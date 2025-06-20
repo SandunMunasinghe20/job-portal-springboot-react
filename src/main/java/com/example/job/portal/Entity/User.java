@@ -17,9 +17,48 @@ public class User {
     private String password;
 
     @Column(name = "account_created_at")
-    private LocalDateTime accountCreatedAt;
+    private Date accountCreatedAt;
 
     @Column(name = "account_updated_at")
-    private LocalDateTime accountUpdatedAt;
+    private Date accountUpdatedAt;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getAccountCreatedAt() {
+        return accountCreatedAt;
+    }
+
+    public void setAccountCreatedAt(Date accountCreatedAt) {
+        this.accountCreatedAt = accountCreatedAt;
+    }
+
+    public Date getAccountUpdatedAt() {
+        return accountUpdatedAt;
+    }
+
+    public void setAccountUpdatedAt(Date accountUpdatedAt) {
+        this.accountUpdatedAt = accountUpdatedAt;
+    }
 }
