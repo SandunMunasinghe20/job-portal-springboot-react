@@ -1,17 +1,22 @@
 package com.example.job.portal.Service;
 
+import com.example.job.portal.DTO.LinkTokenDTO;
 import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
 import com.example.job.portal.Entity.Employer;
 import com.example.job.portal.Entity.Seeker;
+import com.example.job.portal.Entity.User;
 import com.example.job.portal.Repository.EmployerRepo;
 import com.example.job.portal.Repository.SeekerRepo;
+import com.example.job.portal.Repository.UserRepo;
 import com.example.job.portal.Security.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +34,10 @@ public class AuthService {
     private EmployerRepo employerRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private UserRepo userRepo;
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -119,5 +128,57 @@ public class AuthService {
 
         return new LoginResponseDTO(token);
     }
+
+    public ResponseEntity<String> logout(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+
+            return ResponseEntity.ok().body("Successfully logged out");
+        }else {
+            return ResponseEntity.badRequest().body("No authenticated use found");
+        }
+
+    }
+
+    public ResponseEntity<String> forgotPassword(String email) {
+        System.out.println("email in forgotPassword: " + email);
+        String newEmail = email.trim().replaceAll("\\s+", "").toLowerCase();
+        System.out.println("newEmail: " + newEmail);
+        Optional<User> user = userRepo.findByEmail(newEmail);
+
+        System.out.println("forgot password started "+user);
+        if (user.isEmpty()) {
+            System.out.println("user not found");
+            return ResponseEntity.badRequest().body("User not found with this email");
+        }
+
+        User u = user.get();
+
+        //get reset link
+        String resetLink = emailService.getResetLink(u);
+
+        //send reset email
+        ResponseEntity<String> response=emailService.sendEmail(u, resetLink);
+
+        return response;
+    }
+
+    public ResponseEntity<String> resetPassword(LinkTokenDTO linkTokenDTO) {
+        if (linkTokenDTO.getEmail() == null || linkTokenDTO.getEmail().isEmpty()) {
+            return ResponseEntity.badRequest().body("Invalid email");
+        }
+        Optional<User> user = userRepo.findByEmail(linkTokenDTO.getEmail());
+        if (user.isEmpty()){
+            return ResponseEntity.badRequest().body("User not found with this email");
+        }
+        User realUser = user.get();
+
+        //add new pass
+        realUser.setPassword(passwordEncoder.encode(linkTokenDTO.getPassword()));
+        userRepo.save(realUser);
+
+        return ResponseEntity.ok().body("Password reset successfull");
+    }
+
 
 }

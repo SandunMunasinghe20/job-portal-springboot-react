@@ -16,7 +16,7 @@ public class Employer extends User{
     private String phone;
 
     @Column(unique=true)
-    private int registrationNumber;
+    private Integer registrationNumber;
 
     private String industry;
 
