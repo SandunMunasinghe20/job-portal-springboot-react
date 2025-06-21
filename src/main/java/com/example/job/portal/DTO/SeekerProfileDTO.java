@@ -1,20 +1,13 @@
 package com.example.job.portal.DTO;
 
-import jakarta.validation.constraints.*;
 import java.util.List;
 
-public class SeekerDTO {
+public class SeekerProfileDTO {
 
-    private String email;
+    private Long id;
 
-    @NotBlank(message = "First name is required")
     private String fname;
-
-    @NotBlank(message = "Last name is required")
     private String lname;
-
-    //@NotBlank(message = "Phone is required")
-    private String phone;
 
     private String location;
 
@@ -23,7 +16,6 @@ public class SeekerDTO {
 
     private String currentJobTitle;
 
-    @Min(value = 0, message = "Experience cannot be negative")
     private Integer totalExperience;
 
     private String resumeUrl;
@@ -32,7 +24,6 @@ public class SeekerDTO {
     private String jobTypePreference;
     private String preferredIndustry;
 
-    @PositiveOrZero(message = "Expected salary must be zero or positive")
     private Double expectedSalary;
 
     private String availability;
@@ -46,12 +37,6 @@ public class SeekerDTO {
     private String certifications;
 
     // Getters and setters
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getEmail() {
-        return email;
-    }
 
     public String getFname() {
         return fname;
@@ -67,14 +52,6 @@ public class SeekerDTO {
 
     public void setLname(String lname) {
         this.lname = lname;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getLocation() {

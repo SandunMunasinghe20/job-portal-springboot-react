@@ -1,29 +1,15 @@
 package com.example.job.portal.DTO;
 
-import jakarta.validation.constraints.*;
-
-public class EmployerDTO {
+public class EmployerProfileDTO {
 
     private String email;
 
-    @NotBlank(message = "Company name is required")
     private String companyName;
-
     private String address;
-
-    private String phone;
-
-    @Positive(message = "Registration number must be positive")
-    private Integer registrationNumber;
-
     private String industry;
-
     private String companySize;
-
     private String website;
-
     private String logoUrl;
-
     private String companyDescription;
 
     // Getters and setters
@@ -39,7 +25,6 @@ public class EmployerDTO {
     public String getCompanyName() {
         return companyName;
     }
-
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
@@ -47,31 +32,13 @@ public class EmployerDTO {
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getRegistrationNumber() {
-        return registrationNumber;
-    }
-
-    public void setRegistrationNumber(Integer registrationNumber) {
-        this.registrationNumber = registrationNumber;
     }
 
     public String getIndustry() {
         return industry;
     }
-
     public void setIndustry(String industry) {
         this.industry = industry;
     }
@@ -79,7 +46,6 @@ public class EmployerDTO {
     public String getCompanySize() {
         return companySize;
     }
-
     public void setCompanySize(String companySize) {
         this.companySize = companySize;
     }
@@ -87,7 +53,6 @@ public class EmployerDTO {
     public String getWebsite() {
         return website;
     }
-
     public void setWebsite(String website) {
         this.website = website;
     }
@@ -95,7 +60,6 @@ public class EmployerDTO {
     public String getLogoUrl() {
         return logoUrl;
     }
-
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
@@ -103,7 +67,6 @@ public class EmployerDTO {
     public String getCompanyDescription() {
         return companyDescription;
     }
-
     public void setCompanyDescription(String companyDescription) {
         this.companyDescription = companyDescription;
     }
