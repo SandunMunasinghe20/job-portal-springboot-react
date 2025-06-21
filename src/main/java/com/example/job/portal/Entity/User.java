@@ -22,6 +22,16 @@ public class User {
     @Column(name = "account_updated_at")
     private Date accountUpdatedAt;
 
+    @Column(name = "role")
+    private String role;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public String getRole() {
+        return role;
+    }
+
     public long getId() {
         return id;
     }

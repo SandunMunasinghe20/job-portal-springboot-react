@@ -1,22 +1,36 @@
 package com.example.job.portal.Service;
+import com.example.job.portal.DTO.LoginRequestDTO;
+import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
 import com.example.job.portal.Entity.Employer;
 import com.example.job.portal.Entity.Seeker;
 import com.example.job.portal.Repository.EmployerRepo;
 import com.example.job.portal.Repository.SeekerRepo;
+import com.example.job.portal.Security.JWTService;
 import com.example.job.portal.Service.AuthService;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 
@@ -33,6 +47,15 @@ public class AuthServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private UserDto userDto;
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private UserDetailsService userDetailsService;
+    @Mock
+    private JWTService jwtService;
+
+
 
     @BeforeEach
     public void setUp() {
@@ -81,6 +104,37 @@ public class AuthServiceTest {
         ResponseEntity<String> response = authService.registerSeeker(userDto);
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Successfully registered", response.getBody());
+    }
+
+    @Test
+    void login(){
+        String email = "test@example.com";
+        String password = "password123";
+        String fakeToken = "mocked.jwt.token";
+
+        LoginRequestDTO request = new LoginRequestDTO();
+        request.setEmail(email);
+        request.setPassword(password);
+
+        UserDetails userDetails = User.builder()
+                .username(email)
+                .password(password)
+                .roles("seeker")
+                .build();
+
+        // Mocking behavior
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(mock(Authentication.class));
+
+        when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
+        when(jwtService.generateToken(userDetails)).thenReturn(fakeToken);
+
+        // Act
+        LoginResponseDTO response = authService.login(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(fakeToken, response.getToken());
     }
 
 
