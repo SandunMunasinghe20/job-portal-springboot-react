@@ -4,6 +4,8 @@ import com.example.job.portal.Entity.LinkToken;
 import com.example.job.portal.Entity.User;
 import com.example.job.portal.Repository.LinkTokenRepo;
 import com.example.job.portal.Repository.UserRepo;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -21,6 +23,8 @@ public class EmailService {
     private final UserRepo userRepo;
     private final LinkTokenRepo linkTokenRepo;
 
+
+    @Autowired
     public EmailService(JavaMailSenderImpl mailSender, UserRepo userRepo,  LinkTokenRepo linkTokenRepo) {
         this.mailSender = mailSender;
         this.userRepo = userRepo;
@@ -46,10 +50,10 @@ public class EmailService {
 
     }
 
+    @Transactional
     public String getResetLink(User user) {
-
-        String email = user.getEmail();
-        System.out.println("Getting reset link: [" + email + "]");
+        //delete any pre tokens
+        linkTokenRepo.deleteByUser(user);
 
         String token = UUID.randomUUID().toString();
 
@@ -57,11 +61,14 @@ public class EmailService {
         linkToken.setToken(token);
         linkToken.setUser(user);
         linkToken.setExpires(LocalDateTime.now().plusMinutes(15));
+        linkToken.setTokenUsed(false);
+
+
         //save token
         linkTokenRepo.save(linkToken);
 
-        String ResetLink = "http://localhost:8080/reset-password?token=" + token;
-        return (ResetLink);
+        String resetLink = "http://localhost:8080/reset-password?token=" + token;
+        return (resetLink);
     }
 
 }

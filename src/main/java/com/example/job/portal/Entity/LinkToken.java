@@ -20,6 +20,8 @@ public class LinkToken {
 
     private LocalDateTime expires;
 
+    private boolean tokenUsed = false;
+
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;

@@ -1,6 +1,7 @@
 package com.example.job.portal.Controller;
 
 
+import com.example.job.portal.DTO.LinkTokenDTO;
 import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
@@ -56,6 +57,11 @@ public class AuthController {
     public ResponseEntity<String> forgotPassword(@Valid @RequestBody String email) {
         System.out.println("email received: " + email);
         return (authService.forgotPassword(email));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody LinkTokenDTO linkTokenDTO) {
+        return (authService.resetPassword(linkTokenDTO));
     }
 
 

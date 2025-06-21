@@ -5,9 +5,11 @@ import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
 import com.example.job.portal.Entity.Employer;
+import com.example.job.portal.Entity.LinkToken;
 import com.example.job.portal.Entity.Seeker;
 import com.example.job.portal.Entity.User;
 import com.example.job.portal.Repository.EmployerRepo;
+import com.example.job.portal.Repository.LinkTokenRepo;
 import com.example.job.portal.Repository.SeekerRepo;
 import com.example.job.portal.Repository.UserRepo;
 import com.example.job.portal.Security.JWTService;
@@ -23,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -39,9 +42,12 @@ public class AuthService {
     @Autowired
     private UserRepo userRepo;
 
+
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JWTService jwtService;
+    @Autowired
+    private LinkTokenRepo linkTokenRepo;
 
 
     public AuthService(SeekerRepo seekerRepo,
@@ -119,14 +125,19 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
-        );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
-        String token = jwtService.generateToken(userDetails);
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
+            );
 
-        return new LoginResponseDTO(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
+            String token = jwtService.generateToken(userDetails);
+
+            return new LoginResponseDTO(token, "Login successful", true);
+        }catch (Exception e) {
+            return new LoginResponseDTO(null, "Login failed.Check your email and password", false);
+        }
     }
 
     public ResponseEntity<String> logout(Authentication authentication) {
@@ -143,7 +154,7 @@ public class AuthService {
     public ResponseEntity<String> forgotPassword(String email) {
         System.out.println("email in forgotPassword: " + email);
         String newEmail = email.trim().replaceAll("\\s+", "").toLowerCase();
-        System.out.println("newEmail: " + newEmail);
+
         Optional<User> user = userRepo.findByEmail(newEmail);
 
         System.out.println("forgot password started "+user);
@@ -164,18 +175,41 @@ public class AuthService {
     }
 
     public ResponseEntity<String> resetPassword(LinkTokenDTO linkTokenDTO) {
-        if (linkTokenDTO.getEmail() == null || linkTokenDTO.getEmail().isEmpty()) {
+        /*if (linkTokenDTO.getEmail() == null || linkTokenDTO.getEmail().isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid email");
+        }*/
+        //search repo for token
+        LinkToken token = linkTokenRepo.findByToken(linkTokenDTO.getToken());
+
+        if (token == null) {
+            return ResponseEntity.badRequest().body("Token not found");
         }
-        Optional<User> user = userRepo.findByEmail(linkTokenDTO.getEmail());
-        if (user.isEmpty()){
-            return ResponseEntity.badRequest().body("User not found with this email");
+        if (token.getExpires().isBefore(LocalDateTime.now())){
+            return ResponseEntity.badRequest().body("Token expired");
         }
-        User realUser = user.get();
+        if (token.isTokenUsed()){
+            return ResponseEntity.badRequest().body("Token already used");
+        }
+
+        if (!linkTokenDTO.getPassword().equals( linkTokenDTO.getConfirmPassword())){
+            return ResponseEntity.badRequest().body("Passwords do not match");
+        }
+
+        User realUser = token.getUser();
+
+        /*if (!realUser.getEmail().equals(linkTokenDTO.getEmail().trim())) {
+            return ResponseEntity.badRequest().body("Email does not match token owner");
+        }*/
+
+        if (linkTokenDTO.getPassword() == null || linkTokenDTO.getPassword().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Password cannot be empty");
+        }
 
         //add new pass
-        realUser.setPassword(passwordEncoder.encode(linkTokenDTO.getPassword()));
+        realUser.setPassword(passwordEncoder.encode(linkTokenDTO.getPassword().trim()));
         userRepo.save(realUser);
+        token.setTokenUsed(true);
+        linkTokenRepo.save(token);
 
         return ResponseEntity.ok().body("Password reset successfull");
     }
