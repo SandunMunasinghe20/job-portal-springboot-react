@@ -1,0 +1,66 @@
+/* EmailInput Component Styles */
+.email-input-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.email-input-wrapper input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #374151;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.email-input-wrapper input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.email-input-wrapper input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.email-input-wrapper input:hover {
+  border-color: #d1d5db;
+}
+
+.email-input-wrapper input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* Focus visible for accessibility */
+.email-input-wrapper input:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Error state (can be applied with additional class) */
+.email-input-wrapper.error input {
+  border-color: #dc2626;
+}
+
+.email-input-wrapper.error input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Success state (can be applied with additional class) */
+.email-input-wrapper.success input {
+  border-color: #16a34a;
+}
+
+.email-input-wrapper.success input:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
