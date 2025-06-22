@@ -157,7 +157,7 @@ public class AuthService {
 
         Optional<User> user = userRepo.findByEmail(newEmail);
 
-        System.out.println("forgot password started "+user);
+        //System.out.println("forgot password started "+user);
         if (user.isEmpty()) {
             System.out.println("user not found");
             return ResponseEntity.badRequest().body("User not found with this email");
@@ -171,6 +171,7 @@ public class AuthService {
         //send reset email
         ResponseEntity<String> response=emailService.sendEmail(u, resetLink);
 
+        System.out.println("response after sending email "+response);
         return response;
     }
 

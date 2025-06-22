@@ -1,4 +1,4 @@
-import './EmailInput.css';
+import './GetInput.css';
 
 export default function EmailInput(props) {
   return (

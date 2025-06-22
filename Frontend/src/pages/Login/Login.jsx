@@ -1,13 +1,17 @@
 import { useState } from "react";
 import './Login.css'
 import SubmitButton from "../../components/submitButton/submitbutton";
-import EmailInput from "../../components/EmailInput/EmailInput";
+import GetInput from "../../components/GetInput/GetInput";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    
+    const navigate = useNavigate();
+
 
     const handlesubmit = async (e) => {
         e.preventDefault();
@@ -51,17 +55,19 @@ function Login() {
             <h1>Login</h1>
             <form className="login-form" onSubmit={handlesubmit}>
                 <div className="input-group">
-                    <EmailInput type="email" value={email} onChange={setEmail} placeholder="Email" />
+                    <GetInput type="email" value={email} onChange={setEmail} placeholder="Email" />
                 </div>
                 <div className="input-group">
-                    <EmailInput type="password" value={password} onChange={setPassword} placeholder="Password" />
+                    <GetInput type="password" value={password} onChange={setPassword} placeholder="Password" />
                 </div>
                 <SubmitButton msg="Login"/>
                              
                 {error && <p className="login-message login-error">{error}</p>}
                 {success && <p className="login-message login-success">{success}</p>}
 
-                <p className="forgot-password"><a href="http://localhost:8080/api/auth/forgot-password">Forgot Password? </a></p>
+                <p className="forgot-password">
+                    <Link to="/forgotPassword" >Forgot Password? </Link>
+                    </p>
             </form>
         </div>
     );

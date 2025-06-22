@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './Register.css'
-import EmailInput from '../../components/EmailInput/EmailInput';
+import GetInput from '../../components/GetInput/GetInput'
 import SubmitButton from '../../components/submitButton/submitbutton';
 
 export default function Register(){
@@ -47,10 +47,10 @@ export default function Register(){
             <h1>Register</h1>
             <form className="register-form" onSubmit={handlesubmit}>
                 <div className="input-group">
-                    <EmailInput type="email" placeholder="Email" value={email} onChange={setEmail} />
+                    <GetInput type="email" placeholder="Email" value={email} onChange={setEmail} />
                 </div>
                 <div className="input-group">
-                    <EmailInput type="password" placeholder="Password" value={password} onChange={setPassword} />
+                    <GetInput type="password" placeholder="Password" value={password} onChange={setPassword} />
                 </div>
                 <SubmitButton msg="Register" />
                 

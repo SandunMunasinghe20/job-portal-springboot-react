@@ -1,7 +1,6 @@
-package com.example.job.portal.Security;
+package com.example.job.portal.Configuration;
 
-import com.example.job.portal.Security.CustomUserDetailsService;
-
+import com.example.job.portal.Security.JWTAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
