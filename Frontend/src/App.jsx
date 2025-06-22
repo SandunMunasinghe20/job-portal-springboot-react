@@ -2,6 +2,7 @@ import { BrowserRouter ,Routes ,Route } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import JobListing from './components/JobListing/JobListing';
 import './App.css'
 
 function App() {
@@ -12,8 +13,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register/>} />
         <Route path='/forgotPassword' element={<ForgotPassword/>} />
-        
-      </Routes>
+        <Route path='/jobs' element={<JobListing/>} />      
+        </Routes>
     </BrowserRouter>
   );
 }

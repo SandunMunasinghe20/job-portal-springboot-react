@@ -1,9 +1,13 @@
 package com.example.job.portal.Service;
 
 import com.example.job.portal.DTO.JobDTO;
+import com.example.job.portal.Entity.Employer;
 import com.example.job.portal.Entity.Job;
+import com.example.job.portal.Repository.EmployerRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.example.job.portal.Repository.JobRepo;
 import java.util.ArrayList;
@@ -14,7 +18,10 @@ import java.util.ResourceBundle;
 @Service
 public class JobService {
 
+    @Autowired
     private JobRepo jobRepo;
+    @Autowired
+    private EmployerRepo employerRepo;
 
     public ResponseEntity<List<JobDTO>> getAllJobs() {
         //original entity data
@@ -52,17 +59,28 @@ public class JobService {
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<String> addJob(JobDTO jobDTO) {
+    public ResponseEntity<String> addJob(JobDTO jobDTO, Authentication authentication) {
         try {
+
+            String email = authentication.getName();
+            Employer employer = employerRepo.findByEmail(email).get();
+
             Job job = new Job();
             job.setJobTitle(jobDTO.getJobTitle());
             job.setJobDescription(jobDTO.getJobDescription());
             job.setJobType(jobDTO.getJobType());
             job.setSalary(jobDTO.getSalary());
             job.setLocation(jobDTO.getLocation());
+
+            //set employer
+            job.setEmployerId(employer.getId());
+            System.out.println("Empl id : " + employer.getId());
+
+            System.out.println("ready to save job");
             jobRepo.save(job);
             return ResponseEntity.ok("Job added successfully");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong while adding your job");
         }
     }

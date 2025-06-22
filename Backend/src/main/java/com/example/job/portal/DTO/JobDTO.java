@@ -3,8 +3,8 @@ package com.example.job.portal.DTO;
 public class JobDTO {
 
     private Long id;
-    private String JobTitle;
-    private String JobDescription;
+    private String jobTitle;
+    private String jobDescription;
     private String location;
     private String jobType;
     private int salary;
@@ -26,19 +26,19 @@ public class JobDTO {
     }
 
     public String getJobTitle() {
-        return JobTitle;
+        return jobTitle;
     }
 
     public void setJobTitle(String jobTitle) {
-        JobTitle = jobTitle;
+        this.jobTitle = jobTitle;
     }
 
     public String getJobDescription() {
-        return JobDescription;
+        return jobDescription;
     }
 
     public void setJobDescription(String jobDescription) {
-        JobDescription = jobDescription;
+        this.jobDescription = jobDescription;
     }
 
     public String getLocation() {

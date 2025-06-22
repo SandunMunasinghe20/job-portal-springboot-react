@@ -37,7 +37,7 @@ public class JobController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return jobService.addJob(jobDTO);
+        return jobService.addJob(jobDTO,authentication);
     }
 
     @PostMapping("/update")

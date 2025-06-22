@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.ListResourceBundle;
@@ -32,7 +33,8 @@ public class JobServiceTest {
     JobRepo jobRepo;
 
     @Test
-    void testAddJob() {
+    void testAddJob(Authentication authentication) {
+
         JobDTO jobDTO = new JobDTO();
         jobDTO.setSalary(1000);
         jobDTO.setJobTitle("Job Title");
@@ -42,7 +44,7 @@ public class JobServiceTest {
 
         when(jobRepo.save(any(Job.class))).thenReturn(new Job());
 
-        ResponseEntity<String> response = jobService.addJob(jobDTO);
+        ResponseEntity<String> response = jobService.addJob(jobDTO,authentication);
 
         //asserts
         assertEquals(HttpStatus.OK, response.getStatusCode());

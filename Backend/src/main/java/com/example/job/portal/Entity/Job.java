@@ -6,12 +6,13 @@ import jakarta.persistence.*;
 @Table(name = "jobs")
 public class Job {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    /*@ManyToOne
     @MapsId
-    @JoinColumn(name = "id")
-    private Employer employer;
+    @JoinColumn(name = "id")*/
+    private Long employerId;
 
     private String jobTitle;
     private String jobDescription;
@@ -27,12 +28,12 @@ public class Job {
         this.id = id;
     }
 
-    public Employer getEmployer() {
-        return employer;
+    public Long getEmployerId() {
+        return employerId;
     }
 
-    public void setEmployer(Employer employer) {
-        this.employer = employer;
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
     }
 
     public String getJobTitle() {
