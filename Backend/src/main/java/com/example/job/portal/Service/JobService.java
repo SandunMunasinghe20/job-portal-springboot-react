@@ -36,6 +36,8 @@ public class JobService {
             dto.setJobDescription(job.getJobDescription());
             dto.setJobType(job.getJobType());
             dto.setSalary(job.getSalary());
+            dto.setCompanyName(job.getCompanyName());
+            dto.setLocation(job.getLocation());
 
             jobDTOs.add(dto);
         }
@@ -71,6 +73,7 @@ public class JobService {
             job.setJobType(jobDTO.getJobType());
             job.setSalary(jobDTO.getSalary());
             job.setLocation(jobDTO.getLocation());
+            job.setCompanyName(jobDTO.getCompanyName());
 
             //set employer
             job.setEmployerId(employer.getId());

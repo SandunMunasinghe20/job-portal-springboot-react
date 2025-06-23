@@ -1,9 +1,9 @@
 import './submitButton.css'
 
-export default function SubmitButton({msg}){
+export default function SubmitButton({msg,onClick}){
     return (
         <div className='submit-button-component'>
-            <button>{msg}</button>
+            <button onClick={onClick}>{msg}</button>
         </div>
     );
 }

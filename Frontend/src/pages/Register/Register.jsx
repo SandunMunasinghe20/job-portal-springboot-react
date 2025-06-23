@@ -16,7 +16,7 @@ export default function Register(){
         setSuccess("")
 
         try {
-            const response = await fetch("http://localhost:8080/api/auth/register-seeker",{
+            const response = await fetch("http://localhost:8080/api/auth/register-employer",{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json"

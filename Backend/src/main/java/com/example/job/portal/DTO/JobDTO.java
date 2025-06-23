@@ -9,6 +9,16 @@ public class JobDTO {
     private String jobType;
     private int salary;
 
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public String getJobType() {
         return jobType;
     }

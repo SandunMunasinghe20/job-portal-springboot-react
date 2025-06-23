@@ -19,6 +19,15 @@ public class Job {
     private String location;
     private String jobType;
     private int salary;
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public Long getId() {
         return id;
