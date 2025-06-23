@@ -13,7 +13,7 @@ public class EmployerDTO {
 
     private String phone;
 
-    @Positive(message = "Registration number must be positive")
+    //@Positive(message = "Registration number must be positive")
     private Integer registrationNumber;
 
     private String industry;
@@ -25,6 +25,8 @@ public class EmployerDTO {
     private String logoUrl;
 
     private String companyDescription;
+
+    private String role = "employer";
 
     // Getters and setters
 
@@ -107,4 +109,12 @@ public class EmployerDTO {
     public void setCompanyDescription(String companyDescription) {
         this.companyDescription = companyDescription;
     }
+    
+    public void setRole(String role){
+        this.role=role;
+    }
+    public String getRole(){
+        return role;
+    }
+    
 }

@@ -15,7 +15,7 @@ public class Employer extends User{
     private String address;
     private String phone;
 
-    @Column(unique=true)
+    @Column(unique=true,nullable = true)
     private Integer registrationNumber;
 
     private String industry;
@@ -55,11 +55,11 @@ public class Employer extends User{
         this.phone = phone;
     }
 
-    public int getRegistrationNumber() {
+    public Integer getRegistrationNumber() {
         return registrationNumber;
     }
 
-    public void setRegistrationNumber(int registrationNumber) {
+    public void setRegistrationNumber(Integer registrationNumber) {
         this.registrationNumber = registrationNumber;
     }
 

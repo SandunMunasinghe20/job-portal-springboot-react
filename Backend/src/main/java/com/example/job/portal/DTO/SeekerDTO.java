@@ -6,7 +6,7 @@ import java.util.List;
 public class SeekerDTO {
 
     private String email;
-
+    private String role="seeker";
     @NotBlank(message = "First name is required")
     private String fname;
 
@@ -75,6 +75,12 @@ public class SeekerDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public String getRole() {
+        return role;
     }
 
     public String getLocation() {

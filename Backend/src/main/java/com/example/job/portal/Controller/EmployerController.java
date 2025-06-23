@@ -42,6 +42,11 @@ public class EmployerController {
         return employerService.updateEmployer(employerDTO);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<EmployerDTO> getEmployerProfile(Authentication authentication) {
+        return employerService.getEmployerProfile(authentication);
+    }
+
     @DeleteMapping("delete-emp")
     public ResponseEntity<String> deleteEmployer(Authentication authentication) {
         return employerService.deleteEmployer(authentication.getName());

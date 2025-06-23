@@ -4,6 +4,7 @@ import Register from './pages/Register/Register';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Jobs from './pages/JobsPage/Jobs';
 import PostJobs from './pages/PostJobs/PostJobs';
+import ViewProfilePage from './pages/ViewProfile/ViewProfile';
 import './App.css'
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
         <Route path='/register' element={<Register/>} />
         <Route path='/forgotPassword' element={<ForgotPassword/>} />
         <Route path='/jobs' element={<Jobs/>} />
-        <Route path='/postJobs' element={<PostJobs/>} />      
+        <Route path='/postJobs' element={<PostJobs/>} />   
+        <Route path='/profile' element={<ViewProfilePage/>}/>
         </Routes>
     </BrowserRouter>
   );

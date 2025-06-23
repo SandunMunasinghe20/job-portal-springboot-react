@@ -4,6 +4,8 @@ import com.example.job.portal.DTO.EmployerDTO;
 import com.example.job.portal.Entity.Employer;
 import com.example.job.portal.Repository.EmployerRepo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,10 +47,49 @@ public class EmployerService {
         Employer employer = user.get();
 
         employer.setEmail(employerDTO.getEmail());
+        employer.setCompanyName(employerDTO.getCompanyName());
+        employer.setAddress(employerDTO.getAddress());
+        employer.setPhone(employerDTO.getPhone());
+        employer.setRegistrationNumber(employerDTO.getRegistrationNumber());
+        employer.setIndustry(employerDTO.getIndustry());
+        employer.setCompanySize(employerDTO.getCompanySize());
+        employer.setWebsite(employerDTO.getWebsite());
+        employer.setLogoUrl(employerDTO.getLogoUrl());
+        employer.setCompanyDescription(employerDTO.getCompanyDescription());
+        employer.setRole(employerDTO.getRole());
+
         employerRepo.save(employer);
         return ResponseEntity.ok("Profile updated successfully");
 
     }
+
+    public ResponseEntity<EmployerDTO> getEmployerProfile(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Employer> employerOptional = employerRepo.findByEmail(email);
+
+        if (employerOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Employer not found with email: " + email);
+        }
+
+        Employer employer = employerOptional.get();
+
+        EmployerDTO dto = new EmployerDTO();
+        dto.setEmail(employer.getEmail());
+        dto.setCompanyName(employer.getCompanyName());
+        dto.setAddress(employer.getAddress());
+        dto.setPhone(employer.getPhone());
+        dto.setRegistrationNumber(employer.getRegistrationNumber());
+        dto.setIndustry(employer.getIndustry());
+        dto.setCompanySize(employer.getCompanySize());
+        dto.setWebsite(employer.getWebsite());
+        dto.setLogoUrl(employer.getLogoUrl());
+        dto.setCompanyDescription(employer.getCompanyDescription());
+        dto.setRole(employer.getRole());
+        System.out.println("role: " + employer.getRole());
+
+        return ResponseEntity.ok(dto);
+    }
+
 
     public ResponseEntity<String> deleteEmployer(String email) {
         Optional<Employer> user = employerRepo.findByEmail(email);

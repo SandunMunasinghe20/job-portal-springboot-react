@@ -72,10 +72,25 @@ public class SeekerService {
         Seeker seeker = user.get();
 
         SeekerDTO seekerDTO = new SeekerDTO();
-        seekerDTO.setAvailability(seeker.getAvailability());
-        seekerDTO.setCertifications(seeker.getCertifications());
-        seekerDTO.setEmail(email);
+        seekerDTO.setRole("seeker");
+        seekerDTO.setEmail(seeker.getEmail());
         seekerDTO.setFname(seeker.getFname());
+        seekerDTO.setLname(seeker.getLname());
+        seekerDTO.setPhone(seeker.getPhone());
+        seekerDTO.setLocation(seeker.getLocation());
+        seekerDTO.setSkills(seeker.getSkills());
+        seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
+        seekerDTO.setTotalExperience(seeker.getTotalExperience());
+        seekerDTO.setResumeUrl(seeker.getResumeUrl());
+        seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
+        seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
+        seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
+        seekerDTO.setAvailability(seeker.getAvailability());
+        seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
+        seekerDTO.setEducation(seeker.getEducation());
+        seekerDTO.setWorkExperience(seeker.getWorkExperience());
+        seekerDTO.setCertifications(seeker.getCertifications());
+
 
         return ResponseEntity.ok(seekerDTO);
 
