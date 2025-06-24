@@ -85,21 +85,48 @@ body {
 }
 
 
-.already-membe {
+.already-member {
   margin-top: 12px;
   font-size: 0.9rem;
   text-align: right;
 }
 
-.already-membe a {
-  color: #007bff;       
+.already-member a {
+  /*color: #007bff;     */
+  color: #e5e7eb;  
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
-.already-membe a:hover {
+.already-member a:hover {
   color: #0056b3;       /* Darker blue on hover */
   text-decoration: underline;
   cursor: pointer;
+}
+
+
+
+
+.toggle-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+.role-btn {
+  padding: 8px 16px;
+  border: 1px solid #6a5acd;
+  background-color: transparent;
+  color: #6a5acd;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-btn.active {
+  background: linear-gradient(to right, #6a5acd, #8a2be2);
+  color: white;
+  border: none;
 }

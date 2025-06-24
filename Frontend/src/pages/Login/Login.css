@@ -3,7 +3,7 @@
   max-width: 420px;
   margin: 60px auto;
   padding: 40px 32px;
-  background: #ffffff;
+  background: #1e293b;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
@@ -13,7 +13,7 @@
 .login-container h1 {
   font-size: 28px;
   font-weight: 600;
-  color: #1f2937;
+  color: white;
   text-align: center;
   margin: 0 0 32px 0;
   letter-spacing: -0.5px;
@@ -81,7 +81,8 @@
 }
 
 .forgot-password a {
-  color: #007bff;       
+  /*color: #007bff; */
+  color: #e5e7eb;      
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
