@@ -26,9 +26,9 @@ export default function Register(){
 
             // get resp entity string msg
             const msg = await response.text();
-            
+            console.log(response);
             if(!response.ok){
-                setError(msg || "Registration failed.");
+                setError(msg);
                 return;
             }
             
@@ -43,6 +43,7 @@ export default function Register(){
     }
 
     return (
+        
         <div className="register-container">
             <h1>Register</h1>
             <form className="register-form" onSubmit={handlesubmit}>

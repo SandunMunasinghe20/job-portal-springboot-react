@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ViewProfile from "../../components/ViewProfile/ViewProfile";
 import { data, useSearchParams } from "react-router-dom";
+import './ViewProfilePage.css';
+import SubmitButton from '../../components/submitButton/submitbutton';
 
 export default function ViewProfilePage(){
   const [error,setError] = useState("");
@@ -40,11 +42,22 @@ const fetchProfile = async () => {
     },[]);
 
     return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">Your Profile</h1>
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      <ViewProfile profile ={profile}/>
-      {success && <div className="text-green-600 mt-2">{success}</div>}
+  <div className="viewprofilepage-container">
+    <div className="viewprofilepage-content">
+      <h1 className="viewprofilepage-title">Your Profile</h1>
+      
+      {/* Profile card including the profile data */}
+    <div className="viewprofile-card">
+      <ViewProfile profile={profile} />
+
+      {/*button inside the card */}
+      <div className="Edit-profile-button">
+        <button className="jl-btn jl-btn-primary">Edit Profile</button>
+      </div>
     </div>
-  );
+
+    {success && <div className="viewprofilepage-success">{success}</div>}
+  </div>
+</div>
+);
 }

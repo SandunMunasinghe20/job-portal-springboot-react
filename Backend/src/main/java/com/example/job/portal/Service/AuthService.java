@@ -99,6 +99,7 @@ public class AuthService {
 
     public ResponseEntity<String> registerEmployer(UserDto userDto) {
         String email = userDto.getEmail();
+        System.out.println("email received from user: " + email);
         String password = userDto.getPassword();
         if (email == null || password == null) {
             return ResponseEntity.badRequest().body("Invalid email or password");
@@ -107,6 +108,7 @@ public class AuthService {
         Optional<Seeker> seeker = seekerRepo.findByEmail(email);
 
         if(seeker.isPresent() || employer.isPresent()) {
+            System.out.println("Account already exists with this email");
             return ResponseEntity.badRequest().body("Account already exists with this email");
         }else {
             try{
@@ -117,9 +119,12 @@ public class AuthService {
                 newEmployer.setAccountUpdatedAt(new Date());
                 newEmployer.setRole("employer");
                 employerRepo.save(newEmployer);
+                System.out.println("Account successfully registered");
                 return ResponseEntity.ok().body("Account successfully registered");
             }catch (Exception e){
+                System.out.println("Something went wrong while registering employer");
                 return ResponseEntity.badRequest().body("Something went wrong while registering employer");
+
             }
         }
     }

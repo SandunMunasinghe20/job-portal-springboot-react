@@ -1,9 +1,19 @@
 /* Register Component Styles - Job Portal */
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+
+
 .register-container {
   max-width: 420px;
   margin: 60px auto;
   padding: 40px 32px;
-  background: #ffffff;
+  background: #1e293b;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
@@ -13,7 +23,7 @@
 .register-container h1 {
   font-size: 28px;
   font-weight: 600;
-  color: #1f2937;
+  color: white;
   text-align: center;
   margin: 0 0 32px 0;
   letter-spacing: -0.5px;

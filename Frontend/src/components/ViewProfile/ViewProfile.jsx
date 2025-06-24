@@ -1,28 +1,29 @@
 import React from 'react';
+import './ViewProfile.css';
 
 export default function ViewProfile({ profile }) {
 
-  if (!profile) return <div>Unable to see profile.Try again later..</div>;
-
+  if (!profile) return <div className="profile-error">Unable to see profile. Try again later..</div>;
 
   const isSeeker = profile.role === 'seeker';
-  console.log("role in view prof elem: ",profile.role);
-  console.log("is seeker: ",isSeeker);
+  console.log("role in view prof elem: ", profile.role);
+  console.log("is seeker: ", isSeeker);
+  
   return (
-    <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-xl">
-      <div className="flex items-center space-x-4">
+    <div className="profile-container">
+      <div className="profile-header">
         <img
           src={isSeeker ? profile.profilePic : profile.logoUrl}
           alt="Profile"
-          className="w-16 h-16 rounded-full"
+          className="profile-image"
         />
         <div>
-          <h2 className="text-xl font-bold">{isSeeker ? profile.name : profile.companyName}</h2>
-          <p className="text-sm text-gray-500">{profile.email}</p>
+          <h2 className="profile-name">{isSeeker ? profile.name : profile.companyName}</h2>
+          <p className="profile-email">{profile.email}</p>
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="profile-details">
         {isSeeker ? (
           <>
             <p><strong>Skills:</strong> {profile.skills.join(', ')}</p>
@@ -31,31 +32,25 @@ export default function ViewProfile({ profile }) {
               href={profile.resumeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline"
+              className="profile-link"
             >
               View Resume
             </a>
           </>
         ) : (
           <>
-            {!isSeeker && (
-  <>
-    <p><strong>Company Description:</strong> {profile.companyDescription}</p>
-    <p><strong>Address:</strong> {profile.address}</p>
-    <p><strong>Phone:</strong> {profile.phone}</p>
-    <p><strong>Registration Number:</strong> {profile.registrationNumber}</p>
-    <p><strong>Industry:</strong> {profile.industry}</p>
-    <p><strong>Company Size:</strong> {profile.companySize}</p>
-    <p>
-      <strong>Website:</strong>{" "}
-      <a href={profile.website} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">
-        {profile.website}
-      </a>
-    </p>
-  </>
-)}
-            
-
+            <p><strong>Company Description:</strong> {profile.companyDescription}</p>
+            <p><strong>Address:</strong> {profile.address}</p>
+            <p><strong>Phone:</strong> {profile.phone}</p>
+            <p><strong>Registration Number:</strong> {profile.registrationNumber}</p>
+            <p><strong>Industry:</strong> {profile.industry}</p>
+            <p><strong>Company Size:</strong> {profile.companySize}</p>
+            <p>
+              <strong>Website:</strong>{" "}
+              <a href={profile.website} className="profile-link" target="_blank" rel="noopener noreferrer">
+                {profile.website}
+              </a>
+            </p>
           </>
         )}
       </div>

@@ -39,6 +39,7 @@ public class AuthController {
     @PostMapping("register-employer")
     public ResponseEntity<String> registerEmployer(@Valid @RequestBody UserDto userDto) {
         ResponseEntity<String> response =authService.registerEmployer(userDto);
+        System.out.println("response ready to send fro back is : "+response);
         return response;
     }
 

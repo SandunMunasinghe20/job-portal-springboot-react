@@ -4,7 +4,7 @@ import Register from './pages/Register/Register';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Jobs from './pages/JobsPage/Jobs';
 import PostJobs from './pages/PostJobs/PostJobs';
-import ViewProfilePage from './pages/ViewProfile/ViewProfile';
+import ViewProfilePage from './pages/ViewProfilePage/ViewProfilePage';
 import './App.css'
 
 function App() {
