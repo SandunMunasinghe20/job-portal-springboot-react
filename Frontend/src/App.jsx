@@ -5,6 +5,9 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Jobs from './pages/JobsPage/Jobs';
 import PostJobs from './pages/PostJobs/PostJobs';
 import ViewProfilePage from './pages/ViewProfilePage/ViewProfilePage';
+import UsersPage from './pages/UsersPage/UsersPage';
+import UpdateJobs from './pages/UpdateJobs/UpdateJobs';
+import UpdateProfilePage from './pages/UpdateProfilePage/UpdateProfilePage';
 import './App.css'
 
 function App() {
@@ -18,6 +21,13 @@ function App() {
         <Route path='/jobs' element={<Jobs/>} />
         <Route path='/postJobs' element={<PostJobs/>} />   
         <Route path='/profile' element={<ViewProfilePage/>}/>
+        <Route path ='/users' element={<UsersPage/>} />
+        <Route path='/updateJobs' element={<UpdateJobs/>} />
+        <Route path='/updateProfile' element={<UpdateProfilePage/>} />
+
+        
+        
+
         </Routes>
     </BrowserRouter>
   );

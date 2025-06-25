@@ -139,9 +139,12 @@ public class AuthService {
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
             String token = jwtService.generateToken(userDetails);
 
-            return new LoginResponseDTO(token, "Login successful", true);
+            Optional<User> user = userRepo.findByEmail(loginRequestDTO.getEmail());
+            String role = user.get().getRole();
+
+            return new LoginResponseDTO(token,role, "Login successful", true);
         }catch (Exception e) {
-            return new LoginResponseDTO(null, "Login failed.Check your email and password", false);
+            return new LoginResponseDTO(null,null, "Login failed.Check your email and password", false);
         }
     }
 

@@ -42,6 +42,8 @@ function Login() {
 
             //save token
             localStorage.setItem("auth-token",data.token);
+            localStorage.setItem("role",data.role);
+            console.log("Role ",data.role);
             setSuccess("Login Successful");
 
         }catch(e){

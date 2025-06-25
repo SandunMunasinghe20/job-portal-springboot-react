@@ -34,31 +34,60 @@ public class SeekerService {
             seekerDTO.setCertifications(seeker.getCertifications());
             seekerDTO.setEmail(seeker.getEmail());
             seekerDTO.setFname(seeker.getFname());
+            seekerDTO.setLname(seeker.getLname());
             return seekerDTO;
         }).toList();
         return ResponseEntity.ok(seekerDTOs);
     }
 
 
-
     public ResponseEntity<String> updateSeekerProfile(SeekerDTO seekerDTO) {
 
         String email = seekerDTO.getEmail();
-
+        System.out.println("updating seeker: " + email);
         if (email.isEmpty()){
+            System.out.println("Email is empty");
             return ResponseEntity.badRequest().body("Email is empty");
         }
         //find existing user acc
         Optional<Seeker> user = seekerRepo.findByEmail(email);
         if (user.isEmpty()){
+            System.out.println("User not found");
             return ResponseEntity.badRequest().body("User not found");
         }
         Seeker seeker = user.get();
 
-        seeker.setEmail(email);
+        //seeker.setEmail(seekerDTO.getEmail());
+        //seeker.setPassword(seekerDTO.getPassword());
+
+        System.out.println("Updating the user: "+seekerDTO.getEmail());
+
+// Personal Info
+        seeker.setFname(seekerDTO.getFname());
+        seeker.setLname(seekerDTO.getLname());
+        seeker.setPhone(seekerDTO.getPhone());
+        seeker.setLocation(seekerDTO.getLocation());
+
+// Professional Data
+        seeker.setSkills(seekerDTO.getSkills());
+        seeker.setCurrentJobTitle(seekerDTO.getCurrentJobTitle());
+        seeker.setTotalExperience(seekerDTO.getTotalExperience());
+        seeker.setResumeUrl(seekerDTO.getResumeUrl());
+
+// Preferences
+        seeker.setJobTypePreference(seekerDTO.getJobTypePreference());
+        seeker.setPreferredIndustry(seekerDTO.getPreferredIndustry());
+        seeker.setExpectedSalary(seekerDTO.getExpectedSalary());
         seeker.setAvailability(seekerDTO.getAvailability());
+
+// Media / Description
+        seeker.setProfilePictureUrl(seekerDTO.getProfilePictureUrl());
+        seeker.setEducation(seekerDTO.getEducation());
+        seeker.setWorkExperience(seekerDTO.getWorkExperience());
         seeker.setCertifications(seekerDTO.getCertifications());
+
         seekerRepo.save(seeker);
+        System.out.println("updated seeker: " + seekerDTO.getEmail());
         return ResponseEntity.ok("SeekerProfile updated successfully");
 
     }

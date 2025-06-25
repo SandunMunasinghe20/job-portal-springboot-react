@@ -36,7 +36,8 @@ public class EmployerController {
         return employerService.getEmployerById(id);
     }
 
-    @PostMapping("/Emp-update")
+    @PutMapping("/update")
+    @PreAuthorize("hasRole('employer')")
     public ResponseEntity<String > updateEmployer(@RequestBody EmployerDTO employerDTO, Authentication authentication) {
         employerDTO.setEmail(authentication.getName());
         return employerService.updateEmployer(employerDTO);

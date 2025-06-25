@@ -31,6 +31,8 @@ public class Employer extends User{
     @Lob
     private String companyDescription;
 
+
+
     public String getCompanyName() {
         return companyName;
     }

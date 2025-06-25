@@ -1,0 +1,82 @@
+/* UpdateProfileComp.css */
+
+.update-profile {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 32px 28px;
+  background: #1e293b; /* dark blue-gray */
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb; /* light border */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: white;
+}
+
+.update-profile h2 {
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
+}
+
+.update-profile input[type="text"],
+.update-profile input[type="number"],
+.update-profile textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  background: #334155; /* slightly lighter dark */
+  border: 1px solid #64748b; /* gray border */
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.update-profile input[type="text"]:focus,
+.update-profile input[type="number"]:focus,
+.update-profile textarea:focus {
+  border-color: #3b82f6; /* bright blue */
+  background: #1e293b;
+}
+
+.update-profile textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.update-profile button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6; /* bright blue */
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 12px;
+}
+
+.update-profile button:hover {
+  background-color: #2563eb; /* darker blue on hover */
+}
+
+.update-profile p {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.update-profile p[style] {
+  color: #dc2626; /* error red for err messages */
+  background-color: #fef2f2;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+  text-align: center;
+}

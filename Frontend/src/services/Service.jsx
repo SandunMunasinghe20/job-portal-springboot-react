@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function validateEmail({ email }) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,4 +34,27 @@ export function validatePassword({ password }) {
   }
 
   return "";
+}
+
+
+export async function fetchFromBackend({url,method,body}){
+
+    const token = localStorage.getItem("auth-token");
+    console.log("auth token is : ",token);
+    try {
+      const response = await fetch(url,{
+        method:method,
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+token,
+        },
+        body:body?JSON.stringify(body):null,
+      });
+
+      return response;
+
+    } catch (error) {
+      console.log("An error occured while fetching from Server:", error);
+      return ("An error occured while fetching from Server.");
+    }
 }

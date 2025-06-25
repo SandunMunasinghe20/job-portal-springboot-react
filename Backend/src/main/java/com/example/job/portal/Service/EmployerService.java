@@ -39,9 +39,10 @@ public class EmployerService {
 
     public ResponseEntity<String> updateEmployer(EmployerDTO employerDTO) {
         String email = employerDTO.getEmail();
-
+        System.out.println("updating profile for email: " + email);
         Optional<Employer> user = employerRepo.findByEmail(email);
         if (user.isEmpty()) {
+            System.out.println("user not found");
             return ResponseEntity.badRequest().body("User not found with email " + email);
         }
         Employer employer = user.get();
@@ -59,6 +60,7 @@ public class EmployerService {
         employer.setRole(employerDTO.getRole());
 
         employerRepo.save(employer);
+        System.out.println("profile updated successfully for email: " + email);
         return ResponseEntity.ok("Profile updated successfully");
 
     }

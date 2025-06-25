@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginResponseDTO {
     private String token;
+    private String role;
     private String message;
     private boolean success;
 
@@ -29,6 +30,12 @@ public class LoginResponseDTO {
     }
     public boolean isSuccess() {
         return success;
+    }
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }
