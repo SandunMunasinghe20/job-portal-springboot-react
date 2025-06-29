@@ -47,5 +47,13 @@ public class JWTService {
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
+
+    private boolean deleteToken(String token) {
+        try {
+
+        }catch (Exception e) {
+            return false;
+        }
+    }
 }
 
