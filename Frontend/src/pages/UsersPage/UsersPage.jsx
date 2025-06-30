@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { fetchFromBackend } from "../../services/Service";
+import './UsersPage.css';
 
 export default function UsersPage(){
 
@@ -43,17 +44,22 @@ export default function UsersPage(){
   }, []);
     
 
-    <ul>
-  {users.map((user, index) => {
-    const role = user.role;
-    console.log("role is: ", role);
+   return (
+  <div className="users-page-container">
+    <h2 className="users-page-title">
+      {role === "seeker" ? "Available Employers" : "Available Job Seekers"}
+    </h2>
 
-    return (
-      <li key={index}>
-        <ProfileCard profile={user} type={role} />
-      </li>
-    );
-  })}
-</ul>
+    <div className="profile-grid">
+      {users.map((user, index) => {
+        const role = user.role;
+        return (
+          <ProfileCard key={index} profile={user} type={role} />
+        );
+      })}
+    </div>
+  </div>
+);
+
 
 }

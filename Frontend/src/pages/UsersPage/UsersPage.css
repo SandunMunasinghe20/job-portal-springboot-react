@@ -1,0 +1,26 @@
+.users-page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.users-page-title {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.users-page-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #8b92ff;
+  margin: 0.75rem auto 0;
+  border-radius: 2px;
+}

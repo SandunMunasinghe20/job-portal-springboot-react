@@ -30,11 +30,31 @@ public class SeekerService {
 
         List<SeekerDTO> seekerDTOs = seekers.stream().map( seeker -> {
             SeekerDTO seekerDTO = new SeekerDTO();
-            seekerDTO.setAvailability(seeker.getAvailability());
-            seekerDTO.setCertifications(seeker.getCertifications());
             seekerDTO.setEmail(seeker.getEmail());
+            seekerDTO.setRole("seeker");
             seekerDTO.setFname(seeker.getFname());
             seekerDTO.setLname(seeker.getLname());
+            seekerDTO.setPhone(seeker.getPhone());
+            seekerDTO.setLocation(seeker.getLocation());
+
+            // Professional data
+            seekerDTO.setSkills(seeker.getSkills());
+            seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
+            seekerDTO.setTotalExperience(seeker.getTotalExperience());
+            seekerDTO.setResumeUrl(seeker.getResumeUrl());
+
+            // Preferences
+            seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
+            seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
+            seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
+            seekerDTO.setAvailability(seeker.getAvailability());
+
+            // Educational & additional data
+            seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
+            seekerDTO.setEducation(seeker.getEducation());
+            seekerDTO.setWorkExperience(seeker.getWorkExperience());
+            seekerDTO.setCertifications(seeker.getCertifications());
+
             return seekerDTO;
         }).toList();
         return ResponseEntity.ok(seekerDTOs);

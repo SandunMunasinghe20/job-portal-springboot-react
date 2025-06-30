@@ -21,8 +21,7 @@ export default function ProfileCard({ profile, type }) {
 
       {type === 'seeker' && (
         <>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Phone:</strong> {profile.phone}</p>
+          
           <p><strong>Location:</strong> {profile.location}</p>
           <p><strong>Total Experience:</strong> {profile.totalExperience} years</p>
           <p><strong>Expected Salary:</strong> {profile.expectedSalary}</p>

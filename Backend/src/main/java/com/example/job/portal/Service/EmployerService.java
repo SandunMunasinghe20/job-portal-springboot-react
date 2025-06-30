@@ -25,15 +25,23 @@ public class EmployerService {
 
         List<EmployerDTO> dtoList = employers.stream().map(emp -> {
             EmployerDTO dto = new EmployerDTO();
+            dto.setEmail(emp.getEmail());
             dto.setCompanyName(emp.getCompanyName());
             dto.setIndustry(emp.getIndustry());
             dto.setCompanySize(emp.getCompanySize());
             dto.setWebsite(emp.getWebsite());
             dto.setLogoUrl(emp.getLogoUrl());
+            dto.setCompanyDescription(emp.getCompanyDescription());
+            dto.setAddress(emp.getAddress());
+            dto.setPhone(emp.getPhone());
+            dto.setRegistrationNumber(emp.getRegistrationNumber());
+            dto.setRole("employer");
             return dto;
         }).toList();
+
         return ResponseEntity.ok(dtoList);
     }
+
 
 
 
