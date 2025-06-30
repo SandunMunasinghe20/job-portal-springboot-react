@@ -4,24 +4,16 @@ import com.example.job.portal.DTO.LinkTokenDTO;
 import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
-import com.example.job.portal.Entity.Employer;
-import com.example.job.portal.Entity.LinkToken;
-import com.example.job.portal.Entity.Seeker;
-import com.example.job.portal.Entity.User;
-import com.example.job.portal.Repository.EmployerRepo;
-import com.example.job.portal.Repository.LinkTokenRepo;
-import com.example.job.portal.Repository.SeekerRepo;
-import com.example.job.portal.Repository.UserRepo;
-import com.example.job.portal.Security.JWTService;
+import com.example.job.portal.Entity.*;
+import com.example.job.portal.Repository.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +33,10 @@ public class AuthService {
     private EmailService emailService;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private JWTTokenRepo jwtTokenRepo;
+
+    private LocalDateTime localDateTime;
 
 
     private final AuthenticationManager authenticationManager;
@@ -55,7 +51,8 @@ public class AuthService {
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
                        UserDetailsService userDetailsService,
-                       JWTService jwtService) {
+                       JWTService jwtService,
+                       JWTTokenRepo jwtTokenRepo) {
         this.seekerRepo = seekerRepo;
         this.employerRepo = employerRepo;
         this.passwordEncoder = passwordEncoder;
@@ -140,7 +137,26 @@ public class AuthService {
             String token = jwtService.generateToken(userDetails);
 
             Optional<User> user = userRepo.findByEmail(loginRequestDTO.getEmail());
+            if (user.isEmpty()) {
+                return new LoginResponseDTO(null, null, "User not found", false);
+            }
             String role = user.get().getRole();
+
+            //save/update jwt token
+            Optional<JWTToken> existingToken = jwtTokenRepo.findByUser(user);
+            LocalDateTime expiry = LocalDateTime.now().plusHours(10);
+
+            if (existingToken.isPresent()) {
+                System.out.println("User already has a token.so replacing it");
+                JWTToken jwtToken = existingToken.get();
+                jwtToken.setToken(token);
+                jwtToken.setExpires(expiry);
+                jwtToken.setTokenUsed(false);
+                jwtTokenRepo.save(jwtToken);
+            } else {
+                JWTToken newToken = new JWTToken(token, expiry, false, user.get());
+                jwtTokenRepo.save(newToken);
+            }
 
             return new LoginResponseDTO(token,role, "Login successful", true);
         }catch (Exception e) {
@@ -148,16 +164,35 @@ public class AuthService {
         }
     }
 
-    public ResponseEntity<String> logout(Authentication authentication) {
+    public ResponseEntity<String> logout(Authentication authentication, HttpServletRequest request) {
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();
 
-            return ResponseEntity.ok().body("Successfully logged out");
-        }else {
-            return ResponseEntity.badRequest().body("No authenticated use found");
-        }
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.badRequest().body("Authorization header missing or invalid");
+            }
+            String jwtToken = authHeader.substring(7);
 
+            Optional<JWTToken> tokenOpt = jwtTokenRepo.findByToken(jwtToken);
+            if (tokenOpt.isEmpty()) {
+                return ResponseEntity.badRequest().body("Token not found");
+            }
+
+            JWTToken token = tokenOpt.get();
+
+            if (!token.getUser().getEmail().equals(email)) {
+                return ResponseEntity.status(403).body("You are not authorized to logout this token");
+            }
+
+            token.setTokenUsed(true); // mark as used
+            jwtTokenRepo.save(token);
+
+            return ResponseEntity.ok().body("Successfully logged out");
+        }
+        return ResponseEntity.badRequest().body("No authenticated user found");
     }
+
 
     public ResponseEntity<String> forgotPassword(String email) {
         System.out.println("email in forgotPassword: " + email);

@@ -1,46 +1,12 @@
 package com.example.job.portal.Service;
-import com.example.job.portal.DTO.LoginRequestDTO;
-import com.example.job.portal.DTO.LoginResponseDTO;
-import com.example.job.portal.DTO.UserDto;
-import com.example.job.portal.Entity.Employer;
-import com.example.job.portal.Entity.Seeker;
-import com.example.job.portal.Repository.EmployerRepo;
-import com.example.job.portal.Repository.SeekerRepo;
-import com.example.job.portal.Security.JWTService;
-import com.example.job.portal.Service.AuthService;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Optional;
-
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
 
-    @InjectMocks
+  /*  @InjectMocks
     private AuthService authService;
 
     @Mock

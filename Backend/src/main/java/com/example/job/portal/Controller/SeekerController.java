@@ -29,7 +29,7 @@ public class SeekerController {
         return seekerService.getAllSeekers();
     }
 
-    @GetMapping("/my-profile")
+    @GetMapping("/profile")
     public ResponseEntity<SeekerDTO> getSeekerProfile(Authentication authentication) {
         return seekerService.getSeekerprofile(authentication);
     }

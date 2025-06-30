@@ -5,15 +5,14 @@ import com.example.job.portal.DTO.LinkTokenDTO;
 import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
-import com.example.job.portal.Security.JWTService;
+import com.example.job.portal.Service.JWTService;
 import com.example.job.portal.Service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +48,9 @@ public class AuthController {
 
     }
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(Authentication authentication) {
-        String message = String.valueOf(authService.logout(authentication));
-        return ResponseEntity.ok(message);
+    public ResponseEntity<String> logout(Authentication authentication, HttpServletRequest request) {
+
+        return authService.logout(authentication,request);
     }
 
     @PostMapping("/forgot-password")

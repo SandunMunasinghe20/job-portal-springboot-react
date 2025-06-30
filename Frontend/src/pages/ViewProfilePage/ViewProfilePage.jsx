@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import ViewProfile from "../../components/ViewProfile/ViewProfile";
 import { data, useSearchParams } from "react-router-dom";
 import './ViewProfilePage.css';
-import SubmitButton from '../../components/submitButton/submitbutton';
+import { useNavigate } from "react-router-dom";
+
 
 export default function ViewProfilePage(){
+
+  const navigate = useNavigate();
+
   const [error,setError] = useState("");
   const [success,setSuccess] = useState("");
   const [profile,setProfile] = useState([]);
@@ -15,8 +19,17 @@ const fetchProfile = async () => {
       setSuccess("");
 
       try {
-        const token = localStorage.getItem("auth-token"); // assuming token stored on login
-        const response = await fetch("http://localhost:8080/api/employers/profile", {
+        const token = localStorage.getItem("auth-token");
+        const role = localStorage.getItem("role");
+        console.log("Token:", token);
+        let url;
+        if (role ==="employer") {
+          url = "http://localhost:8080/api/employers/profile";
+        }else if (role ==="seeker") {
+          url = "http://localhost:8080/api/seekers/profile";
+        }
+        console.log("Fetching profile from URL:", url);
+        const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -28,7 +41,8 @@ const fetchProfile = async () => {
         }
 
         const data = await response.json();
-        setProfile(data);
+        console.log("Profile data fetched successfully:", data);
+        setProfile(data,role);
         console.log("data :",data);
         console.log("data.role : ",data.role);
 
@@ -52,7 +66,7 @@ const fetchProfile = async () => {
 
       {/*button inside the card */}
       <div className="Edit-profile-button">
-        <button className="jl-btn jl-btn-primary">Edit Profile</button>
+        <button className="jl-btn jl-btn-primary" onClick={() => navigate('/updateProfile')}>Edit Profile</button>
       </div>
     </div>
 

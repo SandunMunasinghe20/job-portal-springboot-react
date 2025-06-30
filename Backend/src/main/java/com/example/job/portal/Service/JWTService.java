@@ -1,4 +1,4 @@
-package com.example.job.portal.Security;
+package com.example.job.portal.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -48,12 +48,7 @@ public class JWTService {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    private boolean deleteToken(String token) {
-        try {
 
-        }catch (Exception e) {
-            return false;
-        }
-    }
+
 }
 

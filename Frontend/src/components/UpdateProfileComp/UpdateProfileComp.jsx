@@ -2,8 +2,11 @@ import { useState ,useEffect } from "react";
 import { fetchFromBackend } from "../../services/Service";
 import './UpdateProfileComp.css'
 import SubmitButton from "../submitButton/submitbutton";
+import { useNavigate } from "react-router-dom";
 
-export default function UpdateProfileComp({profile}) {
+export default function UpdateProfileComp({}) {
+
+  const navigate = useNavigate();
 
     //set Error
     const [err,setErr] = useState("");
@@ -154,6 +157,7 @@ export default function UpdateProfileComp({profile}) {
                 setErr("Error occured while connecting with server.");
             }else{
                 setSuccess("Profile updated successfully!");
+                navigate('/profile');
             }
 
 
@@ -253,6 +257,7 @@ export default function UpdateProfileComp({profile}) {
 
     <SubmitButton msg="Update Profile" onClick={handlesubmit} />
     {success && <p style={{ color: "green" }}>{success}</p>}
+    
 
   </div>
 );
