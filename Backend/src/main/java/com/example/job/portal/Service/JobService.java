@@ -54,7 +54,10 @@ public class JobService {
             dto.setJobTitle(job.getJobTitle());
             dto.setJobDescription(job.getJobDescription());
             dto.setJobType(job.getJobType());
+            dto.setLocation(job.getLocation());
             dto.setSalary(job.getSalary());
+            dto.setCompanyName(job.getCompanyName());
+            System.out.println("company is : "+job.getCompanyName());
             return ResponseEntity.ok(dto);
         }
         //not found a job

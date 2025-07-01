@@ -151,7 +151,7 @@ export default function JobListing() {
         </div>
     );
 }*/
-export default function JobListing({ jobs = [] }) {
+export default function JobListing({ jobs = [] ,navigate } ) {
   if (jobs.length === 0) {
     return <p className="jl-no-jobs-message">No jobs to display.</p>;
   }
@@ -197,7 +197,7 @@ export default function JobListing({ jobs = [] }) {
             </div>
 
             <div className="jl-job-actions">
-              <button className="jl-btn jl-btn-primary" style={{ marginRight: "10px" }}>Apply Now</button>
+              <button className="jl-btn jl-btn-primary" style={{ marginRight: "10px" }} onClick={()=>navigate(`/applyJob?id=${job.id}`)}>Apply Now</button>
               <button className="jl-btn jl-btn-secondary">Save Job</button>
             </div>
           </li>

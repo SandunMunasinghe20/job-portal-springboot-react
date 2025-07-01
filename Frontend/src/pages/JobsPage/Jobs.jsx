@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import './Jobs.css';
 
@@ -6,6 +7,7 @@ export default function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("auth-token");
 
@@ -36,6 +38,7 @@ export default function Jobs() {
 
       const data = await response.json();
       setJobs(data);
+      console.log("data ",data);
     } catch (err) {
       setError("Error occurred while fetching jobs");
     } finally {
@@ -75,7 +78,7 @@ export default function Jobs() {
           <div className="jl-spinner"></div>
         </div>
       ) : (
-        <JobListing jobs={jobs} />
+        <JobListing jobs={jobs} navigate={navigate} />
       )}
     </div>
   );

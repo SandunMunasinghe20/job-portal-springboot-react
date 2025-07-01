@@ -30,7 +30,7 @@ export default function ViewProfile({ profile }) {
             <p><strong>Job Type Preference:</strong> {profile.jobTypePreference || 'N/A'}</p>
             <p><strong>Preferred Industry:</strong> {profile.preferredIndustry || 'N/A'}</p>
             <p><strong>Location:</strong> {profile.location || 'N/A'}</p>
-            <p><strong>Phone:</strong> {profile.phone || 'N/A'}</p>
+            <p><strong>Skills:</strong> {profile.skills ? profile.skills.join(', ') : 'N/A'}</p>
             <p><strong>Education:</strong> {profile.education || 'N/A'}</p>
             <p><strong>Work Experience:</strong> {profile.workExperience || 'N/A'}</p>
             <p><strong>Certifications:</strong> {profile.certifications || 'N/A'}</p>
@@ -49,7 +49,7 @@ export default function ViewProfile({ profile }) {
           <>
             <p><strong>Company Description:</strong> {profile.companyDescription}</p>
             <p><strong>Address:</strong> {profile.address}</p>
-            <p><strong>Phone:</strong> {profile.phone}</p>
+            
             <p><strong>Registration Number:</strong> {profile.registrationNumber}</p>
             <p><strong>Industry:</strong> {profile.industry}</p>
             <p><strong>Company Size:</strong> {profile.companySize}</p>
@@ -59,7 +59,7 @@ export default function ViewProfile({ profile }) {
                 {profile.website}
               </a>
             </p>
-            <p><strong>Email:</strong> {profile.email}</p>
+            
           </>
         )}
       </div>

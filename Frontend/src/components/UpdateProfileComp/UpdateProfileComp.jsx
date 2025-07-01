@@ -181,9 +181,6 @@ export default function UpdateProfileComp({}) {
     <label>Last Name</label>
     <input type="text" value={lname} onChange={(e) => setLname(e.target.value)} placeholder="Last Name" />
 
-    <label>Phone</label>
-    <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone" />
-
     <label>Location</label>
     <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
 
@@ -231,9 +228,7 @@ export default function UpdateProfileComp({}) {
     <label>Address</label>
     <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" />
 
-    <label>Phone</label>
-    <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone" />
-
+    
     <label>Registration Number</label>
     <input type="number" value={registrationNumber} onChange={(e) => setRegistrationNumber(e.target.value)} placeholder="Registration Number" />
 
@@ -256,6 +251,7 @@ export default function UpdateProfileComp({}) {
 
 
     <SubmitButton msg="Update Profile" onClick={handlesubmit} />
+    <SubmitButton msg="Cancel" onClick={() => navigate('/profile')} />
     {success && <p style={{ color: "green" }}>{success}</p>}
     
 

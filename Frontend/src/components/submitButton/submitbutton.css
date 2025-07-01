@@ -1,10 +1,5 @@
 .Edit-profile-button {
   margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.Edit-profile-button {
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
@@ -16,31 +11,14 @@
   align-items: center;
   justify-content: center;
   border: none;
-}
-
-.Edit-profile-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   flex: 1;
-}
-
-.Edit-profile-button {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
-.viewprofile-card {
-  background-color: #1e293b;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 600px;
-  margin: 0 auto;
+
+.Edit-profile-button:hover {
+  background: linear-gradient(135deg, #5a68d6 0%, #643b93 100%);
 }
 
-.Edit-profile-button {
-  display: flex;
-  justify-content: flex-end;
-}
