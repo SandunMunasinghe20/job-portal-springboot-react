@@ -16,4 +16,9 @@ public class JobApplicationDTO {
 
     private byte[] resume;
 
+    private String msg;
+
+    private String companyName;
+    private String jobTitle;
+
 }

@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,15 +63,11 @@ public class JobApplicationService {
             if(status.equals("APPROVED") || status.equals("PENDING")){
                 return ResponseEntity.badRequest().body("You have already Applied to this Job");
             }
-
         }
-
-
         //max file size
         if (resume.getSize() > 10 * 1024 * 1024) {    //10Mb
             return ResponseEntity.badRequest().body("Max allowed size is 10MB");
         }
-
         //resume to byte arr
         byte[] resumeBytes = null;
         try {
@@ -78,7 +76,6 @@ public class JobApplicationService {
             return ResponseEntity.status(500).body("Failed to read resume file");
         }
         System.out.println("job found and byte arr created");
-
 
         JobApplication jobApplication = new JobApplication();
         jobApplication.setResume(resumeBytes);
@@ -89,6 +86,111 @@ public class JobApplicationService {
         jobApplicationRepo.save(jobApplication);
 
         return ResponseEntity.ok("Successfully applied to job");
+    }
+
+    public ResponseEntity<?> getAllJobs(Authentication authentication) {
+        String email = authentication.getName();
+        //get user
+        Optional<User> optUser = userRepo.findByEmail(email);
+
+        if (optUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User user = optUser.get();
+        System.out.println("user found");
+
+        Long seekerId = user.getId();
+
+        Optional<List<JobApplication>> jobApplications = jobApplicationRepo.findAllBySeekerId(seekerId);
+        if (jobApplications.isEmpty() || jobApplications.get().isEmpty()) {
+           return ResponseEntity.badRequest().body("No Job Applications found");
+        }
+
+        List<JobApplicationDTO> dtos = new ArrayList<>();
+
+        for (JobApplication jobApplication : jobApplications.get()) {
+            JobApplicationDTO dto = new JobApplicationDTO();
+            dto.setJobId(jobApplication.getJobId());
+            dto.setSeekerId(jobApplication.getSeekerId());
+            dto.setStatus(jobApplication.getStatus());
+            dto.setResume(jobApplication.getResume());
+            //company name + title
+            Optional<Job> job = jobRepo.findById(jobApplication.getJobId());
+            if (job.isPresent()) {
+                System.out.println("job found");
+                Job j = job.get();
+
+                dto.setCompanyName(j.getCompanyName());
+                dto.setJobTitle(j.getJobTitle());
+            }
+
+            dtos.add(dto);
+        }
+        return ResponseEntity.ok(dtos);
+    }
+    public ResponseEntity<String> deleteJob(Long jobApplicationId, Authentication authentication) {
+
+        Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
+        if (optApp.isEmpty()) {
+            return ResponseEntity.badRequest().body("Job Application not found");
+        }
+        JobApplication jobApplication = optApp.get();
+
+        String email = authentication.getName();
+        Optional<User> optUser = userRepo.findByEmail(email);
+        if (optUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User user = optUser.get();
+        System.out.println("user found");
+
+        if (!jobApplication.getSeekerId().equals(user.getId()) && !user.getRole().equals("admin")) {
+            return ResponseEntity.badRequest().body("You are not allowed to delete this Job");
+        }
+
+        try {
+            jobApplicationRepo.deleteById(jobApplicationId);
+            return ResponseEntity.ok("Successfully deleted job application");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete job application");
+        }
+    }
+
+    public ResponseEntity<String> updateJob(Long jobApplicationId, MultipartFile resume, Authentication authentication) {
+        Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
+        if (optApp.isEmpty()) {
+            return ResponseEntity.badRequest().body("Job Application not found");
+        }
+        JobApplication jobApplication = optApp.get();
+
+        String email = authentication.getName();
+        Optional<User> optUser = userRepo.findByEmail(email);
+        if (optUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User user = optUser.get();
+        System.out.println("user found");
+
+        if (!jobApplication.getSeekerId().equals(user.getId())) {
+            return ResponseEntity.status(403).body("You are not allowed to update this Job");
+        }
+
+        //size check
+        if (resume.getSize() > 10 * 1024 * 1024) {
+            return ResponseEntity.badRequest().body("Max allowed size is 10MB");
+        }
+
+        byte[] resumeBytes = null;
+        try {
+            resumeBytes = resume.getBytes();
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Failed to read resume file");
+        }
+
+        jobApplication.setResume(resumeBytes);
+        jobApplication.setAppliedAt(LocalDateTime.now());
+        jobApplicationRepo.save(jobApplication);
+        return ResponseEntity.ok("Successfully updated job application");
     }
 
 }
