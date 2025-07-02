@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "job_applications")
+@Table(name = "job_applications" ,uniqueConstraints = @UniqueConstraint(columnNames = {"seeker_id", "job_id"}))
 @Getter
 @Setter
 public class JobApplication {
@@ -19,17 +19,17 @@ public class JobApplication {
     private Long id;
 
 
-    @JoinColumn(name = "seeker_id")
+    @Column(name = "seeker_id")
     private Long seekerId;
 
 
-    @JoinColumn(name = "job_id")
+    @Column(name = "job_id")
     private Long jobId;
 
     private LocalDateTime appliedAt;
 
     @Lob
-    @Column(name = "resume", columnDefinition = "BLOB")
+    @Column(name = "resume", columnDefinition = "MEDIUMBLOB")
     private byte[] resume;
 
     private String status = "PENDING";

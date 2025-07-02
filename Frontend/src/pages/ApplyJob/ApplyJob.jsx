@@ -13,8 +13,10 @@ export default function ApplyJob(){
     const [success,setSuccess] = useState("");
     const [err,setErr] = useState("");
     const [jobData,setJobData] = useState("");
+    const [resume,setResume] = useState(null);
 
     useEffect (() =>{
+
         const fetchJobDetails = async () => {
         setErr("");
         setSuccess("");
@@ -48,16 +50,46 @@ export default function ApplyJob(){
     const handlesubmit = async() =>{
         setErr("");
         setSuccess("");
+        console.log("token when applying to job: ",token);
+
+        if (!resume) {
+        setErr("Please upload a resume.");
+        return;
+    }
 
         try{
+
+            const formData = new FormData();
+        formData.append("jobId", jobId);
+        formData.append("resume", resume);
             
             const response = await fetch("http://localhost:8080/api/applyJobs/",{
-                
-            })
+                method:"POST",
+                headers:{
+                    'Authorization':'Bearer '+token,
+                },
+                body:formData,
+              
+            });
+
+            if (!response.ok) {
+                const errmsg = await response.text();
+                setErr (errmsg);
+                return;
+            }
+            const data = await response.text();
+            setSuccess(data);
+            console.log("data : ",data);
+
 
         }catch(e){
             setErr("Error occured while applying to job");
+            return;
         }
+    };
+
+    const handleFileChange = (e) =>{
+        setResume(e.target.files[0]);
     }
 
     return (
@@ -72,8 +104,11 @@ export default function ApplyJob(){
             <p>Salary: {jobData.salary}</p>
             <p>Location: {jobData.location}</p>
             
-            <input type="file" />
-            <SubmitButton msg="Apply" />
+            <input type="file" onChange={handleFileChange}/>
+            <SubmitButton msg="Apply" onClick={handlesubmit}/>
+            {err && <p style={{ color: "red", marginTop: "10px" }}>{err}</p>}
+            {success && <p style={{ color: "green", marginTop: "10px" }}>{success}</p>}
+
         </div>
     );
 }
