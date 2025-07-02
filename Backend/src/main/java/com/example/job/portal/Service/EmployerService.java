@@ -68,6 +68,7 @@ public class EmployerService {
         employer.setRole(employerDTO.getRole());
 
         employerRepo.save(employer);
+
         System.out.println("profile updated successfully for email: " + email);
         return ResponseEntity.ok("Profile updated successfully");
 

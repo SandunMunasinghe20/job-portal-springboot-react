@@ -5,6 +5,7 @@ import com.example.job.portal.Service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,11 @@ public class JobController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return jobService.getJobById(id);
+    }
+    @PreAuthorize("hasRole('employer')")
+    @GetMapping("findByEmp")
+    public ResponseEntity<List<JobDTO>> getJobsByEmpId(Authentication authentication) {
+        return jobService.getAllJobsByCompany(authentication);
     }
 
     @PostMapping("/add")

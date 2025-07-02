@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GetInput from '../../components/GetInput/GetInput';
 import SubmitButton from '../../components/submitButton/submitbutton';
+import './PostJobs.css';
 
 export default function PostJobs(){
     const [jobTitle, setJobTitle] = useState('');
@@ -51,7 +52,7 @@ export default function PostJobs(){
     }
 
     return (
-        <div>
+        <div className="job-post-controller">
       <GetInput 
         type="text"
         placeholder="Job Title"
@@ -87,14 +88,7 @@ export default function PostJobs(){
       />
       <br />
 
-      <GetInput 
-        type="text"
-        placeholder="Company Name"
-        value={companyName}
-        onChange={setCompanyName}
-        required
-      />
-      <br />
+      
 
       <GetInput 
         type="text"

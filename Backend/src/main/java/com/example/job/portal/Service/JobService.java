@@ -64,11 +64,48 @@ public class JobService {
         return ResponseEntity.notFound().build();
     }
 
+    public ResponseEntity<List<JobDTO>> getAllJobsByCompany(Authentication authentication) {
+        String email = authentication.getName();
+
+        //find employer
+        Optional<Employer> optEmployer = employerRepo.findByEmail(email);
+        if (optEmployer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Employer employer = optEmployer.get();
+
+        List<Job> jobs = jobRepo.findAllByEmployerId(employer.getId());
+        List<JobDTO> jobDTOs = new ArrayList<>();
+
+        for (Job job : jobs) {
+            JobDTO dto = new JobDTO();
+            dto.setId(job.getId());
+            dto.setJobTitle(job.getJobTitle());
+            dto.setJobDescription(job.getJobDescription());
+            dto.setJobType(job.getJobType());
+            dto.setSalary(job.getSalary());
+            dto.setCompanyName(job.getCompanyName());
+            dto.setLocation(job.getLocation());
+            jobDTOs.add(dto);
+        }
+            return ResponseEntity.ok(jobDTOs);
+        }
+
+
+
     public ResponseEntity<String> addJob(JobDTO jobDTO, Authentication authentication) {
         try {
 
             String email = authentication.getName();
-            Employer employer = employerRepo.findByEmail(email).get();
+            Optional<Employer> OptEmployer = employerRepo.findByEmail(email);
+            if (OptEmployer.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Employer not found");
+            }
+            Employer employer = OptEmployer.get();
+
+            if (employer.getCompanyName() == null || employer.getCompanyName().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("You must complete your company profile before posting a job.");
+            }
 
             Job job = new Job();
             job.setJobTitle(jobDTO.getJobTitle());
@@ -76,7 +113,7 @@ public class JobService {
             job.setJobType(jobDTO.getJobType());
             job.setSalary(jobDTO.getSalary());
             job.setLocation(jobDTO.getLocation());
-            job.setCompanyName(jobDTO.getCompanyName());
+            job.setCompanyName(employer.getCompanyName());
 
             //set employer
             job.setEmployerId(employer.getId());
@@ -114,6 +151,8 @@ public class JobService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong while updating your job");
         }
     }
+
+
     public ResponseEntity<String> deleteJob(Long id) {
         try {
             Optional<Job> jobOpt = jobRepo.findById(id);

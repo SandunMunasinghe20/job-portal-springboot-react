@@ -9,6 +9,8 @@ import UsersPage from './pages/UsersPage/UsersPage';
 import UpdateJobs from './pages/UpdateJobs/UpdateJobs';
 import UpdateProfilePage from './pages/UpdateProfilePage/UpdateProfilePage';
 import ApplyJob from './pages/ApplyJob/ApplyJob';
+import JobsByCompany from './pages/JobsPage/JobsByCompany';
+import Home from './pages/Home/Home';
 import './App.css'
 
 function App() {
@@ -26,7 +28,8 @@ function App() {
         <Route path='/updateJobs' element={<UpdateJobs/>} />
         <Route path='/updateProfile' element={<UpdateProfilePage/>} />
         <Route path='/applyJob' element={<ApplyJob/>} />
-        
+        <Route path='/home' element={<Home/>} />
+        <Route path='/myJobs' element={<JobsByCompany/>} />
         
 
         </Routes>

@@ -53,7 +53,7 @@ export default function ForgotPassword(){
     }
 
     return (
-        <div>
+        <div className="forgot-container">
             <form onSubmit={handlesubmit}>
             <GetInput 
                 type ="email"
