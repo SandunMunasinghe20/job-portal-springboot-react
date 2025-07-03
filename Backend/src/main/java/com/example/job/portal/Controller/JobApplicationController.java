@@ -29,8 +29,8 @@ public class JobApplicationController {
 
     @GetMapping("/view")
     public ResponseEntity<?> viewAllJobApplications(Authentication authentication) {
-
-        return jobApplicationService.getAllJobs(authentication);
+        System.out.println("View application controller ");
+        return jobApplicationService.getAllJobApplications(authentication);
     }
 
     @DeleteMapping("/delete/{jobApplicationId}")

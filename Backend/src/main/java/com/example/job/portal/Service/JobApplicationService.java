@@ -88,7 +88,7 @@ public class JobApplicationService {
         return ResponseEntity.ok("Successfully applied to job");
     }
 
-    public ResponseEntity<?> getAllJobs(Authentication authentication) {
+    public ResponseEntity<?> getAllJobApplications(Authentication authentication) {
         String email = authentication.getName();
         //get user
         Optional<User> optUser = userRepo.findByEmail(email);
@@ -101,12 +101,15 @@ public class JobApplicationService {
 
         Long seekerId = user.getId();
 
+        //get only seeker's applications
         Optional<List<JobApplication>> jobApplications = jobApplicationRepo.findAllBySeekerId(seekerId);
         if (jobApplications.isEmpty() || jobApplications.get().isEmpty()) {
            return ResponseEntity.badRequest().body("No Job Applications found");
         }
 
         List<JobApplicationDTO> dtos = new ArrayList<>();
+
+        int count =0;
 
         for (JobApplication jobApplication : jobApplications.get()) {
             JobApplicationDTO dto = new JobApplicationDTO();
@@ -122,12 +125,18 @@ public class JobApplicationService {
 
                 dto.setCompanyName(j.getCompanyName());
                 dto.setJobTitle(j.getJobTitle());
+                count++;
             }
 
             dtos.add(dto);
         }
+        if (count == 0) {
+            return ResponseEntity.badRequest().body("No Job Applications found");
+        }
         return ResponseEntity.ok(dtos);
     }
+
+
     public ResponseEntity<String> deleteJob(Long jobApplicationId, Authentication authentication) {
 
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);

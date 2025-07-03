@@ -1,0 +1,80 @@
+.ApplicationCard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.application-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.application-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e1;
+}
+
+.application-item p {
+    margin: 0 0 0.75rem 0;
+    line-height: 1.5;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.application-item p:last-child {
+    margin-bottom: 0;
+}
+
+.application-item p strong {
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.application-item a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.application-item a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.application-item a:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .ApplicationCard-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .application-item {
+        padding: 1.25rem;
+    }
+
+    .application-item p strong {
+        min-width: 70px;
+        font-size: 0.8rem;
+    }
+}

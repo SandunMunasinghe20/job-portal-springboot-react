@@ -1,0 +1,73 @@
+.Applications-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 80px);
+    text-align: center;
+}
+
+.Applications-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+}
+
+.Applications-container p {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 1.5rem 0;
+    font-weight: 500;
+}
+
+/* Loading state */
+.Applications-container .loading {
+    color: #3b82f6;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.Applications-container .loading::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #3b82f6;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* Error state */
+.Applications-container .error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #dc2626;
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 600px;
+    margin: 1.5rem auto;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .Applications-container h1 {
+        font-size: 1.5rem;
+    }
+}
