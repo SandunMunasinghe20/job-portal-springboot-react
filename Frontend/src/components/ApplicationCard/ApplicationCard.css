@@ -15,6 +15,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
     position: relative;
+
 }
 
 .application-item:hover {
@@ -28,6 +29,8 @@
     line-height: 1.5;
     color: #374151;
     font-size: 0.9rem;
+
+
 }
 
 .application-item p:last-child {
@@ -42,6 +45,7 @@
     letter-spacing: 0.025em;
     display: inline-block;
     min-width: 80px;
+
 }
 
 .application-item a {
@@ -77,4 +81,25 @@
         min-width: 70px;
         font-size: 0.8rem;
     }
+}
+
+.application-item button {
+    margin: 10px;
+    padding: 10px;
+    max-width: 200px;
+    min-width: 100px;
+
+    border-radius: 5px;
+
+
+}
+
+.delete-button {
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+.edit-button {
+    font-weight: bold;
+    color: #3b82f6;
 }

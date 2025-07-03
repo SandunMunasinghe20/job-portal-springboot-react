@@ -35,14 +35,14 @@ public class JobApplicationController {
 
     @DeleteMapping("/delete/{jobApplicationId}")
     public ResponseEntity<String> deleteJobApplication(@PathVariable Long jobApplicationId, Authentication authentication) {
-
-        return jobApplicationService.deleteJob(jobApplicationId,authentication);
+        System.out.println("delete application controller ");
+        return jobApplicationService.deleteJobApplication(jobApplicationId,authentication);
     }
 
     @PutMapping("/update/{jobApplicationId}")
     public ResponseEntity<String> updateJobApplication(@PathVariable Long jobApplicationId, @RequestParam("resume")MultipartFile resume, Authentication authentication){
 
-        return jobApplicationService.updateJob(jobApplicationId,resume,authentication);
+        return jobApplicationService.updateJobApplication(jobApplicationId,resume,authentication);
     }
 
 }

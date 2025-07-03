@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JobApplicationRepo extends JpaRepository<JobApplication, Long> {
+
     Optional<JobApplication> findByJobIdAndSeekerId(long jobId, long seekerId);
 
     Optional<List<JobApplication>> findAllBySeekerId(long seekerId);
+
 }

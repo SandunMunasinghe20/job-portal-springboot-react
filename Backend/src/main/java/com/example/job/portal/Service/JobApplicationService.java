@@ -113,6 +113,8 @@ public class JobApplicationService {
 
         for (JobApplication jobApplication : jobApplications.get()) {
             JobApplicationDTO dto = new JobApplicationDTO();
+
+            dto.setId(jobApplication.getId());
             dto.setJobId(jobApplication.getJobId());
             dto.setSeekerId(jobApplication.getSeekerId());
             dto.setStatus(jobApplication.getStatus());
@@ -137,12 +139,13 @@ public class JobApplicationService {
     }
 
 
-    public ResponseEntity<String> deleteJob(Long jobApplicationId, Authentication authentication) {
-
+    public ResponseEntity<String> deleteJobApplication(Long jobApplicationId, Authentication authentication) {
+        System.out.println("job delete started");
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
         if (optApp.isEmpty()) {
             return ResponseEntity.badRequest().body("Job Application not found");
         }
+
         JobApplication jobApplication = optApp.get();
 
         String email = authentication.getName();
@@ -165,7 +168,8 @@ public class JobApplicationService {
         }
     }
 
-    public ResponseEntity<String> updateJob(Long jobApplicationId, MultipartFile resume, Authentication authentication) {
+    public ResponseEntity<String> updateJobApplication(Long jobApplicationId, MultipartFile resume, Authentication authentication) {
+        System.out.println("job id received at update:  "+jobApplicationId);
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
         if (optApp.isEmpty()) {
             return ResponseEntity.badRequest().body("Job Application not found");
