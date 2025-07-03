@@ -1,113 +1,117 @@
 import { useState } from "react";
 import GetInput from '../../components/GetInput/GetInput';
 import SubmitButton from '../../components/submitButton/submitbutton';
+import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './PostJobs.css';
 
-export default function PostJobs(){
-    const [jobTitle, setJobTitle] = useState('');
-    const [jobDescription, setJobDescription] = useState('');
-    const [location, setLocation] = useState('');
-    const [salary, setSalary] = useState('');
-    const [companyName, setCompanyName] = useState('');
-    const [jobType,setJobType] = useState("");
-    
-    const [err,setErr] = useState("");
-    const [success,setSuccess] = useState("");
-    const [posting,setPosting] = useState("");
+export default function PostJobs() {
+  const [jobTitle, setJobTitle] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
+  const [location, setLocation] = useState('');
+  const [salary, setSalary] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [jobType, setJobType] = useState("");
 
-    //token
-    const token = localStorage.getItem("auth-token");
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
+  const [posting, setPosting] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  //token
+  const token = localStorage.getItem("auth-token");
+  const role = localStorage.getItem("role");
 
-        setErr("");
-        setSuccess("");
-        setPosting("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        try{
-            const response = await fetch("http://localhost:8080/api/jobs/add",{
-                method : 'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Authorization':'Bearer '+token
-                },
-                body : JSON.stringify({
-                    jobTitle,jobDescription,location,salary:Number(salary),
-                    companyName
-                }),
-            });
+    setErr("");
+    setSuccess("");
+    setPosting("");
 
-            if(!response.ok){
-                setErr("Failed to add Job.Try again");
-            }
+    try {
+      const response = await fetch("http://localhost:8080/api/jobs/add", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          jobTitle, jobDescription, location, salary: Number(salary),
+          companyName
+        }),
+      });
 
-            const data = await response.text();
-            console.log("data ",data);
-            setSuccess(data);
+      if (!response.ok) {
+        setErr("Failed to add Job.Try again");
+      }
 
-        }catch(e){
-            setErr("Failed to connect with backend.Try again");
-        }
+      const data = await response.text();
+      console.log("data ", data);
+      setSuccess(data);
+
+    } catch (e) {
+      setErr("Failed to connect with backend.Try again");
     }
+  }
 
-    return (
-        <div className="job-post-controller">
-      <GetInput 
-        type="text"
-        placeholder="Job Title"
-        value={jobTitle}
-        onChange={setJobTitle}
-        required
-      />
-      <br />
-
-      <GetInput 
-        type="text"
-        placeholder="Job Description"
-        value={jobDescription}
-        onChange={setJobDescription}
-        required
-      />
+  return (
+    <><NavBar role={role} />
+      <div className="job-post-controller">
+        <GetInput
+          type="text"
+          placeholder="Job Title"
+          value={jobTitle}
+          onChange={setJobTitle}
+          required
+        />
         <br />
-      <GetInput 
-        type="text"
-        placeholder="Location"
-        value={location}
-        onChange={setLocation}
-        required
-      />
-      <br />
 
-      <GetInput 
-        type="number"
-        placeholder="Salary"
-        value={salary}
-        onChange={setSalary}
-        required
-      />
-      <br />
+        <GetInput
+          type="text"
+          placeholder="Job Description"
+          value={jobDescription}
+          onChange={setJobDescription}
+          required
+        />
+        <br />
+        <GetInput
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={setLocation}
+          required
+        />
+        <br />
 
-      
-
-      <GetInput 
-        type="text"
-        placeholder="Job Type"
-        value={jobType}
-        onChange={setJobType}
-        required
-      />
-
-      <br />
-      {err && <p style={{ color: "red" }}>{err}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {posting && <p>{posting}</p>}
+        <GetInput
+          type="number"
+          placeholder="Salary"
+          value={salary}
+          onChange={setSalary}
+          required
+        />
+        <br />
 
 
-        <SubmitButton msg="Post Job" onClick = {handleSubmit} />
 
-    </div>
+        <GetInput
+          type="text"
+          placeholder="Job Type"
+          value={jobType}
+          onChange={setJobType}
+          required
+        />
 
-    );
+        <br />
+        {err && <p style={{ color: "red" }}>{err}</p>}
+        {success && <p style={{ color: "green" }}>{success}</p>}
+        {posting && <p>{posting}</p>}
+
+
+        <SubmitButton msg="Post Job" onClick={handleSubmit} />
+
+      </div>
+    </>
+
+  );
 
 }

@@ -1,9 +1,13 @@
 import UpdateProfileComp from "../../components/UpdateProfileComp/UpdateProfileComp";
+import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
-export default function UpdateProfilePage(){
 
+export default function UpdateProfilePage() {
+    const role = localStorage.getItem("role");
     return (
-        <UpdateProfileComp/>
+        <><NavBar role={role} />
+            <UpdateProfileComp />
+        </>
     );
 
 }

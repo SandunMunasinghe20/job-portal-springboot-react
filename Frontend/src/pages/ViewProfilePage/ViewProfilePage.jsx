@@ -3,75 +3,84 @@ import ViewProfile from "../../components/ViewProfile/ViewProfile";
 import { data, useSearchParams } from "react-router-dom";
 import './ViewProfilePage.css';
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
 
-export default function ViewProfilePage(){
+export default function ViewProfilePage() {
 
   const navigate = useNavigate();
 
-  const [error,setError] = useState("");
-  const [success,setSuccess] = useState("");
-  const [profile,setProfile] = useState([]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [profile, setProfile] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const fetchProfile = async () => {
+  const token = localStorage.getItem("auth-token");
+  const role = localStorage.getItem("role");
 
-      setError("");
-      setSuccess("");
+  const fetchProfile = async () => {
 
-      try {
-        const token = localStorage.getItem("auth-token");
-        const role = localStorage.getItem("role");
-        console.log("Token:", token);
-        let url;
-        if (role ==="employer") {
-          url = "http://localhost:8080/api/employers/profile";
-        }else if (role ==="seeker") {
-          url = "http://localhost:8080/api/seekers/profile";
-        }
-        console.log("Fetching profile from URL:", url);
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
-        if (!response.ok) {
-          setError("Failed to fetch profile");
-          return;
-        }
+    try {
 
-        const data = await response.json();
-        console.log("Profile data fetched successfully:", data);
-        setProfile(data,role);
-        console.log("data :",data);
-        console.log("data.role : ",data.role);
+      console.log("Token:", token);
+      let url;
+      if (role === "employer") {
+        url = "http://localhost:8080/api/employers/profile";
+      } else if (role === "seeker") {
+        url = "http://localhost:8080/api/seekers/profile";
+      }
+      console.log("Fetching profile from URL:", url);
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      } catch (err) {
-        setError("Something went wrong");
-      } 
-    };
+      if (!response.ok) {
+        setError("Failed to fetch profile");
+        return;
+      }
 
-    useEffect(()=>{
-        fetchProfile();
-    },[]);
+      const data = await response.json();
+      console.log("Profile data fetched successfully:", data);
+      setProfile(data, role);
+      console.log("data :", data);
+      console.log("data.role : ", data.role);
 
-    return (
-  <div className="viewprofilepage-container">
-    <div className="viewprofilepage-content">
-      <h1 className="viewprofilepage-title">Your Profile</h1>
-      
-      {/* Profile card including the profile data */}
-    <div className="viewprofile-card">
-      <ViewProfile profile={profile} />
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      {/*button inside the card */}
-      <div className="Edit-profile-button">
-        <button className="jl-btn jl-btn-primary" onClick={() => navigate('/updateProfile')}>Edit Profile</button>
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  return (
+    <><NavBar role={role} />
+      <div className="viewprofilepage-container">
+        <div className="viewprofilepage-content">
+          <h1 className="viewprofilepage-title">Your Profile</h1>
+
+          {/* Profile card including the profile data */}
+          <div className="viewprofile-card">
+            <ViewProfile profile={profile} />
+
+            {/*button inside the card */}
+            <div className="Edit-profile-button">
+              <button className="jl-btn jl-btn-primary" onClick={() => navigate('/updateProfile')}>Edit Profile</button>
+            </div>
+          </div>
+
+          {success && <div className="viewprofilepage-success">{success}</div>}
+        </div>
       </div>
-    </div>
-
-    {success && <div className="viewprofilepage-success">{success}</div>}
-  </div>
-</div>
-);
+    </>
+  );
 }

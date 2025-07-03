@@ -4,33 +4,36 @@ import { useNavigate } from "react-router-dom";
 //import validatePassword from "../../services/Service";
 import GetInput from "../../components/GetInput/GetInput";
 import SubmitButton from "../../components/submitButton/submitbutton";
+import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import "./ForgotPassword.css";
 
 
-export default function ForgotPassword(){
-    const [email,setEmail] = useState("");
-    const [err,setError] = useState("");
-    const [success,setSuccess] = useState("");
+export default function ForgotPassword() {
+    const [email, setEmail] = useState("");
+    const [err, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
+    const role = localStorage.getItem("role");
 
-    const handlesubmit = async (e) =>{
+
+    const handlesubmit = async (e) => {
         e.preventDefault();
-        
+
         setError("");
         setSuccess("");
 
-        try{
+        try {
             //console.log("starting to get to back");
-            const response = await fetch("http://localhost:8080/api/auth/forgot-password",{
+            const response = await fetch("http://localhost:8080/api/auth/forgot-password", {
                 method: 'POST',
-                headers:{
-                    'Content-Type':'text/plain'
+                headers: {
+                    'Content-Type': 'text/plain'
                 },
-                body:email
+                body: email
             });
 
-            if(!response.ok){
+            if (!response.ok) {
                 const errMsg = await response.text();
                 setError(errMsg);
                 return;
@@ -41,33 +44,35 @@ export default function ForgotPassword(){
 
             setSuccess(data);
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 navigate("/login");
-            },3000);                    //3 sec
-             
-            
+            }, 3000);                    //3 sec
 
-        }catch(e){
+
+
+        } catch (e) {
             setError("Something went wrong while sending Password Reset Link");
         }
     }
 
     return (
-        <div className="forgot-container">
-            <form onSubmit={handlesubmit}>
-            <GetInput 
-                type ="email"
-                value = {email}
-                placeholder="Email"
-                onChange={setEmail}
-                required = "required"
-            />
-            <br />
-            <SubmitButton msg = "Send Link" />
-            {err && <p className="login-message login-error">{err}</p>}
-                {success && <p className="login-message login-success">{success}</p>}
-            </form>
-        </div>
+        <><NavBar role={role} />
+            <div className="forgot-container">
+                <form onSubmit={handlesubmit}>
+                    <GetInput
+                        type="email"
+                        value={email}
+                        placeholder="Email"
+                        onChange={setEmail}
+                        required="required"
+                    />
+                    <br />
+                    <SubmitButton msg="Send Link" />
+                    {err && <p className="login-message login-error">{err}</p>}
+                    {success && <p className="login-message login-success">{success}</p>}
+                </form>
+            </div>
+        </>
     );
 
 }

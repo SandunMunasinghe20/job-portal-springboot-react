@@ -1,6 +1,7 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
+import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './Jobs.css';
 
 export default function Jobs() {
@@ -9,6 +10,8 @@ export default function Jobs() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+
+  const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
   const fetchJobs = async () => {
@@ -38,7 +41,7 @@ export default function Jobs() {
 
       const data = await response.json();
       setJobs(data);
-      console.log("data ",data);
+      console.log("data ", data);
     } catch (err) {
       setError("Error occurred while fetching jobs");
     } finally {
@@ -51,35 +54,37 @@ export default function Jobs() {
   }, []);
 
   return (
-    <div className="jl-container">
-      <div className="jl-header">
-        <h1 className="jl-title">Job Board</h1>
-        <p className="jl-subtitle">Discover exceptional career opportunities tailored for you</p>
-        <div className="jl-stats">
-          <div className="jl-stat-item">
-            <span className="jl-stat-number">{jobs.length}</span>
-            <span>Total Jobs</span>
-          </div>
-          <div className="jl-stat-item">
-            <span className="jl-stat-number">{new Set(jobs.map((job) => job.companyName)).size}</span>
-            <span>Companies</span>
-          </div>
-          <div className="jl-stat-item">
-            <span className="jl-stat-number">{new Set(jobs.map((job) => job.location)).size}</span>
-            <span>Locations</span>
+    <><NavBar role={role} />
+      <div className="jl-container">
+        <div className="jl-header">
+          <h1 className="jl-title">Job Board</h1>
+          <p className="jl-subtitle">Discover exceptional career opportunities tailored for you</p>
+          <div className="jl-stats">
+            <div className="jl-stat-item">
+              <span className="jl-stat-number">{jobs.length}</span>
+              <span>Total Jobs</span>
+            </div>
+            <div className="jl-stat-item">
+              <span className="jl-stat-number">{new Set(jobs.map((job) => job.companyName)).size}</span>
+              <span>Companies</span>
+            </div>
+            <div className="jl-stat-item">
+              <span className="jl-stat-number">{new Set(jobs.map((job) => job.location)).size}</span>
+              <span>Locations</span>
+            </div>
           </div>
         </div>
+
+        {error && <div className="jl-error-message">{error}</div>}
+
+        {loading ? (
+          <div className="jl-loading-spinner">
+            <div className="jl-spinner"></div>
+          </div>
+        ) : (
+          <JobListing jobs={jobs} navigate={navigate} />
+        )}
       </div>
-
-      {error && <div className="jl-error-message">{error}</div>}
-
-      {loading ? (
-        <div className="jl-loading-spinner">
-          <div className="jl-spinner"></div>
-        </div>
-      ) : (
-        <JobListing jobs={jobs} navigate={navigate} />
-      )}
-    </div>
+    </>
   );
 }
