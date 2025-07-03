@@ -44,9 +44,9 @@ export default function ForgotPassword() {
 
             setSuccess(data);
 
-            setTimeout(() => {
-                navigate("/login");
-            }, 3000);                    //3 sec
+            /* setTimeout(() => {
+                 navigate('/changePass');
+             }, 3000);    */                //3 sec
 
 
 

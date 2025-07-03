@@ -11,6 +11,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -67,7 +69,9 @@ public class EmailService {
         //save token
         linkTokenRepo.save(linkToken);
 
-        String resetLink = "http://localhost:8080/reset-password?token=" + token;
+        String resetLink = "http://localhost:5173/reset-password?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8) +
+                "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
+
         return (resetLink);
     }
 

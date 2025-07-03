@@ -60,7 +60,7 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@Valid @RequestBody LinkTokenDTO linkTokenDTO) {
+    public ResponseEntity<String> resetPassword(@Valid  @RequestBody LinkTokenDTO linkTokenDTO) {
         return (authService.resetPassword(linkTokenDTO));
     }
 

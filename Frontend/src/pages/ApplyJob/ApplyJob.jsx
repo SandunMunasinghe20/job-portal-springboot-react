@@ -59,6 +59,26 @@ export default function ApplyJob() {
             return;
         }
 
+        const maxSize = 10 * 1024 * 1024;
+
+        const allowedTypes = [
+            "application/pdf",
+            "application/msword", // .doc
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+        ];
+
+        if (!allowedTypes.includes(resume.type)) {
+            setErr("Only PDF, DOC or DOCX files are allowed");
+            setResume(null);
+            return;
+        }
+
+        if (resume.size > maxSize) {
+            setErr("File size must be less than 10MB.");
+            setResume(null);
+            return;
+        }
+
         try {
 
             const formData = new FormData();
@@ -76,6 +96,7 @@ export default function ApplyJob() {
 
             if (!response.ok) {
                 const errmsg = await response.text();
+                console.log("err ", errmsg);
                 setErr(errmsg);
                 return;
             }

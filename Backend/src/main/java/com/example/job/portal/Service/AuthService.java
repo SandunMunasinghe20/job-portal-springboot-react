@@ -219,9 +219,7 @@ public class AuthService {
     }
 
     public ResponseEntity<String> resetPassword(LinkTokenDTO linkTokenDTO) {
-        /*if (linkTokenDTO.getEmail() == null || linkTokenDTO.getEmail().isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid email");
-        }*/
+
         //search repo for token
         LinkToken token = linkTokenRepo.findByToken(linkTokenDTO.getToken());
 
@@ -241,9 +239,9 @@ public class AuthService {
 
         User realUser = token.getUser();
 
-        /*if (!realUser.getEmail().equals(linkTokenDTO.getEmail().trim())) {
+        if (!realUser.getEmail().equals(linkTokenDTO.getEmail().trim())) {
             return ResponseEntity.badRequest().body("Email does not match token owner");
-        }*/
+        }
 
         if (linkTokenDTO.getPassword() == null || linkTokenDTO.getPassword().trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Password cannot be empty");
@@ -254,6 +252,7 @@ public class AuthService {
         userRepo.save(realUser);
         token.setTokenUsed(true);
         linkTokenRepo.save(token);
+        System.out.println("Password reset successful");
 
         return ResponseEntity.ok().body("Password reset successfull");
     }

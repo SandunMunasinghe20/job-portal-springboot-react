@@ -10,6 +10,7 @@ import UpdateJobs from './pages/UpdateJobs/UpdateJobs';
 import UpdateProfilePage from './pages/UpdateProfilePage/UpdateProfilePage';
 import ApplyJob from './pages/ApplyJob/ApplyJob';
 import JobsByCompany from './pages/JobsPage/JobsByCompany';
+import ChangePass from './pages/ForgotPassword/ChangePass';
 import Home from './pages/Home/Home';
 import './App.css'
 
@@ -30,7 +31,7 @@ function App() {
         <Route path='/applyJob' element={<ApplyJob />} />
         <Route path='/home' element={<Home />} />
         <Route path='/myJobs' element={<JobsByCompany />} />
-
+        <Route path='reset-password' element={<ChangePass />} />
 
       </Routes>
     </BrowserRouter>

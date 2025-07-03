@@ -33,7 +33,10 @@ function NavBar({ role }) {
     if (!role) {
         return (
             <div className="Nav-container">
-                <h2>Job Pulse</h2>
+                <h2> <button onClick={() => {
+                    console.log('Job Pulse clicked!');
+                    navigate('/home');
+                }}>Job Pulse</button></h2>
                 <div className="Nav-links">
                     <Link to='/register'>Register</Link>
                     <Link to='/login'>Login</Link>
@@ -44,12 +47,15 @@ function NavBar({ role }) {
 
         return (
             <div className="Nav-container">
-                <h2>Job Pulse</h2>
+                <h2> <button onClick={() => {
+                    console.log('Job Pulse clicked!');
+                    navigate('/home');
+                }}>Job Pulse</button></h2>
                 {role === 'employer'
                     &&
                     <>
                         <div className="Nav-links">
-                            <Link to='/home' >Home</Link>
+
                             <Link to="/postJobs">Post a Job</Link>
                             <Link to='/myJobs'>My Jobs</Link>
                             <Link to='/profile'>Profile</Link>
@@ -63,9 +69,9 @@ function NavBar({ role }) {
                     &&
                     <>
                         <div className="Nav-links">
-                            <Link to='/home' >Home</Link>
-                            <Link to='/applyJob'>Apply a Job</Link>
-                            <Link>My Applications</Link>
+
+                            <Link to='/jobs'>Apply a Job</Link>
+                            <Link to='/myApplications'>My Applications</Link>
                             <Link to='/profile'>Profile</Link>
                             <button onClick={logout} >Logout</button>
                         </div>

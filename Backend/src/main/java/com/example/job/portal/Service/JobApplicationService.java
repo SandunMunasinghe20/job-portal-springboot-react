@@ -66,7 +66,7 @@ public class JobApplicationService {
         }
         //max file size
         if (resume.getSize() > 10 * 1024 * 1024) {    //10Mb
-            return ResponseEntity.badRequest().body("Max allowed size is 10MB");
+            return ResponseEntity.badRequest().body("Max allowed file size is 10MB");
         }
         //resume to byte arr
         byte[] resumeBytes = null;
