@@ -154,4 +154,36 @@ public class SeekerService {
         seekerRepo.delete(seeker);
         return ResponseEntity.ok("SeekerProfile deleted successfully");
     }
+
+    public ResponseEntity<SeekerDTO> getSeekerprofileById(Long id) {
+        Optional<Seeker> optSeeker = seekerRepo.findById(id);
+        if (optSeeker.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Seeker seeker = optSeeker.get();
+
+        SeekerDTO seekerDTO = new SeekerDTO();
+        seekerDTO.setRole("seeker");
+        seekerDTO.setFname(seeker.getFname());
+        seekerDTO.setLname(seeker.getLname());
+        //seekerDTO.setPhone(seeker.getPhone());
+        seekerDTO.setLocation(seeker.getLocation());
+        seekerDTO.setSkills(seeker.getSkills());
+        seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
+        seekerDTO.setTotalExperience(seeker.getTotalExperience());
+        seekerDTO.setResumeUrl(seeker.getResumeUrl());
+        seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
+        seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
+        seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
+        seekerDTO.setAvailability(seeker.getAvailability());
+        seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
+        seekerDTO.setEducation(seeker.getEducation());
+        seekerDTO.setWorkExperience(seeker.getWorkExperience());
+        seekerDTO.setCertifications(seeker.getCertifications());
+
+
+
+        return ResponseEntity.ok(seekerDTO);
+    }
 }

@@ -13,6 +13,7 @@ import JobsByCompany from './pages/JobsPage/JobsByCompany';
 import ChangePass from './pages/ForgotPassword/ChangePass';
 import Applications from './pages/Applications/Applications';
 import Home from './pages/Home/Home';
+import MyProfile from './components/MyProfile';
 import './App.css'
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
         <Route path='/myJobs' element={<JobsByCompany />} />
         <Route path='reset-password' element={<ChangePass />} />
         <Route path='/myApplications' element={<Applications />} />
-
+        <Route path='/myprof' element={<MyProfile />} />
       </Routes>
     </BrowserRouter>
   );

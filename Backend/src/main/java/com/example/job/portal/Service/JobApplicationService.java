@@ -87,7 +87,33 @@ public class JobApplicationService {
 
         return ResponseEntity.ok("Successfully applied to job");
     }
+    //all
+    public ResponseEntity<?> getallAppliedJobs() {
+        List<JobApplicationDTO> appliedJobs = new ArrayList<>();
 
+        List<JobApplication> optionalList = jobApplicationRepo.findAll();
+
+        for (JobApplication jobApplication : optionalList) {
+            JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
+            jobApplicationDTO.setJobId(jobApplication.getJobId());
+            jobApplicationDTO.setSeekerId(jobApplication.getSeekerId());
+            jobApplicationDTO.setAppliedAt(jobApplication.getAppliedAt());
+            jobApplicationDTO.setStatus(jobApplication.getStatus());
+            jobApplicationDTO.setResume(jobApplication.getResume());
+
+            //job title and company
+            Optional<Job> optApp = jobRepo.findJobById(jobApplication.getJobId());
+            if (optApp.isPresent()) {
+                Job job = optApp.get();
+                jobApplicationDTO.setJobTitle(job.getJobTitle());
+                jobApplicationDTO.setCompanyName(job.getCompanyName());
+            }
+
+            appliedJobs.add(jobApplicationDTO);
+        }
+        return ResponseEntity.ok(appliedJobs);
+    }
+//user specific
     public ResponseEntity<?> getAllJobApplications(Authentication authentication) {
         String email = authentication.getName();
         //get user
@@ -106,7 +132,6 @@ public class JobApplicationService {
         if (jobApplications.isEmpty() || jobApplications.get().isEmpty()) {
            return ResponseEntity.badRequest().body("No Job Applications found");
         }
-
         List<JobApplicationDTO> dtos = new ArrayList<>();
 
         int count =0;
@@ -129,7 +154,6 @@ public class JobApplicationService {
                 dto.setJobTitle(j.getJobTitle());
                 count++;
             }
-
             dtos.add(dto);
         }
         if (count == 0) {

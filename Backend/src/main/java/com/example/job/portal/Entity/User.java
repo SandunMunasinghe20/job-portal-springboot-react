@@ -27,6 +27,8 @@ public class User {
     @Column(name = "role")
     private String role;
 
+
+
     public void setRole(String role) {
         this.role = role;
     }

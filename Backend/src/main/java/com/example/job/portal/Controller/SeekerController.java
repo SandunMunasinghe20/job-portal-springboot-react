@@ -36,12 +36,8 @@ public class SeekerController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('employer')")  // Only employers can access
-    public ResponseEntity<Seeker> getSeekerProfileById(@PathVariable Long id) {
-        Optional<Seeker> seeker = seekerRepo.findById(id);
-        if (seeker.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(seeker.get());
+    public ResponseEntity<SeekerDTO> getSeekerProfileById(@PathVariable Long id) {
+        return seekerService.getSeekerprofileById(id);
     }
 
     @PutMapping("/update")
