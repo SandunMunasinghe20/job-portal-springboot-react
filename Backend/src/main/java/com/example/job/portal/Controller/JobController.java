@@ -46,7 +46,7 @@ public class JobController {
         return jobService.addJob(jobDTO,authentication);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<String> updateJob(Authentication authentication, @RequestBody JobDTO jobDTO) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -59,6 +59,7 @@ public class JobController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        System.out.println("Job id to delete is : "+id);
         return jobService.deleteJob(id);
     }
 

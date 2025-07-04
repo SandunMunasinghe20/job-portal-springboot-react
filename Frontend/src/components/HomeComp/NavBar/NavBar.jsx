@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import './NavBar.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function NavBar({ role }) {
@@ -9,6 +9,8 @@ function NavBar({ role }) {
 
     const [err, setErr] = useState("");
     const [success, setSuccess] = useState("");
+    const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
+    const [visible, setVisible] = useState(true);
 
     const logout = () => {
 
@@ -29,10 +31,22 @@ function NavBar({ role }) {
 
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollPos = window.scrollY;
+            setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+            setPrevScrollPos(currentScrollPos);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [prevScrollPos]);
+
 
     if (!role) {
         return (
-            <div className="Nav-container">
+            <div className={`Nav-container ${visible ? 'nav-visible' : 'nav-hidden'}`}>
+
                 <h2> <button onClick={() => {
                     console.log('Job Pulse clicked!');
                     navigate('/home');
@@ -46,7 +60,8 @@ function NavBar({ role }) {
     } else {
 
         return (
-            <div className="Nav-container">
+            <div className={`Nav-container ${visible ? 'nav-visible' : 'nav-hidden'}`}>
+
                 <h2> <button onClick={() => {
                     console.log('Job Pulse clicked!');
                     navigate('/home');

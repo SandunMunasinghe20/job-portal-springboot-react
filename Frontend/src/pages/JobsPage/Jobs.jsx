@@ -53,38 +53,20 @@ export default function Jobs() {
     fetchJobs();
   }, []);
 
+
   return (
-    <><NavBar role={role} />
-      <div className="jl-container">
-        <div className="jl-header">
-          <h1 className="jl-title">Job Board</h1>
-          <p className="jl-subtitle">Discover exceptional career opportunities tailored for you</p>
-          <div className="jl-stats">
-            <div className="jl-stat-item">
-              <span className="jl-stat-number">{jobs.length}</span>
-              <span>Total Jobs</span>
-            </div>
-            <div className="jl-stat-item">
-              <span className="jl-stat-number">{new Set(jobs.map((job) => job.companyName)).size}</span>
-              <span>Companies</span>
-            </div>
-            <div className="jl-stat-item">
-              <span className="jl-stat-number">{new Set(jobs.map((job) => job.location)).size}</span>
-              <span>Locations</span>
-            </div>
-          </div>
+    <>
+      <NavBar role={role} />
+
+      {error && <div className="jl-err-message">{error}</div>}
+
+      {loading ? (
+        <div className="jl-loading-spinner">
+          <div className="jl-spinner"></div>
         </div>
-
-        {error && <div className="jl-error-message">{error}</div>}
-
-        {loading ? (
-          <div className="jl-loading-spinner">
-            <div className="jl-spinner"></div>
-          </div>
-        ) : (
-          <JobListing jobs={jobs} navigate={navigate} />
-        )}
-      </div>
+      ) : (
+        <JobListing jobs={jobs} navigate={navigate} />
+      )}
     </>
   );
 }

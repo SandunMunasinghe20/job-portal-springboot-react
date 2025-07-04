@@ -95,7 +95,6 @@ public class JobService {
 
     public ResponseEntity<String> addJob(JobDTO jobDTO, Authentication authentication) {
         try {
-
             String email = authentication.getName();
             Optional<Employer> OptEmployer = employerRepo.findByEmail(email);
             if (OptEmployer.isEmpty()) {

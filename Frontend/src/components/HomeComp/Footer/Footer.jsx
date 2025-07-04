@@ -17,7 +17,7 @@ export default function Footer({ role }) {
                         <ul>
                             <li><a href="/jobs">Browse Jobs</a></li>
                             <li><a href="/profile">My Profile</a></li>
-                            <li><a href="/applications">Applications</a></li>
+                            <li><a href="/myApplications">Applications</a></li>
                             <li><a href="/career-resources">Career Resources</a></li>
                         </ul>
                     </div>
@@ -27,7 +27,7 @@ export default function Footer({ role }) {
                     <div className="footer-section">
                         <h4>For Employers</h4>
                         <ul>
-                            <li><a href="/post-job">Post a Job</a></li>
+                            <li><a href="/postJobs">Post a Job</a></li>
                             <li><a href="/candidates">Find Candidates</a></li>
                             <li><a href="/analytics">Hiring Analytics</a></li>
                             <li><a href="/employer-branding">Employer Branding</a></li>
