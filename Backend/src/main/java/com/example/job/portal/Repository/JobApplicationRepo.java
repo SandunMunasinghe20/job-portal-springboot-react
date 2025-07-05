@@ -12,4 +12,5 @@ public interface JobApplicationRepo extends JpaRepository<JobApplication, Long> 
 
     Optional<List<JobApplication>> findAllBySeekerId(long seekerId);
 
+    List<JobApplication> findByJobIdIn(List<Long> jobIds);
 }

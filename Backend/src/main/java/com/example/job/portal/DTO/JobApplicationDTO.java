@@ -21,4 +21,6 @@ public class JobApplicationDTO {
     private String companyName;
     private String jobTitle;
 
+    //to send resume to front
+    private String resumeBase64;
 }

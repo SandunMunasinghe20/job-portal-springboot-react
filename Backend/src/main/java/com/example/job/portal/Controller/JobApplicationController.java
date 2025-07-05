@@ -45,4 +45,6 @@ public class JobApplicationController {
         return jobApplicationService.updateJobApplication(jobApplicationId,resume,authentication);
     }
 
+
+
 }

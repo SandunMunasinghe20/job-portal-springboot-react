@@ -1,7 +1,11 @@
 import React from "react";
+import PdfViewer from '../../components/PdfViewer';
 import './ProfilCard.css';
 
 export default function ProfileCard({ profile, roletoget }) {
+
+
+
   console.log("roletoget:", roletoget);
 
   if (roletoget === 'admin') {
@@ -39,7 +43,12 @@ export default function ProfileCard({ profile, roletoget }) {
             <p><strong>Education:</strong> {profile.education}</p>
             <p><strong>Work Experience:</strong> {profile.workExperience}</p>
             <p><strong>Certifications:</strong> {profile.certifications}</p>
-            <p><strong>Resume:</strong> <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer">View Resume</a></p>
+            {profile.resumeBase64 ? (
+              <PdfViewer base64Pdf={profile.resumeBase64} />
+            ) : (
+              <p>No resume available</p>
+            )}
+
 
             {profile.skills && profile.skills.length > 0 && (
               <>
@@ -69,3 +78,4 @@ export default function ProfileCard({ profile, roletoget }) {
 
 
 }
+

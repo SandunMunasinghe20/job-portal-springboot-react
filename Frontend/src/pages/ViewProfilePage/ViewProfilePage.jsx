@@ -48,7 +48,7 @@ export default function ViewProfilePage() {
 
       const data = await response.json();
       console.log("Profile data fetched successfully:", data);
-      setProfile(data, role);
+      setProfile(data);
       console.log("data :", data);
       console.log("data.role : ", data.role);
 

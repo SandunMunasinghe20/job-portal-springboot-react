@@ -17,6 +17,7 @@ export default function ApplicationCard({ applications }) {
     const [app, setApp] = useState();
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [resume, setResume] = useState(null);
+    const [editAppId, setEditAppId] = useState(null);
 
     const navigate = useNavigate();
 
@@ -46,10 +47,10 @@ export default function ApplicationCard({ applications }) {
             return;
         }
     }
-    const handleEditClicked = () => {
-        //make upload resume data visible
-        setIsEditClicked(true);
-    }
+
+    const handleEditClicked = (id) => {
+        setEditAppId(id);
+    };
 
 
     const handleEdit = async ({ app }) => {
@@ -121,6 +122,16 @@ export default function ApplicationCard({ applications }) {
         setResume(e.target.files[0]);
     }
 
+    const openPdf = (base64String) => {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) =>
+            byteCharacters.charCodeAt(i)
+        );
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
+    };
 
     return (
         <div className='ApplicationCard-container'>
@@ -130,18 +141,26 @@ export default function ApplicationCard({ applications }) {
                     <p><strong>Company:</strong> {app.companyName}</p>
                     <p>
                         <strong>Resume:</strong>{' '}
-                        <a href={app.resume} target="_blank" rel="noopener noreferrer">
-                            View Resume
-                        </a>
+                        {app.resumeBase64 ? (
+                            <button onClick={() => openPdf(app.resumeBase64)}>View Resume</button>
+
+                        ) : (
+                            'No resume uploaded'
+                        )}
+
                     </p>
                     <p><strong>Status:</strong> {app.status}</p>
                     <p><strong>Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
                     {(role === 'seeker') || (role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
-                    {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked()}>Edit</button>}
+                    {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked(app.id)}>Edit</button>}
                     {role === 'employer' && <button className='edit-button' onClick={() => handleApprove}>Approve</button>}
 
-                    {isEditClicked && <input type='file' onChange={handleFileChange}></input>}
-                    {isEditClicked && <SubmitButton msg="Update" onClick={() => handleEdit({ app })} />}
+                    {editAppId === app.id && (
+                        <>
+                            <input type='file' onChange={handleFileChange} />
+                            <SubmitButton msg="Update" onClick={() => handleEdit({ app })} />
+                        </>
+                    )}
 
 
                     {err && <p style={{ color: "red", marginTop: "10px" }}>{err}</p>}

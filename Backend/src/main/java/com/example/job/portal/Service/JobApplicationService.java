@@ -1,14 +1,12 @@
 package com.example.job.portal.Service;
-
+import java.util.Base64;
 
 import com.example.job.portal.DTO.JobApplicationDTO;
-import com.example.job.portal.Entity.Job;
-import com.example.job.portal.Entity.JobApplication;
-import com.example.job.portal.Entity.User;
-import com.example.job.portal.Repository.JobApplicationRepo;
-import com.example.job.portal.Repository.JobRepo;
-import com.example.job.portal.Repository.UserRepo;
+import com.example.job.portal.Entity.*;
+import com.example.job.portal.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -30,6 +28,10 @@ public class JobApplicationService {
     private JobApplicationRepo jobApplicationRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private SeekerRepo seekerRepo;
+    @Autowired
+    private EmployerRepo employerRepo;
 
     public JobApplicationService() {
     }
@@ -88,7 +90,9 @@ public class JobApplicationService {
 
         return ResponseEntity.ok("Successfully applied to job");
     }
-    //all
+
+
+    //all for admin
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> getallAppliedJobs() {
         List<JobApplicationDTO> appliedJobs = new ArrayList<>();
@@ -101,7 +105,14 @@ public class JobApplicationService {
             jobApplicationDTO.setSeekerId(jobApplication.getSeekerId());
             jobApplicationDTO.setAppliedAt(jobApplication.getAppliedAt());
             jobApplicationDTO.setStatus(jobApplication.getStatus());
-            jobApplicationDTO.setResume(jobApplication.getResume());
+            //resume handle
+            byte[] resumeBytes = jobApplication.getResume();
+            if (resumeBytes != null) {
+                String base64Resume = Base64.getEncoder().encodeToString(resumeBytes);
+                jobApplicationDTO.setResumeBase64(base64Resume);
+            } else {
+                jobApplicationDTO.setResumeBase64(null);
+            }
 
             //job title and company
             Optional<Job> optApp = jobRepo.findJobById(jobApplication.getJobId());
@@ -115,19 +126,21 @@ public class JobApplicationService {
         }
         return ResponseEntity.ok(appliedJobs);
     }
-//user specific
+
+    //seeker own appli
+    @PreAuthorize("hasRole('seeker')")
     public ResponseEntity<?> getAllJobApplications(Authentication authentication) {
         String email = authentication.getName();
         //get user
-        Optional<User> optUser = userRepo.findByEmail(email);
+        Optional<Seeker> optionalSeeker = seekerRepo.findByEmail(email);
 
-        if (optUser.isEmpty()) {
+        if (optionalSeeker.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
-        User user = optUser.get();
+        Seeker seeker = optionalSeeker.get();
         System.out.println("user found");
 
-        Long seekerId = user.getId();
+        Long seekerId = seeker.getId();
 
         //get only seeker's applications
         Optional<List<JobApplication>> jobApplications = jobApplicationRepo.findAllBySeekerId(seekerId);
@@ -146,6 +159,14 @@ public class JobApplicationService {
             dto.setSeekerId(jobApplication.getSeekerId());
             dto.setStatus(jobApplication.getStatus());
             dto.setResume(jobApplication.getResume());
+            byte[] resumeBytes = jobApplication.getResume();
+            if (resumeBytes != null) {
+                String base64Resume = Base64.getEncoder().encodeToString(resumeBytes);
+                dto.setResumeBase64(base64Resume);
+            } else {
+                dto.setResumeBase64(null);
+            }
+
             //company name + title
             Optional<Job> job = jobRepo.findById(jobApplication.getJobId());
             if (job.isPresent()) {
@@ -161,6 +182,57 @@ public class JobApplicationService {
         if (count == 0) {
             return ResponseEntity.badRequest().body("No Job Applications found");
         }
+        return ResponseEntity.ok(dtos);
+    }
+
+    //employers view applications for them
+    public ResponseEntity<?> empViewApplications(Authentication authentication) {
+        // 1. Get Employer
+        String email = authentication.getName();
+        Optional<Employer> optionalEmployer = employerRepo.findByEmail(email);
+        if (optionalEmployer.isEmpty()) {
+            return ResponseEntity.badRequest().body("Your employer account not found. Try logging in again.");
+        }
+        Employer employer = optionalEmployer.get();
+
+        // 2. Get Job IDs by Employer
+        List<Job> jobs = jobRepo.findAllByEmployerId(employer.getId());
+        List<Long> jobIds = jobs.stream().map(Job::getId).toList();
+
+        if (jobIds.isEmpty()) return ResponseEntity.badRequest().body("No Jobs found");
+        List<JobApplication> applications = jobApplicationRepo.findByJobIdIn(jobIds);
+
+        List<JobApplicationDTO> dtos = new ArrayList<>();
+        for (JobApplication jobApplication : applications) {
+            JobApplicationDTO dto = new JobApplicationDTO();
+
+            dto.setId(jobApplication.getId());
+            dto.setJobId(jobApplication.getJobId());
+            dto.setSeekerId(jobApplication.getSeekerId());
+            dto.setStatus(jobApplication.getStatus());
+
+            // Convert resume bytes to Base64 string, if present
+            byte[] resumeBytes = jobApplication.getResume();
+            if (resumeBytes != null) {
+                String base64Resume = Base64.getEncoder().encodeToString(resumeBytes);
+                dto.setResumeBase64(base64Resume);
+            } else {
+                dto.setResumeBase64(null);
+            }
+
+            // Get job details for the DTO
+            jobs.stream()
+                    .filter(job -> job.getId().equals(jobApplication.getJobId()))
+                    .findFirst()
+                    .ifPresent(job -> {
+                        dto.setCompanyName(job.getCompanyName());
+                        dto.setJobTitle(job.getJobTitle());
+                    });
+
+            dtos.add(dto);
+        }
+
+        // 5. Return the list of DTOs
         return ResponseEntity.ok(dtos);
     }
 

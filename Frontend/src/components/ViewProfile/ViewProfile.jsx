@@ -36,20 +36,25 @@ export default function ViewProfile({ profile }) {
             <p><strong>Certifications:</strong> {profile.certifications || 'N/A'}</p>
             <p>
               <strong>Resume:</strong>{' '}
-              {profile.resumeUrl ? (
-                <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer">
+              {profile.resumeBase64 ? (
+                <a
+                  href={`data:application/pdf;base64,${profile.resumeBase64}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   View Resume
                 </a>
               ) : (
                 'N/A'
               )}
             </p>
+
           </>
         ) : (
           <>
             <p><strong>Company Description:</strong> {profile.companyDescription}</p>
             <p><strong>Address:</strong> {profile.address}</p>
-            
+
             <p><strong>Registration Number:</strong> {profile.registrationNumber}</p>
             <p><strong>Industry:</strong> {profile.industry}</p>
             <p><strong>Company Size:</strong> {profile.companySize}</p>
@@ -59,7 +64,7 @@ export default function ViewProfile({ profile }) {
                 {profile.website}
               </a>
             </p>
-            
+
           </>
         )}
       </div>
