@@ -37,9 +37,11 @@ public class AuthController {
 
     @PostMapping("register-employer")
     public ResponseEntity<String> registerEmployer(@Valid @RequestBody UserDto userDto) {
-        ResponseEntity<String> response =authService.registerEmployer(userDto);
-        System.out.println("response ready to send fro back is : "+response);
-        return response;
+        return authService.registerEmployer(userDto);
+    }
+    @PostMapping("register-admin")
+    public ResponseEntity<String> registerAdmin(@Valid @RequestBody UserDto userDto) {
+        return authService.registerAdmin(userDto);
     }
 
     @PostMapping("/login")

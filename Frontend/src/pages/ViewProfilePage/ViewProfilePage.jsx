@@ -25,18 +25,19 @@ export default function ViewProfilePage() {
     setLoading(true);
 
     try {
-
       console.log("Token:", token);
       let url;
       if (role === "employer") {
         url = "http://localhost:8080/api/employers/profile";
       } else if (role === "seeker") {
         url = "http://localhost:8080/api/seekers/profile";
+      } else {
+        url = "http://localhost:8080/api/admin/profile";
       }
       console.log("Fetching profile from URL:", url);
       const response = await fetch(url, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
 
@@ -68,7 +69,7 @@ export default function ViewProfilePage() {
         <div className="viewprofilepage-content">
           <h1 className="viewprofilepage-title">Your Profile</h1>
 
-          {/* Profile card including the profile data */}
+
           <div className="viewprofile-card">
             <ViewProfile profile={profile} />
 

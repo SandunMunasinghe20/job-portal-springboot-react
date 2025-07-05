@@ -7,6 +7,7 @@ import com.example.job.portal.DTO.UserDto;
 import com.example.job.portal.Entity.*;
 import com.example.job.portal.Repository.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +45,8 @@ public class AuthService {
     private final JWTService jwtService;
     @Autowired
     private LinkTokenRepo linkTokenRepo;
+    @Autowired
+    private AdminRepo adminRepo;
 
 
     public AuthService(SeekerRepo seekerRepo,
@@ -73,8 +76,10 @@ public class AuthService {
 
         Optional<Seeker> seeker = seekerRepo.findByEmail(email);
         Optional<Employer> employer = employerRepo.findByEmail(email);
+        Optional<Admin> admin = adminRepo.findByEmail(email);
 
-        if(seeker.isPresent() || employer.isPresent()) {
+
+        if(seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
             return ResponseEntity.badRequest().body("Account already exists with this email");
         }else{
             try{
@@ -103,8 +108,9 @@ public class AuthService {
         }
         Optional<Employer> employer = employerRepo.findByEmail(email);
         Optional<Seeker> seeker = seekerRepo.findByEmail(email);
+        Optional<Admin> admin = adminRepo.findByEmail(email);
 
-        if(seeker.isPresent() || employer.isPresent()) {
+        if(seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
             System.out.println("Account already exists with this email");
             return ResponseEntity.badRequest().body("Account already exists with this email");
         }else {
@@ -125,6 +131,39 @@ public class AuthService {
             }
         }
     }
+
+    public ResponseEntity<String> registerAdmin(UserDto userDto) {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
+
+        if (email == null || password == null) {
+            return ResponseEntity.badRequest().body("Invalid email or password");
+        }
+
+        Optional<Seeker> seeker = seekerRepo.findByEmail(email);
+        Optional<Employer> employer = employerRepo.findByEmail(email);
+        Optional<Admin> admin = adminRepo.findByEmail(email);
+
+        if (seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
+            return ResponseEntity.badRequest().body("Account already exists with this email");
+        } else {
+            try {
+                Admin newAdmin = new Admin();
+
+                newAdmin.setEmail(email);
+                newAdmin.setPassword(passwordEncoder.encode(password));
+                newAdmin.setAccountCreatedAt(new Date());
+                newAdmin.setAccountUpdatedAt(new Date());
+                newAdmin.setRole("admin");
+                adminRepo.save(newAdmin);
+                return ResponseEntity.ok().body("Successfully registered");
+
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Something went wrong while registering seeker");
+            }
+        }
+    }
+
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
 
@@ -256,6 +295,5 @@ public class AuthService {
 
         return ResponseEntity.ok().body("Password reset successfull");
     }
-
 
 }

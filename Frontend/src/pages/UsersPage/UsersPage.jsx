@@ -4,6 +4,9 @@ import { fetchFromBackend } from "../../services/Service";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './UsersPage.css';
 
+import { useLocation } from "react-router-dom";
+
+
 export default function UsersPage() {
 
   const [users, setUsers] = useState([]);
@@ -11,9 +14,15 @@ export default function UsersPage() {
 
 
   const role = localStorage.getItem("role");
-  console.log("Current users role is: ", role);
+  /*console.log("Current users role is: ", role);
   const roletoget = localStorage.getItem("role-to-get");
-  console.log("role-to-get: ", roletoget);
+  console.log("role-to-get: ", roletoget);*/
+
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const roletoget = queryParams.get("role");
+
 
   useEffect(() => {
     async function loadUsers() {
@@ -41,8 +50,9 @@ export default function UsersPage() {
         console.log("data is: ", data);
       }
     }
-    loadUsers();
-  }, []);
+    if (roletoget)
+      loadUsers();
+  }, [roletoget]);
 
 
   return (

@@ -13,17 +13,17 @@ function NavBar({ role }) {
     const [visible, setVisible] = useState(true);
 
     const handleSeekers = () => {
-        localStorage.removeItem("role-to-get");
-        localStorage.setItem("role-to-get", "seeker");
-
-        console.log("role-to-get: ", localStorage.getItem("role-to-get"));
-        navigate('/users');
+        /* localStorage.removeItem("role-to-get");
+         localStorage.setItem("role-to-get", "seeker");
+ 
+         console.log("role-to-get: ", localStorage.getItem("role-to-get"));*/
+        navigate('/users?role=seeker');
     }
     const handleEmployers = () => {
-        localStorage.removeItem("role-to-get");
-        localStorage.setItem("role-to-get", "employer");
-        console.log("role-to-get: ", localStorage.getItem("role-to-get"));
-        navigate('/users');
+        /* localStorage.removeItem("role-to-get");
+         localStorage.setItem("role-to-get", "employer");
+         console.log("role-to-get: ", localStorage.getItem("role-to-get"));*/
+        navigate('/users?role=employer');
     }
 
     const logout = () => {

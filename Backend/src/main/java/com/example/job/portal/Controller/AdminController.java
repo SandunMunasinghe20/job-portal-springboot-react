@@ -1,21 +1,12 @@
 package com.example.job.portal.Controller;
 
-
-import com.example.job.portal.DTO.EmployerDTO;
-import com.example.job.portal.DTO.JobApplicationDTO;
-import com.example.job.portal.DTO.JobDTO;
-import com.example.job.portal.DTO.SeekerDTO;
-import com.example.job.portal.Entity.JobApplication;
-import com.example.job.portal.Service.EmployerService;
-import com.example.job.portal.Service.JobApplicationService;
-import com.example.job.portal.Service.JobService;
-import com.example.job.portal.Service.SeekerService;
+import com.example.job.portal.DTO.*;
+import com.example.job.portal.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -27,8 +18,10 @@ public class AdminController {
     @Autowired private EmployerService employerService;
     @Autowired private JobService jobService;
     @Autowired private JobApplicationService jobApplicationService;
+    @Autowired
+    private AdminService adminService;
 
-    // --------- SEEKERS ---------
+    // seekers
 
     @GetMapping("/seekers")
     public ResponseEntity<List<SeekerDTO>> getAllSeekers() {
@@ -51,7 +44,7 @@ public class AdminController {
         return seekerService.updateSeekerProfile(seekerDTO);
     }
 
-    // --------- EMPLOYERS ---------
+    // employers
 
     @GetMapping("/employers")
     public ResponseEntity<List<EmployerDTO>> getAllEmployers() {
@@ -74,7 +67,7 @@ public class AdminController {
         return employerService.updateEmployer(employerDTO);
     }
 
-    // --------- JOBS ---------
+    // jobs
 
     @GetMapping("/jobs")
     public ResponseEntity<List<JobDTO>> getAllJobs() {
@@ -91,19 +84,30 @@ public class AdminController {
         return jobService.deleteJob(id);
     }
 
-    // --------- JOB APPLICATIONS ---------
+    // job applications
 
     @GetMapping("/applications")
     public ResponseEntity<?> getAllJobApplications() {
         return jobApplicationService.getallAppliedJobs();
     }
 
-    // Optional future endpoint
+
     /*
     @DeleteMapping("/applications/{id}")
     public ResponseEntity<String> deleteJobApplicationById(@PathVariable long id, Authentication auth) {
         return jobApplicationService.deleteJobApplication(id, auth);
     }
     */
+
+    @GetMapping("/profile")
+    public ResponseEntity<AdminDTO> getProfile(Authentication authentication) {
+        return adminService.getAdminProfile(authentication);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateProfile(@RequestBody AdminDTO adminDTO, Authentication authentication) {
+        return adminService.updateAdmin(adminDTO, authentication);
+    }
+
 }
 
