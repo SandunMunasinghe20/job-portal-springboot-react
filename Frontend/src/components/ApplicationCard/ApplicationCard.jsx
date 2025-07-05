@@ -136,9 +136,9 @@ export default function ApplicationCard({ applications }) {
                     </p>
                     <p><strong>Status:</strong> {app.status}</p>
                     <p><strong>Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
-                    <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>
-                    <button className='edit-button' onClick={() => handleEditClicked()}>Edit</button>
-
+                    {(role === 'seeker') || (role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
+                    {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked()}>Edit</button>}
+                    {role === 'employer' && <button className='edit-button' onClick={() => handleApprove}>Approve</button>}
 
                     {isEditClicked && <input type='file' onChange={handleFileChange}></input>}
                     {isEditClicked && <SubmitButton msg="Update" onClick={() => handleEdit({ app })} />}

@@ -226,8 +226,9 @@ export default function JobListing() {
                                     {role === 'seeker' && <button className="jl-btn jl-btn-primary" onClick={() => navigate(`/applyJob?id=${job.id}`)}>Apply Now</button>}
                                     {role === 'seeker' && <button className="jl-btn jl-btn-primary">Save Job</button>}
                                     {role === 'employer' && <button className="jl-btn jl-btn-secondary" onClick={() => navigate(`/updateJobs?id=${job.id}`)}>Edit</button>}
-                                    {role === 'employer' && <button className="jl-btn jl-btn-secondary" onClick={(e) => openDeleteModal(job)}>Delete</button>}
+                                    {(role === 'employer' || role === 'admin') && <button className="jl-btn jl-btn-secondary" onClick={(e) => openDeleteModal(job)}>Delete</button>}
                                 </div>
+
                                 {modalOpen && jobToDelete?.id === job.id && (
                                     <ConfirmModal
                                         message="Are you sure you want to delete this job?"

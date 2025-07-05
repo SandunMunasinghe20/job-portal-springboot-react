@@ -12,11 +12,23 @@ function NavBar({ role }) {
     const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
     const [visible, setVisible] = useState(true);
 
-    const logout = () => {
+    const handleSeekers = () => {
+        localStorage.removeItem("role-to-get");
+        localStorage.setItem("role-to-get", "seeker");
 
+        console.log("role-to-get: ", localStorage.getItem("role-to-get"));
+        navigate('/users');
+    }
+    const handleEmployers = () => {
+        localStorage.removeItem("role-to-get");
+        localStorage.setItem("role-to-get", "employer");
+        console.log("role-to-get: ", localStorage.getItem("role-to-get"));
+        navigate('/users');
+    }
+
+    const logout = () => {
         setErr("");
         setSuccess("");
-
 
         try {
             localStorage.removeItem("role");
@@ -27,7 +39,6 @@ function NavBar({ role }) {
         } catch (e) {
             setErr("Failed to Logout");
         }
-
 
     }
 
@@ -93,7 +104,21 @@ function NavBar({ role }) {
                     </>
 
                 }
-            </div>
+
+                {role === 'admin'
+                    &&
+                    <div className="Nav-links">
+                        <Link to='/jobs'>Jobs</Link>
+                        <Link to='/myApplications'>Job Applications</Link>
+                        <button onClick={() => { handleSeekers() }}>Job Seekers</button>
+                        <button onClick={() => { handleEmployers() }}>Job Employers</button>
+                        <Link to='/profile'>Profile</Link>
+                        <button onClick={logout} >Logout</button>
+                    </div >
+
+                }
+
+            </div >
 
         );
     }

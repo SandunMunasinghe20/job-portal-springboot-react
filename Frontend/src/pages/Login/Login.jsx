@@ -77,7 +77,11 @@ function Login() {
             setSuccess("Login Successful");
 
             setTimeout(() => {
-                navigate('/home');
+                const role = localStorage.getItem("role");
+                if (role == 'admin') {
+                    navigate('/adminHome');
+                } else
+                    navigate('/home');
             }, 1000);
 
         } catch (e) {

@@ -14,6 +14,8 @@ import ChangePass from './pages/ForgotPassword/ChangePass';
 import Applications from './pages/Applications/Applications';
 import Home from './pages/Home/Home';
 import MyProfile from './components/MyProfile';
+import AdminHome from './pages/Admin/AdminHome';
+import AdminViewSeekers from './pages/Admin/AdminViewSeekers';
 import './App.css'
 
 function App() {
@@ -36,6 +38,9 @@ function App() {
         <Route path='reset-password' element={<ChangePass />} />
         <Route path='/myApplications' element={<Applications />} />
         <Route path='/myprof' element={<MyProfile />} />
+        <Route path='/adminHome' element={<AdminHome />} />
+        <Route path='/seekers' element={<AdminViewSeekers />} />
+
       </Routes>
     </BrowserRouter>
   );

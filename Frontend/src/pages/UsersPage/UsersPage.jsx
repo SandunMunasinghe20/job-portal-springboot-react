@@ -10,20 +10,21 @@ export default function UsersPage() {
   const [error, setError] = useState("");
 
 
-  //const url = "http://localhost:8080/api/seekers/all"
-  //const method = 'GET'
   const role = localStorage.getItem("role");
   console.log("Current users role is: ", role);
+  const roletoget = localStorage.getItem("role-to-get");
+  console.log("role-to-get: ", roletoget);
 
   useEffect(() => {
     async function loadUsers() {
       let response;
 
-      if (role === "seeker") {
+      if (roletoget === 'employer') {
         response = await fetchFromBackend({
           url: "http://localhost:8080/api/employers/all",
           method: "GET"
         });
+
       } else {
         response = await fetchFromBackend({
           url: "http://localhost:8080/api/seekers/all",
@@ -40,23 +41,23 @@ export default function UsersPage() {
         console.log("data is: ", data);
       }
     }
-
     loadUsers();
   }, []);
 
 
   return (
-    <><NavBar role={role} />
+    <>
+      <NavBar role={role} />
       <div className="users-page-container">
         <h2 className="users-page-title">
-          {role === "seeker" ? "Available Employers" : "Available Job Seekers"}
+          {roletoget === "employer" ? "Available Employers" : "Available Job Seekers"}
         </h2>
 
         <div className="profile-grid">
           {users.map((user, index) => {
-            const role = user.role;
+            //const rolenew = user.role;
             return (
-              <ProfileCard key={index} profile={user} type={role} />
+              <ProfileCard key={index} profile={user} roletoget={roletoget} />
             );
           })}
         </div>

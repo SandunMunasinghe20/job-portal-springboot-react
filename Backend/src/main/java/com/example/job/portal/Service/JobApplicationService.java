@@ -10,6 +10,7 @@ import com.example.job.portal.Repository.JobRepo;
 import com.example.job.portal.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,6 +89,7 @@ public class JobApplicationService {
         return ResponseEntity.ok("Successfully applied to job");
     }
     //all
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> getallAppliedJobs() {
         List<JobApplicationDTO> appliedJobs = new ArrayList<>();
 

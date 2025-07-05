@@ -1,32 +1,32 @@
 import React from "react";
-import './ProfilCard.css'; 
+import './ProfilCard.css';
 
-export default function ProfileCard({ profile, type }) {
-  console.log("type:", type);
+export default function ProfileCard({ profile, roletoget }) {
+  console.log("roletoget:", roletoget);
   return (
     <div className="profile-card">
       <img
-        src={type === 'seeker' ? profile.profilePictureUrl : profile.logoUrl}
+        src={roletoget === 'seeker' ? profile.profilePictureUrl : profile.logoUrl}
         alt="Profile"
         className="profile-image"
       />
 
       <h2>
-        {type === 'seeker'
+        {roletoget === 'seeker'
           ? `${profile.fname || ''} ${profile.lname || ''}`
           : profile.companyName}
       </h2>
 
-      <p>{type === 'seeker' ? profile.currentJobTitle : profile.industry}</p>
+      <p>{roletoget === 'seeker' ? profile.currentJobTitle : profile.industry}</p>
 
-      {type === 'seeker' && (
+      {roletoget === 'seeker' && (
         <>
-          
+
           <p><strong>Location:</strong> {profile.location}</p>
           <p><strong>Total Experience:</strong> {profile.totalExperience} years</p>
           <p><strong>Expected Salary:</strong> {profile.expectedSalary}</p>
           <p><strong>Availability:</strong> {profile.availability}</p>
-          <p><strong>Job Type Preference:</strong> {profile.jobTypePreference}</p>
+          <p><strong>Job role Preference:</strong> {profile.jobrolePreference}</p>
           <p><strong>Preferred Industry:</strong> {profile.preferredIndustry}</p>
           <p><strong>Education:</strong> {profile.education}</p>
           <p><strong>Work Experience:</strong> {profile.workExperience}</p>
@@ -46,7 +46,7 @@ export default function ProfileCard({ profile, type }) {
         </>
       )}
 
-      {type === 'employer' && (
+      {roletoget === 'employer' && (
         <>
           <p><strong>Description:</strong> {profile.companyDescription}</p>
           <p><strong>Website:</strong> <a href={profile.website} target="_blank" rel="noopener noreferrer">{profile.website}</a></p>

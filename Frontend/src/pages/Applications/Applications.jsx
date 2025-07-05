@@ -13,13 +13,22 @@ export default function Applications() {
     const token = localStorage.getItem("auth-token");
     const role = localStorage.getItem("role");
 
+    let url;
+    if (role === 'seeker')
+        url = "http://localhost:8080/api/applyJobs/view";
+    else if (role == 'admin')
+        url = "http://localhost:8080/api/admin/applications";
+    else
+        url = "http://localhost:8080/api/applyJobs/view"
+
     useEffect(() => {
         const fetchApplications = async () => {
             setErr("");
             setLoading(true);
+
             try {
 
-                const response = await fetch("http://localhost:8080/api/applyJobs/view", {
+                const response = await fetch(url, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                     },
