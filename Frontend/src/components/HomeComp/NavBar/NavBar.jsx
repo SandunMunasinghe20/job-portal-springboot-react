@@ -13,16 +13,10 @@ function NavBar({ role }) {
     const [visible, setVisible] = useState(true);
 
     const handleSeekers = () => {
-        /* localStorage.removeItem("role-to-get");
-         localStorage.setItem("role-to-get", "seeker");
- 
-         console.log("role-to-get: ", localStorage.getItem("role-to-get"));*/
         navigate('/users?role=seeker');
     }
+
     const handleEmployers = () => {
-        /* localStorage.removeItem("role-to-get");
-         localStorage.setItem("role-to-get", "employer");
-         console.log("role-to-get: ", localStorage.getItem("role-to-get"));*/
         navigate('/users?role=employer');
     }
 
@@ -59,8 +53,12 @@ function NavBar({ role }) {
             <div className={`Nav-container ${visible ? 'nav-visible' : 'nav-hidden'}`}>
 
                 <h2> <button onClick={() => {
+
                     console.log('Job Pulse clicked!');
-                    navigate('/home');
+                    if (role === 'admin')
+                        navigate('/adminHome');
+                    else
+                        navigate('/home');
                 }}>Job Pulse</button></h2>
                 <div className="Nav-links">
                     <Link to='/register'>Register</Link>
@@ -77,6 +75,8 @@ function NavBar({ role }) {
                     console.log('Job Pulse clicked!');
                     navigate('/home');
                 }}>Job Pulse</button></h2>
+
+
                 {role === 'employer'
                     &&
                     <>
@@ -85,6 +85,7 @@ function NavBar({ role }) {
                             <Link to="/postJobs">Post a Job</Link>
                             <Link to='/myJobs'>My Jobs</Link>
                             <Link to='/profile'>Profile</Link>
+                            <Link to='/myApplications'>Applications </Link>
                             <button onClick={logout} >Logout</button>
                         </div>
                     </>

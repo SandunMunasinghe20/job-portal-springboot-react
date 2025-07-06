@@ -189,6 +189,7 @@ public class JobApplicationService {
     public ResponseEntity<?> empViewApplications(Authentication authentication) {
         // 1. Get Employer
         String email = authentication.getName();
+        System.out.println("Email for emp view applications"+email);
         Optional<Employer> optionalEmployer = employerRepo.findByEmail(email);
         if (optionalEmployer.isEmpty()) {
             return ResponseEntity.badRequest().body("Your employer account not found. Try logging in again.");
@@ -302,6 +303,21 @@ public class JobApplicationService {
         jobApplication.setAppliedAt(LocalDateTime.now());
         jobApplicationRepo.save(jobApplication);
         return ResponseEntity.ok("Successfully updated job application");
+    }
+
+    public ResponseEntity<String> handleApplicationByEmployer(JobApplicationDTO jobApplicationDTO) {
+        Long jobApplicationId = jobApplicationDTO.getId();
+        Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
+        if (optApp.isEmpty()) {
+            return ResponseEntity.badRequest().body("Job Application not found");
+        }
+        //get job application
+        JobApplication jobApplication = optApp.get();
+
+        //update job app
+        jobApplication.setStatus(jobApplicationDTO.getStatus());
+        jobApplicationRepo.save(jobApplication);
+        return ResponseEntity.ok("Successfully "+jobApplicationDTO.getStatus()+ " job application");
     }
 
 }

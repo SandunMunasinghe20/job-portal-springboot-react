@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './ApplicationCard.css';
 import SubmitButton from '../submitButton/submitbutton';
+import { fetchFromBackend } from '../../services/Service';
 
 export default function ApplicationCard({ applications }) {
 
@@ -18,6 +19,10 @@ export default function ApplicationCard({ applications }) {
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [resume, setResume] = useState(null);
     const [editAppId, setEditAppId] = useState(null);
+
+    const [confirmationAppId, setConfirmationAppId] = useState(null);
+    const [actionType, setActionType] = useState(""); // APPROVED/REJECTED
+
 
     const navigate = useNavigate();
 
@@ -118,10 +123,12 @@ export default function ApplicationCard({ applications }) {
         }
     };
 
+
     const handleFileChange = (e) => {
         setResume(e.target.files[0]);
     }
 
+    //send base 64 data to front
     const openPdf = (base64String) => {
         const byteCharacters = atob(base64String);
         const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) =>
@@ -132,6 +139,38 @@ export default function ApplicationCard({ applications }) {
         const blobUrl = URL.createObjectURL(blob);
         window.open(blobUrl);
     };
+
+    //approve/reject a application
+    const handleStatusChange = async ({ app, newStatus }) => {
+        setSuccess("");
+        setErr("");
+
+        try {
+            const response = await fetch("http://localhost:8080/api/applyJobs/updateBYEmp", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
+                body: JSON.stringify({
+                    id: app.id,
+                    status: newStatus
+                })
+            });
+            const data = await response.text();
+            if (!response.ok) {
+                setErr(data);
+                return;
+            }
+            setSuccess(data);
+            setConfirmationAppId(null);
+            navigate(0);
+        } catch {
+            setErr("An error occurred while updating the job application");
+            setConfirmationAppId(null);
+        }
+    };
+
 
     return (
         <div className='ApplicationCard-container'>
@@ -149,11 +188,52 @@ export default function ApplicationCard({ applications }) {
                         )}
 
                     </p>
-                    <p><strong>Status:</strong> {app.status}</p>
+
+
+                    {(app.status === 'APPROVED')
+                        &&
+                        <p style={{ color: 'green' }}><strong>Status:</strong> {app.status}</p>
+                    }
+                    {(app.status == 'REJECTED')
+                        &&
+                        <p style={{ color: 'red' }}><strong>Status:</strong> {app.status}</p>
+                    }
+                    {(app.status == 'PENDING')
+                        &&
+                        <p><strong>Status:</strong> {app.status}</p>
+                    }
+
+
+
                     <p><strong>Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
                     {(role === 'seeker') || (role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
                     {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked(app.id)}>Edit</button>}
-                    {role === 'employer' && <button className='edit-button' onClick={() => handleApprove}>Approve</button>}
+
+                    {/*approve/reject button*/}
+                    {role === 'employer' && (
+                        confirmationAppId === app.id ? (
+                            <>
+                                <p>Are you sure you want to {actionType.toLowerCase()} this application?</p>
+                                <button onClick={() => handleStatusChange({ app, newStatus: actionType })}>Yes</button>
+                                <button onClick={() => setConfirmationAppId(null)}>No</button>
+                            </>
+                        ) : (
+                            <>
+                                <button className='edit-button' onClick={() => {
+                                    setConfirmationAppId(app.id);
+                                    setActionType("APPROVED");
+                                }}>Approve</button>
+
+                                <button className='delete-button' style={{ marginLeft: '8px' }} onClick={() => {
+                                    setConfirmationAppId(app.id);
+                                    setActionType("REJECTED");
+                                }}>Reject</button>
+                            </>
+                        )
+                    )}
+
+
+
 
                     {editAppId === app.id && (
                         <>

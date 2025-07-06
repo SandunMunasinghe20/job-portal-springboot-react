@@ -3,9 +3,11 @@ import GetInput from '../../components/GetInput/GetInput';
 import SubmitButton from '../../components/submitButton/submitbutton';
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './PostJobs.css';
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function PostJobs() {
+
+  const navigate = useNavigate();
 
   const [jobTitle, setJobTitle] = useState('');
   const [jobDescription, setJobDescription] = useState('');
@@ -74,6 +76,7 @@ export default function PostJobs() {
         const data = await response.text();
         console.log("data ", data);
         setSuccess(data);
+        //navigate('/myJobs');
       } else {
         //updating job
         if (!response.ok) {
@@ -84,8 +87,9 @@ export default function PostJobs() {
         const data = await response.text();
         console.log("data ", data);
         setSuccess(data);
-      }
 
+      }
+      navigate('/myJobs');
 
     } catch (e) {
       setErr("Failed to connect with backend.Try again");

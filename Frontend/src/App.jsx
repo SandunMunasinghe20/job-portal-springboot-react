@@ -16,6 +16,7 @@ import Home from './pages/Home/Home';
 import MyProfile from './components/MyProfile';
 import AdminHome from './pages/Admin/AdminHome';
 import AdminViewSeekers from './pages/Admin/AdminViewSeekers';
+import EmpReceivedApplications from './pages/Applications/EmpReceivedApplications';
 import './App.css'
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path='/myprof' element={<MyProfile />} />
         <Route path='/adminHome' element={<AdminHome />} />
         <Route path='/seekers' element={<AdminViewSeekers />} />
+        <Route path='/receivedApplications' element={<EmpReceivedApplications />} />
 
       </Routes>
     </BrowserRouter>
