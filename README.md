@@ -131,9 +131,9 @@ npm run dev
 * [x] Login, Register, Forgot/Reset Password
 * [x] Job Posting and Application Flows
 * [x] MySQL Integration
-* [ ] Job Search / Filters
-* [ ] Resume Upload & File Storage
-* [ ] Deployment (Render, Vercel, Railway)
+* [x] Job Search / Filters
+* [x] Resume Upload & File Storage
+* [] Deployment (Render, Vercel, Railway)
 
 ---
 
