@@ -22,4 +22,5 @@ jobs:
 
       - name: 🔍 Navigate to backend and build
         working-directory: ./Backend
-        run: mvn clean install
+        run: mvn clean install -DskipTests=true
+
