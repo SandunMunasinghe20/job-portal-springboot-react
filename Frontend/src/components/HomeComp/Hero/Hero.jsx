@@ -11,6 +11,7 @@ export default function Hero({ role }) {
         <div className="Hero-container">
             <div className="hero-container">
                 <div className="hero-text">
+
                     {role === 'seeker' ? (
                         <>
                             <h1>Find Your Dream Job</h1>

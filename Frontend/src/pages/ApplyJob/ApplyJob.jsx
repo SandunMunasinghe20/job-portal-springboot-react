@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import "./applyjob.css";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
 export default function ApplyJob() {
@@ -14,6 +14,8 @@ export default function ApplyJob() {
     const [err, setErr] = useState("");
     const [jobData, setJobData] = useState("");
     const [resume, setResume] = useState(null);
+
+    const navigate = useNavigate();
 
     const role = localStorage.getItem("role");
 
@@ -80,7 +82,6 @@ export default function ApplyJob() {
         }
 
         try {
-
             const formData = new FormData();
             formData.append("jobId", jobId);
             formData.append("resume", resume);
@@ -98,11 +99,19 @@ export default function ApplyJob() {
                 const errmsg = await response.text();
                 console.log("err ", errmsg);
                 setErr(errmsg);
+
+                setTimeout(() => {
+                    navigate('/jobs');
+                }, 1000);
+
                 return;
             }
             const data = await response.text();
             setSuccess(data);
             console.log("data : ", data);
+            setTimeout(() => {
+                navigate('/myApplications');
+            }, 1000);
 
 
         } catch (e) {

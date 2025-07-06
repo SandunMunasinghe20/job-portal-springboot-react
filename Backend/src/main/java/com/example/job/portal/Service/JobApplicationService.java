@@ -317,7 +317,7 @@ public class JobApplicationService {
         //update job app
         jobApplication.setStatus(jobApplicationDTO.getStatus());
         jobApplicationRepo.save(jobApplication);
-        return ResponseEntity.ok("Successfully "+jobApplicationDTO.getStatus()+ " job application");
+        return ResponseEntity.ok("Successfully "+jobApplicationDTO.getStatus()+" job application");
     }
 
 }

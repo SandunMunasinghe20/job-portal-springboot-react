@@ -8,6 +8,7 @@ public class JobDTO {
     private String location;
     private String jobType;
     private int salary;
+    private Long employerId;
 
     private String companyName;
 
@@ -17,6 +18,15 @@ public class JobDTO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+
+    public Long getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
     }
 
     public String getJobType() {

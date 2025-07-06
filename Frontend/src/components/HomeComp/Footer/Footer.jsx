@@ -1,5 +1,6 @@
 import './Footer.css'
 
+
 export default function Footer({ role }) {
     return (
         <footer className="footer">
