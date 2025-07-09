@@ -3,11 +3,12 @@ import ApplicationCard from "../../components/ApplicationCard/ApplicationCard";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
 import './Applications.css';
+import { toast } from "react-toastify";
 
 
 export default function Applications() {
     const [applications, setApplications] = useState([]);
-    const [err, setErr] = useState("");
+    //const [err, setErr] = useState("");
     const [loading, setLoading] = useState(true);
 
     const token = localStorage.getItem("auth-token");
@@ -15,7 +16,7 @@ export default function Applications() {
 
     let url;
     if (role === 'seeker')
-        url = "http://localhost:8080/api/applyJobs/view";
+        url = "http://localhost:8080/api/applyJobs/myApplications";
     else if (role == 'admin')
         url = "http://localhost:8080/api/admin/applications";
     else
@@ -23,7 +24,7 @@ export default function Applications() {
 
     useEffect(() => {
         const fetchApplications = async () => {
-            setErr("");
+            //setErr("");
             setLoading(true);
 
             try {
@@ -36,7 +37,7 @@ export default function Applications() {
 
                 if (!response.ok) {
                     const errorMsg = await response.text();
-                    setErr(errorMsg);
+                    toast.error(errorMsg);
                     setLoading(false);
                     return;
                 }
@@ -46,7 +47,7 @@ export default function Applications() {
                 setApplications(data);
                 setLoading(false);
             } catch (error) {
-                setErr("Error connecting to server");
+                toast.error("Error connecting to server");
                 setLoading(false);
             }
         };
@@ -60,7 +61,7 @@ export default function Applications() {
 
                 <h1>My Applications</h1>
                 {loading && <p>Loading applications...</p>}
-                {err && <p style={{ color: "red" }}>{err}</p>}
+
                 <ApplicationCard applications={applications} />
             </div>
         </>

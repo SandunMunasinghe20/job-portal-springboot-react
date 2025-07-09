@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import './NavBar.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function NavBar({ role }) {
 
     const navigate = useNavigate();
 
-    const [err, setErr] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [err, toast.error] = useState("");
+    //const [success, toast.success] = useState("");
     const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
     const [visible, setVisible] = useState(true);
 
@@ -21,17 +22,17 @@ function NavBar({ role }) {
     }
 
     const logout = () => {
-        setErr("");
-        setSuccess("");
+        //toast.error("");
+        //toast.success("");
 
         try {
             localStorage.removeItem("role");
             localStorage.removeItem("auth-token");
-            setSuccess("Logout Successful");
+            toast.success("Logout Successful");
             navigate("/login");
 
         } catch (e) {
-            setErr("Failed to Logout");
+            toast.error("Failed to Logout");
         }
 
     }

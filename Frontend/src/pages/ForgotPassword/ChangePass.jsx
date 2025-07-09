@@ -5,12 +5,13 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import './ForgotPassword.css'
+import { toast } from "react-toastify";
 
 
 export default function ChangePass() {
 
-    const [err, setErr] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [err, toast.error] = useState("");
+    // const [success, toast.success] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -25,11 +26,11 @@ export default function ChangePass() {
     const handlesubmit = async () => {
 
         if (!password || !confirmPassword) {
-            setErr("Please Fill Both Fields");
+            toast.error("Please Fill Both Fields");
             return;
         }
         if (password != confirmPassword) {
-            setErr("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -51,17 +52,17 @@ export default function ChangePass() {
 
             const data = await response.text();
             if (!response.ok) {
-                setErr(data);
+                toast.error(data);
                 return;
             }
-            setSuccess(data);
+            toast.success(data);
 
             setTimeout(() => {
                 navigate('/login');
             }, 1000);
 
         } catch (error) {
-            setErr("Error occured while Connecting with Server");
+            toast.error("Error occured while Connecting with Server");
             return;
         }
     }
@@ -86,8 +87,6 @@ export default function ChangePass() {
                 />
                 <br />
                 <SubmitButton msg="Change Password" onClick={handlesubmit} />
-                {err && <p className="login-message login-error">{err}</p>}
-                {success && <p className="login-message login-success">{success}</p>}
             </div>
         </>
     );

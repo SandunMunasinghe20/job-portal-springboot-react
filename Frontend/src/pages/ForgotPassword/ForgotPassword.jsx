@@ -6,12 +6,13 @@ import GetInput from "../../components/GetInput/GetInput";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import "./ForgotPassword.css";
+import { toast } from "react-toastify";
 
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
-    const [err, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [err, toast.error] = useState("");
+    //const [success, toast.success] = useState("");
     const navigate = useNavigate();
 
     const role = localStorage.getItem("role");
@@ -20,8 +21,7 @@ export default function ForgotPassword() {
     const handlesubmit = async (e) => {
         e.preventDefault();
 
-        setError("");
-        setSuccess("");
+
 
         try {
             //console.log("starting to get to back");
@@ -35,23 +35,23 @@ export default function ForgotPassword() {
 
             if (!response.ok) {
                 const errMsg = await response.text();
-                setError(errMsg);
+                toast.error(errMsg);
                 return;
             }
             //console.log("res :",response);
-            const data = response.text();
+            const data = await response.text();
             //console.log("data is :",data);
 
-            setSuccess(data);
+            toast.success(data);
 
-            /* setTimeout(() => {
-                 navigate('/changePass');
-             }, 3000);    */                //3 sec
+            /*setTimeout(() => {
+                navigate('/reset-password');
+            }, 3000);     */           //3 sec
 
 
 
         } catch (e) {
-            setError("Something went wrong while sending Password Reset Link");
+            toast.error("Something went wrong while sending Password Reset Link");
         }
     }
 
@@ -68,8 +68,6 @@ export default function ForgotPassword() {
                     />
                     <br />
                     <SubmitButton msg="Send Link" />
-                    {err && <p className="login-message login-error">{err}</p>}
-                    {success && <p className="login-message login-success">{success}</p>}
                 </form>
             </div>
         </>

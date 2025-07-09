@@ -3,12 +3,14 @@ import './Register.css'
 import GetInput from '../../components/GetInput/GetInput'
 import SubmitButton from '../../components/submitButton/submitbutton';
 import NavBar from '../../components/HomeComp/NavBar/NavBar';
+import { toast } from "react-toastify";
+
 
 export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [err, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [err, toast.error] = useState("");
+    //const [success, toast.success] = useState("");
     const [selected, setSelected] = useState('seeker');
 
 
@@ -19,8 +21,8 @@ export default function Register() {
     const handlesubmit = async (e) => {
         e.preventDefault();
 
-        setError("")
-        setSuccess("")
+        toast.error("")
+        toast.success("")
 
         try {
             if (selected == 'seeker') {
@@ -43,17 +45,17 @@ export default function Register() {
             console.log(msg);
 
             if (!response.ok) {
-                setError(msg);
+                toast.error(msg);
                 return;
             }
 
 
             if (msg) {
-                setSuccess(msg);
+                toast.success(msg);
             }
 
         } catch (error) {
-            setError("Error occurred while registering");
+            toast.error("Error occurred while registering");
         }
     }
 

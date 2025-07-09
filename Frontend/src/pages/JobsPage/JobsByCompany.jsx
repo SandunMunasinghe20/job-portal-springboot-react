@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './Jobs.css';
+import { toast } from "react-toastify";
 
 
 export default function JobsByCompany() {
 
-  const [err, setErr] = useState("");
+  //const [err, toast.error] = useState("");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +19,7 @@ export default function JobsByCompany() {
 
   const fetchJobsByCompany = async () => {
     setLoading(true);
-    setErr("");
+
 
 
     try {
@@ -30,7 +31,7 @@ export default function JobsByCompany() {
       });
 
       if (!response.ok) {
-        setErr("Job fetching failed");
+        toast.error("Job fetching failed");
         setLoading(false);
         return;
       }
@@ -41,7 +42,7 @@ export default function JobsByCompany() {
       setLoading(false);
 
     } catch (e) {
-      setErr("Error occured while fetching your Jobs");
+      toast.error("Error occured while fetching your Jobs");
       setLoading(false);
     }
   }
@@ -54,7 +55,6 @@ export default function JobsByCompany() {
     <>
       <NavBar role={role} />
 
-      {err && <div className="jl-err-message">{err}</div>}
 
       {loading ? (
         <div className="jl-loading-spinner">

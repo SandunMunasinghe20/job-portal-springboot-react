@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../ConfirmModel/ConfirmModel";
+import { toast } from "react-toastify";
 import "./JobListing.css";
 
-
 export default function JobListing() {
-    const [error, setError] = useState("");
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const [success, setSuccess] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [jobToDelete, setJobToDelete] = useState(null);
-    const [toastPosition, setToastPosition] = useState({ x: 0, y: 0 });
 
     const navigate = useNavigate();
 
     const token = localStorage.getItem("auth-token");
     const role = localStorage.getItem("role");
-
 
     const openDeleteModal = (job) => {
         setJobToDelete(job);
@@ -27,7 +23,7 @@ export default function JobListing() {
 
     const confirmDelete = () => {
         if (jobToDelete) {
-            handleDelete(null, { job: jobToDelete });
+            handleDelete(jobToDelete);
         }
         setModalOpen(false);
     };
@@ -38,83 +34,71 @@ export default function JobListing() {
     };
 
     const handleSubmit = async () => {
-        setError("");
+        toast.dismiss();
         setLoading(true);
 
-
         if (!token) {
-            setError("Please Login first");
+            toast.error("Please login first");
             navigate("/login");
             return;
         }
 
         try {
             const response = await fetch("http://localhost:8080/api/jobs/all", {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
                 },
             });
 
             if (!response.ok) {
-                setError("Failed to fetch jobs");
+                toast.error("Failed to fetch jobs");
                 return;
             }
 
             const data = await response.json();
-            console.log("Job DTOs received: ", data);
             setJobs(data);
-
+            toast.success("Jobs loaded successfully");
         } catch (error) {
-            setError("An error occurred while fetching jobs");
+            toast.error("An error occurred while fetching jobs");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    const handleDelete = async (e, { job }) => {
-        setToastPosition({
-            x: e?.clientX ?? window.innerWidth / 2,
-            y: e?.clientY ?? window.innerHeight / 2
-        });
-        console.log("job id is : ", job.id);
+    const handleDelete = async (job) => {
+        toast.dismiss();
+
         try {
-            const response = await fetch(`http://localhost:8080/api/jobs/delete/${job.id}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                },
-            });
+            const response = await fetch(
+                `http://localhost:8080/api/jobs/delete/${job.id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
 
             if (!response.ok) {
                 const data = await response.text();
-                setError(data);
-                //setError("Failed to fetch jobs");
+                toast.error(data);
                 return;
             }
 
-            const data = await response.text();
-            //console.log("response ", data);
-            setJobs(prev => prev.filter(j => j.id !== job.id));
-            setSuccess("Job Deleted Successfully");
-            setError("");
-
-            setTimeout(() => {
-                setSuccess("");
-            }, 3000);
-
+            setJobs((prev) => prev.filter((j) => j.id !== job.id));
+            toast.success("Job deleted successfully");
         } catch (error) {
-            setError("An error occurred while Deleting Job");
+            toast.error("An error occurred while deleting the job");
         }
-    }
+    };
 
     useEffect(() => {
         handleSubmit();
     }, []);
 
-    // Filter jobs based on search term
-    const filteredJobs = jobs.filter(job => {
+    const filteredJobs = jobs.filter((job) => {
         const title = job.jobTitle ?? "";
         const desc = job.jobDescription ?? "";
         const loc = job.location ?? "";
@@ -123,34 +107,39 @@ export default function JobListing() {
         return (
             title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            loc.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
-            (company.toLowerCase().includes(searchTerm.toLowerCase()))
+            loc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            company.toLowerCase().includes(searchTerm.toLowerCase())
         );
     });
-
 
     return (
         <div className="jl-container">
             <div className="jl-header">
-                <h1 className="jl-title"> Job Board</h1>
-                <p className="jl-subtitle">Discover exceptional career opportunities tailored for you</p>
+                <h1 className="jl-title">Job Board</h1>
+                <p className="jl-subtitle">
+                    Discover exceptional career opportunities tailored for you
+                </p>
                 <div className="jl-stats">
                     <div className="jl-stat-item">
                         <span className="jl-stat-number">{jobs.length}</span>
                         <span>Total Jobs</span>
                     </div>
                     <div className="jl-stat-item">
-                        <span className="jl-stat-number">{new Set(jobs.map(job => job.companyName)).size}</span>
+                        <span className="jl-stat-number">
+                            {new Set(jobs.map((job) => job.companyName)).size}
+                        </span>
                         <span>Companies</span>
                     </div>
                     <div className="jl-stat-item">
-                        <span className="jl-stat-number">{new Set(jobs.map(job => job.location)).size}</span>
+                        <span className="jl-stat-number">
+                            {new Set(jobs.map((job) => job.location)).size}
+                        </span>
                         <span>Locations</span>
                     </div>
                 </div>
             </div>
 
-            {!loading && !error && jobs.length > 0 && (
+            {!loading && jobs.length > 0 && (
                 <div className="jl-filter-bar">
                     <input
                         type="text"
@@ -161,25 +150,6 @@ export default function JobListing() {
                     />
                 </div>
             )}
-
-            {error && (
-                <div
-                    className="jl-toast-error"
-                    style={{ left: toastPosition.x, top: toastPosition.y, position: "fixed" }}
-                >
-                    {error}
-                </div>
-            )}
-
-            {success && (
-                <div className="jl-toast-success"
-                    style={{ left: toastPosition.x, top: toastPosition.y, position: "fixed" }}
-                >
-                    {success}
-                </div>
-            )}
-
-
 
             {loading ? (
                 <div className="jl-loading-spinner">
@@ -201,7 +171,9 @@ export default function JobListing() {
                                     <div className="jl-job-detail-item">
                                         <div className="jl-job-detail-icon company"></div>
                                         <span className="jl-job-detail-label">Company:</span>
-                                        <span className="jl-job-detail-value jl-company-name">{job.companyName || "Confidential"}</span>
+                                        <span className="jl-job-detail-value jl-company-name">
+                                            {job.companyName || "Confidential"}
+                                        </span>
                                     </div>
                                     <div className="jl-job-detail-item">
                                         <div className="jl-job-detail-icon"></div>
@@ -211,22 +183,47 @@ export default function JobListing() {
                                     <div className="jl-job-detail-item">
                                         <div className="jl-job-detail-icon salary"></div>
                                         <span className="jl-job-detail-label">Salary:</span>
-                                        <span className="jl-job-detail-value jl-salary-value">Rs. {job.salary?.toLocaleString()}</span>
+                                        <span className="jl-job-detail-value jl-salary-value">
+                                            Rs. {job.salary?.toLocaleString()}
+                                        </span>
                                     </div>
                                     <div className="jl-job-detail-item">
                                         <div className="jl-job-detail-icon job-type"></div>
                                         <span className="jl-job-detail-label">Job Type:</span>
-                                        <span className="jl-job-detail-value jl-company-name">{job.jobType}</span>
+                                        <span className="jl-job-detail-value jl-company-name">
+                                            {job.jobType}
+                                        </span>
                                     </div>
-
-
                                 </div>
 
                                 <div className="jl-job-actions">
-                                    {role === 'seeker' && <button className="jl-btn jl-btn-primary" onClick={() => navigate(`/applyJob?id=${job.id}`)}>Apply Now</button>}
-                                    {role === 'seeker' && <button className="jl-btn jl-btn-primary">Save Job</button>}
-                                    {role === 'employer' && <button className="jl-btn jl-btn-secondary" onClick={() => navigate(`/updateJobs?id=${job.id}`)}>Edit</button>}
-                                    {(role === 'employer' || role === 'admin') && <button className="jl-btn jl-btn-secondary" onClick={(e) => openDeleteModal(job)}>Delete</button>}
+                                    {role === "seeker" && (
+                                        <button
+                                            className="jl-btn jl-btn-primary"
+                                            onClick={() => navigate(`/applyJob?id=${job.id}`)}
+                                        >
+                                            Apply Now
+                                        </button>
+                                    )}
+                                    {role === "seeker" && (
+                                        <button className="jl-btn jl-btn-primary">Save Job</button>
+                                    )}
+                                    {role === "employer" && (
+                                        <button
+                                            className="jl-btn jl-btn-secondary"
+                                            onClick={() => navigate(`/updateJobs?id=${job.id}`)}
+                                        >
+                                            Edit
+                                        </button>
+                                    )}
+                                    {(role === "employer" || role === "admin") && (
+                                        <button
+                                            className="jl-btn jl-btn-secondary"
+                                            onClick={() => openDeleteModal(job)}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
                                 </div>
 
                                 {modalOpen && jobToDelete?.id === job.id && (
@@ -237,75 +234,16 @@ export default function JobListing() {
                                     />
                                 )}
                             </div>
-
                         ))
                     ) : (
                         <div className="jl-no-jobs-message">
-                            {searchTerm ? `No jobs found matching "${searchTerm}"` : "No jobs available at the moment"}
+                            {searchTerm
+                                ? `No jobs found matching "${searchTerm}"`
+                                : "No jobs available at the moment"}
                         </div>
                     )}
                 </div>
             )}
-
-
-
         </div>
     );
 }
-/*
-export default function JobListing({ jobs = [] ,navigate } ) {
-if (jobs.length === 0) {
-return <p className="jl-no-jobs-message">No jobs to display.</p>;
-}
-
-return (
-<div className="jl-jobs-grid">
-  <ul style={{ padding: 0, margin: 0, listStyle: "none" }}>
-    {jobs.map((job, index) => (
-      <li key={index} className="jl-job-card">
-        <div className="jl-job-header">
-          <h3 className="jl-job-title">{job.jobTitle}</h3>
-          <div className="jl-job-badge">Featured</div>
-        </div>
-
-        <p className="jl-job-description">
-          {job.jobDescription
-            ? job.jobDescription.length > 100
-              ? job.jobDescription.substring(0, 100) + "..."
-              : job.jobDescription
-            : "No description available."}
-        </p>
-
-        <div className="jl-job-details">
-          <div className="jl-job-detail-item">
-            <div className="jl-job-detail-icon"></div>
-            <span className="jl-job-detail-label">Location:</span>
-            <span className="jl-job-detail-value">{job.location || "Not specified"}</span>
-          </div>
-
-          <div className="jl-job-detail-item">
-            <div className="jl-job-detail-icon salary"></div>
-            <span className="jl-job-detail-label">Salary:</span>
-            <span className="jl-job-detail-value jl-salary-value">
-              {job.salary ? `Rs. ${job.salary.toLocaleString()}` : "Not disclosed"}
-            </span>
-          </div>
-
-          <div className="jl-job-detail-item">
-            <div className="jl-job-detail-icon company"></div>
-            <span className="jl-job-detail-label">Company:</span>
-            <span className="jl-job-detail-value jl-company-name">{job.companyName || "Unknown Company"}</span>
-          </div>
-        </div>
-
-        <div className="jl-job-actions">
-          <button className="jl-btn jl-btn-primary" style={{ marginRight: "10px" }} onClick={()=>navigate(`/applyJob?id=${job.id}`)}>Apply Now</button>
-          <button className="jl-btn jl-btn-secondary">Save Job</button>
-        </div>
-      </li>
-    ))}
-  </ul>
-</div>
-);
-}
-*/

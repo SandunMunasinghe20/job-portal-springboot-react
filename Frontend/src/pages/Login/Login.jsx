@@ -4,12 +4,13 @@ import SubmitButton from "../../components/submitButton/submitbutton";
 import GetInput from "../../components/GetInput/GetInput";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
+import { toast } from "react-toastify";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [error, setError] = useState("");
+    // const [success, setSuccess] = useState("");
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     const role = localStorage.getItem("role");
@@ -46,8 +47,8 @@ function Login() {
     const handlesubmit = async (e) => {
         e.preventDefault();
 
-        setError("")
-        setSuccess("")
+        //setError("")
+        //setSuccess("")
 
         try {
             const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -59,14 +60,14 @@ function Login() {
             });
 
             if (!response.ok) {
-                setError("Login failed")
+                toast.error("Login failed")
                 return;
             }
 
             const data = await response.json();
 
             if (data.token == null) {
-                setError(data.message)
+                toast.error(data.message)
                 return;
             }
 
@@ -74,7 +75,8 @@ function Login() {
             localStorage.setItem("auth-token", data.token);
             localStorage.setItem("role", data.role);
             console.log("Role ", data.role);
-            setSuccess("Login Successful");
+            //setSuccess("Login Successful");
+            toast.success('Login Successful');
 
             setTimeout(() => {
                 const role = localStorage.getItem("role");
@@ -86,7 +88,8 @@ function Login() {
 
         } catch (e) {
             //console.log("Error occured while logging");
-            setError("Login failed. Try again");
+            //setError("Login failed. Try again");
+            toast.error("Login failed. Try again");
         }
     };
 
@@ -112,8 +115,8 @@ function Login() {
                     </div>
                     <SubmitButton msg="Login" />
 
-                    {error && <p className="login-message login-error">{error}</p>}
-                    {success && <p className="login-message login-success">{success}</p>}
+                    {/*error && <p className="login-message login-error">{error}</p>*/}
+                    {/*success && <p className="login-message login-success">{success}</p>*/}
 
                     <p className="forgot-password">
                         <Link to="/forgotPassword" >Forgot Password? </Link>

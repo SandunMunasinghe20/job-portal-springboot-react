@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import './ApplicationCard.css';
 import SubmitButton from '../submitButton/submitbutton';
 import { fetchFromBackend } from '../../services/Service';
+import { toast } from "react-toastify";
+
 
 export default function ApplicationCard({ applications }) {
 
@@ -13,8 +15,8 @@ export default function ApplicationCard({ applications }) {
     console.log("role : ", role);
 
 
-    const [err, setErr] = useState("");
-    const [success, setSuccess] = useState("");
+    //const [err, toast.error] = useState("");
+    //const [success, toast.success] = useState("");
     const [app, setApp] = useState();
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [resume, setResume] = useState(null);
@@ -37,17 +39,17 @@ export default function ApplicationCard({ applications }) {
                 },
             });
             if (!response.ok) {
-                setErr("Error occured while deleting Job Application");
+                toast.error("Error occured while deleting Job Application");
                 console.log("Error occured while deleting Job Application");
                 return;
             }
             const data = await response.text();
             console.log("data ", data);
-            setSuccess(data);
+            toast.success(data);
             navigate(0);
 
         } catch (error) {
-            setErr("Error occured while connecting to server.");
+            toast.error("Error occured while connecting to server.");
             console.log("Error occured while connecting to server.")
             return;
         }
@@ -61,7 +63,7 @@ export default function ApplicationCard({ applications }) {
     const handleEdit = async ({ app }) => {
 
         if (!resume) {
-            setErr("Please upload a resume.");
+            toast.error("Please upload a resume.");
             return;
         }
 
@@ -69,18 +71,18 @@ export default function ApplicationCard({ applications }) {
 
         const allowedTypes = [
             "application/pdf",
-            "application/msword", // .doc
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+            //"application/msword", // .doc
+            //"application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
         ];
 
         if (!allowedTypes.includes(resume.type)) {
-            setErr("Only PDF, DOC or DOCX files are allowed");
+            toast.error("Only PDF files are allowed");
             setResume(null);
             return;
         }
 
         if (resume.size > maxSize) {
-            setErr("File size must be less than 10MB.");
+            toast.error("File size must be less than 10MB.");
             setResume(null);
             return;
         }
@@ -103,12 +105,12 @@ export default function ApplicationCard({ applications }) {
             if (!response.ok) {
                 const errmsg = await response.text();
                 console.log("err ", errmsg);
-                setErr(errmsg);
+                toast.error(errmsg);
                 return;
             }
 
             const data = await response.text();
-            setSuccess(data);
+            toast.success(data);
             console.log("data : ", data);
 
             setResume(null);
@@ -118,7 +120,7 @@ export default function ApplicationCard({ applications }) {
             }, 1000);
 
         } catch (e) {
-            setErr("Error occured while updating your Job Application");
+            toast.error("Error occured while updating your Job Application");
             return;
         }
     };
@@ -142,8 +144,6 @@ export default function ApplicationCard({ applications }) {
 
     //approve/reject a application
     const handleStatusChange = async ({ app, newStatus }) => {
-        setSuccess("");
-        setErr("");
 
         try {
             const response = await fetch("http://localhost:8080/api/applyJobs/updateBYEmp", {
@@ -159,14 +159,14 @@ export default function ApplicationCard({ applications }) {
             });
             const data = await response.text();
             if (!response.ok) {
-                setErr(data);
+                toast.error(data);
                 return;
             }
-            setSuccess(data);
+            toast.success(data);
             setConfirmationAppId(null);
             navigate(0);
         } catch {
-            setErr("An error occurred while updating the job application");
+            toast.error("An error occurred while updating the job application");
             setConfirmationAppId(null);
         }
     };
@@ -206,7 +206,7 @@ export default function ApplicationCard({ applications }) {
 
 
                     <p><strong>Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
-                    {(role === 'seeker') || (role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
+                    {(role === 'seeker' || role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
                     {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked(app.id)}>Edit</button>}
 
                     {/*approve/reject button*/}
@@ -230,12 +230,10 @@ export default function ApplicationCard({ applications }) {
                                 }}>Reject</button>
                             </>
                         )
-                    )}
+                    )
+                    }
 
-
-
-
-                    {editAppId === app.id && (
+                    {role === 'seeker' && editAppId === app.id && (
                         <>
                             <input type='file' onChange={handleFileChange} />
                             <SubmitButton msg="Update" onClick={() => handleEdit({ app })} />
@@ -243,8 +241,6 @@ export default function ApplicationCard({ applications }) {
                     )}
 
 
-                    {err && <p style={{ color: "red", marginTop: "10px" }}>{err}</p>}
-                    {success && <p style={{ color: "green", marginTop: "10px" }}>{success}</p>}
                 </div>
             ))}
         </div>

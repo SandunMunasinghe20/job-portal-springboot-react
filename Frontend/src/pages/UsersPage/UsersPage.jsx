@@ -3,14 +3,14 @@ import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { fetchFromBackend } from "../../services/Service";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './UsersPage.css';
-
+import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 
 export default function UsersPage() {
 
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState("");
+  //const [error, toast.error] = useState("");
 
 
   const role = localStorage.getItem("role");
@@ -44,7 +44,7 @@ export default function UsersPage() {
       const data = await response.json();
 
       if (data.error) {
-        setError(data.error);
+        toast.error(data.error);
       } else {
         setUsers(data);
         console.log("data is: ", data);

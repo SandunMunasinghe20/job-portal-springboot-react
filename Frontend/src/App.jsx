@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
@@ -36,7 +38,7 @@ function App() {
         <Route path='/applyJob' element={<ApplyJob />} />
         <Route path='/home' element={<Home />} />
         <Route path='/myJobs' element={<JobsByCompany />} />
-        <Route path='reset-password' element={<ChangePass />} />
+        <Route path='/reset-password' element={<ChangePass />} />
         <Route path='/myApplications' element={<Applications />} />
         <Route path='/myprof' element={<MyProfile />} />
         <Route path='/adminHome' element={<AdminHome />} />
@@ -44,6 +46,19 @@ function App() {
         <Route path='/receivedApplications' element={<EmpReceivedApplications />} />
 
       </Routes>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </BrowserRouter>
   );
 }

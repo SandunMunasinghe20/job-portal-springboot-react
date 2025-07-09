@@ -25,6 +25,13 @@ public class JobApplicationController {
         
         return jobApplicationService.applyJob(jobId,resume,authentication);
     }
+    @PreAuthorize("hasRole('seeker')")
+    @GetMapping("/myApplications")
+    public ResponseEntity<?> viewMyApplications(Authentication authentication) {
+        System.out.println("Seeker view applications");
+        return jobApplicationService.getAllJobApplications(authentication);
+    }
+
 
     @PreAuthorize("hasRole('employer')")
     @GetMapping("/view")

@@ -3,14 +3,15 @@ import { fetchFromBackend } from "../../services/Service";
 import './UpdateProfileComp.css'
 import SubmitButton from "../submitButton/submitbutton";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function UpdateProfileComp({ }) {
 
   const navigate = useNavigate();
 
   //set Error
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  //const [err, toast.error] = useState("");
+  //const [success, toast.success] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Seeker states
@@ -46,8 +47,7 @@ export default function UpdateProfileComp({ }) {
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
-      setErr("");
-      setSuccess("")
+
       try {
         const url =
           role === "seeker"
@@ -57,7 +57,7 @@ export default function UpdateProfileComp({ }) {
         const response = await fetchFromBackend({ url, method: "GET" });
 
         if (!response.ok) {
-          setErr("Failed to fetch profile");
+          toast.error("Failed to fetch profile");
           return;
         }
 
@@ -94,7 +94,7 @@ export default function UpdateProfileComp({ }) {
         }
 
       } catch (error) {
-        setErr("Unable to load profile data.");
+        toast.error("Unable to load profile data.");
       } finally {
         setLoading(false);
       }
@@ -146,7 +146,7 @@ export default function UpdateProfileComp({ }) {
     }
 
 
-    setErr("");
+
 
     try {
       const response = await fetchFromBackend({ url, method: 'PUT', body })
@@ -154,15 +154,15 @@ export default function UpdateProfileComp({ }) {
       console.log("url is ; ", url);
 
       if (!response.ok) {
-        setErr("Error occured while connecting with server.");
+        toast.error("Error occured while connecting with server.");
       } else {
-        setSuccess("Profile updated successfully!");
+        toast.success("Profile updated successfully!");
         navigate('/profile');
       }
 
 
     } catch (error) {
-      setErr("Failed to load your data to update");
+      toast.error("Failed to load your data to update");
     }
   };
   if (loading) return <p>Loading profile...</p>;
@@ -171,7 +171,6 @@ export default function UpdateProfileComp({ }) {
     <div className="update-profile">
       <h2>Update Profile</h2>
 
-      {err && <p style={{ color: "red" }}>{err}</p>}
 
       {localStorage.getItem("role") === "seeker" ? (
         <>
@@ -252,7 +251,6 @@ export default function UpdateProfileComp({ }) {
 
       <SubmitButton msg="Update Profile" onClick={handlesubmit} />
       <SubmitButton msg="Cancel" onClick={() => navigate('/profile')} />
-      {success && <p style={{ color: "green" }}>{success}</p>}
 
 
     </div>

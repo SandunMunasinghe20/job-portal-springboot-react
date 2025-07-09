@@ -4,14 +4,14 @@ import { data, useSearchParams } from "react-router-dom";
 import './ViewProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-
+import { toast } from "react-toastify";
 
 export default function ViewProfilePage() {
 
   const navigate = useNavigate();
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  //const [error, toast.error] = useState("");
+  //const [success, toast.success] = useState("");
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,8 +20,7 @@ export default function ViewProfilePage() {
 
   const fetchProfile = async () => {
 
-    setError("");
-    setSuccess("");
+
     setLoading(true);
 
     try {
@@ -42,7 +41,7 @@ export default function ViewProfilePage() {
       });
 
       if (!response.ok) {
-        setError("Failed to fetch profile");
+        toast.error("Failed to fetch profile");
         return;
       }
 
@@ -53,7 +52,7 @@ export default function ViewProfilePage() {
       console.log("data.role : ", data.role);
 
     } catch (err) {
-      setError("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -79,7 +78,6 @@ export default function ViewProfilePage() {
             </div>
           </div>
 
-          {success && <div className="viewprofilepage-success">{success}</div>}
         </div>
       </div>
     </>

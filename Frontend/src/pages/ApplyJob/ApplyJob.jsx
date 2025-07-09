@@ -3,6 +3,7 @@ import SubmitButton from "../../components/submitButton/submitbutton";
 import "./applyjob.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
+import { toast } from "react-toastify";
 
 export default function ApplyJob() {
 
@@ -10,8 +11,8 @@ export default function ApplyJob() {
     const jobId = searchParams.get("id");
     const token = localStorage.getItem("auth-token");
 
-    const [success, setSuccess] = useState("");
-    const [err, setErr] = useState("");
+    //const [success, setSuccess] = useState("");
+    //const [err, setErr] = useState("");
     const [jobData, setJobData] = useState("");
     const [resume, setResume] = useState(null);
 
@@ -22,8 +23,8 @@ export default function ApplyJob() {
     useEffect(() => {
 
         const fetchJobDetails = async () => {
-            setErr("");
-            setSuccess("");
+            //setErr("");
+            //setSuccess("");
             try {
                 const response = await fetch(`http://localhost:8080/api/jobs/findById/${jobId}`, {
                     method: 'GET',
@@ -32,7 +33,7 @@ export default function ApplyJob() {
                     },
                 });
                 if (!response.ok) {
-                    setErr("Failed to load Job Details");
+                    toast.error("Failed to load Job Details");
                     return;
                 }
                 const data = await response.json();
@@ -40,7 +41,7 @@ export default function ApplyJob() {
                 setJobData(data);
 
             } catch (e) {
-                setErr("Unable to connect with the server.");
+                toast.error("Unable to connect with the server.");
                 return;
             }
         };
@@ -52,12 +53,12 @@ export default function ApplyJob() {
     }, [jobId, token]);
 
     const handlesubmit = async () => {
-        setErr("");
-        setSuccess("");
+        //setErr("");
+        //setSuccess("");
         console.log("token when applying to job: ", token);
 
         if (!resume) {
-            setErr("Please upload a resume.");
+            toast.error("Please upload a resume.");
             return;
         }
 
@@ -70,13 +71,13 @@ export default function ApplyJob() {
         ];
 
         if (!allowedTypes.includes(resume.type)) {
-            setErr("Only PDF, DOC or DOCX files are allowed");
+            toast.error("Only PDF, DOC or DOCX files are allowed");
             setResume(null);
             return;
         }
 
         if (resume.size > maxSize) {
-            setErr("File size must be less than 10MB.");
+            toast.error("File size must be less than 10MB.");
             setResume(null);
             return;
         }
@@ -98,7 +99,7 @@ export default function ApplyJob() {
             if (!response.ok) {
                 const errmsg = await response.text();
                 console.log("err ", errmsg);
-                setErr(errmsg);
+                toast.error(errmsg);
 
                 setTimeout(() => {
                     navigate('/jobs');
@@ -107,7 +108,7 @@ export default function ApplyJob() {
                 return;
             }
             const data = await response.text();
-            setSuccess(data);
+            toast.success(data);
             console.log("data : ", data);
             setTimeout(() => {
                 navigate('/myApplications');
@@ -115,7 +116,7 @@ export default function ApplyJob() {
 
 
         } catch (e) {
-            setErr("Error occured while applying to job");
+            toast.error("Error occured while applying to job");
             return;
         }
     };
@@ -139,8 +140,6 @@ export default function ApplyJob() {
 
                 <input type="file" onChange={handleFileChange} />
                 <SubmitButton msg="Apply" onClick={handlesubmit} />
-                {err && <p style={{ color: "red", marginTop: "10px" }}>{err}</p>}
-                {success && <p style={{ color: "green", marginTop: "10px" }}>{success}</p>}
 
             </div>
         </>

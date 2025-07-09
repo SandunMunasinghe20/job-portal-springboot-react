@@ -4,6 +4,8 @@ import SubmitButton from '../../components/submitButton/submitbutton';
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './PostJobs.css';
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 export default function PostJobs() {
 
@@ -16,8 +18,8 @@ export default function PostJobs() {
   const [jobType, setJobType] = useState("");
 
 
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  //const [err, toast.error] = useState("");
+  //const [success, toast.success] = useState("");
   const [posting, setPosting] = useState("");
 
   const [searchParams] = useSearchParams();
@@ -42,8 +44,7 @@ export default function PostJobs() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setErr("");
-    setSuccess("");
+
     setPosting("");
 
 
@@ -70,29 +71,29 @@ export default function PostJobs() {
       //no existing job id ,so this is an adding job
       if (!jobId) {
         if (!response.ok) {
-          setErr("Failed to add Job.Try again");
+          toast.error("Failed to add Job.Try again");
         }
 
         const data = await response.text();
         console.log("data ", data);
-        setSuccess(data);
+        toast.success(data);
         //navigate('/myJobs');
       } else {
         //updating job
         if (!response.ok) {
           const data = await response.text();
-          setErr(data);
+          toast.error(data);
         }
 
         const data = await response.text();
         console.log("data ", data);
-        setSuccess(data);
+        toast.success(data);
 
       }
       navigate('/myJobs');
 
     } catch (e) {
-      setErr("Failed to connect with backend.Try again");
+      toast.error("Failed to connect with backend.Try again");
     }
   }
 
@@ -106,7 +107,7 @@ export default function PostJobs() {
       });
 
       if (!res.ok) {
-        setErr("Error occured while fetching Job Data");
+        toast.error("Error occured while fetching Job Data");
         return;
       }
       const jobData = await res.json();
@@ -172,8 +173,6 @@ export default function PostJobs() {
         />
 
         <br />
-        {err && <p style={{ color: "red" }}>{err}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
         {posting && <p>{posting}</p>}
 
         {/*edit or update button */}

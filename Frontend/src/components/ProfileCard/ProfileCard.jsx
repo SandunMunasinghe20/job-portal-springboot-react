@@ -2,6 +2,8 @@ import React from "react";
 import PdfViewer from '../../components/PdfViewer';
 import './ProfilCard.css';
 
+
+
 export default function ProfileCard({ profile, roletoget }) {
 
 

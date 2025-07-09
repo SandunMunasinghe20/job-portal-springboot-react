@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import './Jobs.css';
+import { toast } from "react-toastify";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
-  const [error, setError] = useState("");
+  //const [error, toast.error] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -15,11 +16,11 @@ export default function Jobs() {
   const token = localStorage.getItem("auth-token");
 
   const fetchJobs = async () => {
-    setError("");
+
     setLoading(true);
 
     if (!token) {
-      setError("Please login first.");
+      toast.error("Please login first.");
       setLoading(false);
       return;
     }
@@ -34,7 +35,7 @@ export default function Jobs() {
       });
 
       if (!response.ok) {
-        setError("Failed to fetch jobs");
+        toast.error("Failed to fetch jobs");
         setLoading(false);
         return;
       }
@@ -43,7 +44,7 @@ export default function Jobs() {
       setJobs(data);
       console.log("data ", data);
     } catch (err) {
-      setError("Error occurred while fetching jobs");
+      toast.error("Error occurred while fetching jobs");
     } finally {
       setLoading(false);
     }
@@ -58,7 +59,6 @@ export default function Jobs() {
     <>
       <NavBar role={role} />
 
-      {error && <div className="jl-err-message">{error}</div>}
 
       {loading ? (
         <div className="jl-loading-spinner">
