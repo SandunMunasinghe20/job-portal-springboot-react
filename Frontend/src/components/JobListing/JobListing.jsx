@@ -9,6 +9,8 @@ export default function JobListing() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
+    const [expandedJobId, setExpandedJobId] = useState(null);
+
     const [jobToDelete, setJobToDelete] = useState(null);
 
     const navigate = useNavigate();
@@ -32,6 +34,10 @@ export default function JobListing() {
         setJobToDelete(null);
         setModalOpen(false);
     };
+
+    const toggleExpand = (id) => {
+        setExpandedJobId((prev) => (prev === id ? null : id));
+    }
 
     const handleSubmit = async () => {
         toast.dismiss();
@@ -114,9 +120,10 @@ export default function JobListing() {
 
     return (
         <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
-            <div className="jl-header">
-                <h1 className="jl-title">Job Board</h1>
-                <p className="jl-subtitle">
+
+            <div className="available-jobs">
+                <h1 className="flex justify-center items-center co text-blue-600">Job Board</h1>
+                <p className="text-center py-4">
                     Discover exceptional career opportunities tailored for you
                 </p>
                 <div className="jl-stats">
@@ -139,6 +146,7 @@ export default function JobListing() {
                 </div>
             </div>
 
+
             {!loading && jobs.length > 0 && (
                 <div className="jl-filter-bar">
                     <input
@@ -152,80 +160,97 @@ export default function JobListing() {
             )}
 
             {loading ? (
-                <div className="jl-loading-spinner">
-                    <div className="jl-spinner"></div>
-                </div>
+                <div className="jl-spinner">Loading...</div>
             ) : (
-                <div className="jl-jobs-grid">
+                <div className="text-white">
                     {filteredJobs.length > 0 ? (
                         filteredJobs.map((job, index) => (
 
-                            <div key={index} className="bg-white rounded-2xl shadow-md p-6 mb-6">
-                                <div className="jl-job-header">
-                                    <h3 className="jl-job-title">{job.jobTitle}</h3>
-                                    <div className="jl-job-badge">Featured</div>
+                            <div key={index} className="bg-black rounded-2xl shadow-md p-6 mb-6">
+
+                                <div className=" flex justify-between items-center w-full">
+                                    <h3 className="text-4xl">{job.jobTitle}</h3>
+                                    <div className="text-green-600 m-1">{job.days}</div>
+                                    <div>{job.skillsRequired}</div>
                                 </div>
 
-                                <p className="jl-job-description">{job.jobDescription}</p>
+                                <div className="flex justify-between">
+                                    <ul className="flex space-x-6 text-gray-700">
+                                        <li className="flex items-center space-x-1">
+                                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                                <path d="M9 17v-6h6v6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3.5l1-1h2l1 1H17a2 2 0 012 2v12a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span>{job.jobType}</span>
+                                        </li>
+                                        <li className="flex items-center space-x-1">
+                                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                                                <circle cx="12" cy="9" r="2.5" />
+                                            </svg>
+                                            <span>{job.location}</span>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                                <div className="jl-job-details">
-                                    <div className="jl-job-detail-item">
-                                        <div className="jl-job-detail-icon company"></div>
-                                        <span className="jl-job-detail-label">Company:</span>
-                                        <span className="jl-job-detail-value jl-company-name">
+
+                                <div className=" text-right">
+                                    Rs. {job.salary?.toLocaleString()}
+                                </div>
+
+                                <button
+                                    className="text-blue-600 text-sm underline"
+                                    onClick={() => toggleExpand(job.id)}
+                                >
+                                    {expandedJobId === job.id ? "Hide Details" : "Show Details"}
+                                </button>
+
+                                {expandedJobId === job.id && (
+                                    <>
+                                        <p>
                                             {job.companyName || "Confidential"}
-                                        </span>
-                                    </div>
-                                    <div className="jl-job-detail-item">
-                                        <div className="jl-job-detail-icon"></div>
-                                        <span className="jl-job-detail-label">Location:</span>
-                                        <span className="jl-job-detail-value">{job.location}</span>
-                                    </div>
-                                    <div className="jl-job-detail-item">
-                                        <div className="jl-job-detail-icon salary"></div>
-                                        <span className="jl-job-detail-label">Salary:</span>
-                                        <span className="jl-job-detail-value jl-salary-value">
-                                            Rs. {job.salary?.toLocaleString()}
-                                        </span>
-                                    </div>
-                                    <div className="jl-job-detail-item">
-                                        <div className="jl-job-detail-icon job-type"></div>
-                                        <span className="jl-job-detail-label">Job Type:</span>
-                                        <span className="jl-job-detail-value jl-company-name">
-                                            {job.jobType}
-                                        </span>
-                                    </div>
-                                </div>
+                                        </p>
+                                        <p className="jl-job-description">{job.jobDescription}</p>
+                                    </>
+                                )}
 
-                                <div className="jl-job-actions">
-                                    {role === "seeker" && (
-                                        <button
-                                            className="jl-btn jl-btn-primary"
-                                            onClick={() => navigate(`/applyJob?id=${job.id}`)}
-                                        >
-                                            Apply Now
-                                        </button>
-                                    )}
-                                    {role === "seeker" && (
-                                        <button className="jl-btn jl-btn-primary">Save Job</button>
-                                    )}
-                                    {role === "employer" && (
-                                        <button
-                                            className="jl-btn jl-btn-secondary"
-                                            onClick={() => navigate(`/updateJobs?id=${job.id}`)}
-                                        >
-                                            Edit
-                                        </button>
-                                    )}
-                                    {(role === "employer" || role === "admin") && (
-                                        <button
-                                            className="jl-btn jl-btn-secondary"
-                                            onClick={() => openDeleteModal(job)}
-                                        >
-                                            Delete
-                                        </button>
-                                    )}
-                                </div>
+
+
+                                {/*Apply or save Job*/}
+
+                                {expandedJobId === job.id
+                                    &&
+                                    <div className="flex justify-center ">
+                                        <div className="flex justify-between items-center w-60 pt-4">
+                                            {role === "seeker" && (
+                                                <button
+
+                                                    onClick={() => navigate(`/applyJob?id=${job.id}`)}
+                                                >
+                                                    Apply Now
+                                                </button>
+                                            )}
+                                            {role === "seeker" && (
+                                                <button >Save Job</button>
+                                            )}
+                                            {role === "employer" && (
+                                                <button
+                                                    className="jl-btn jl-btn-secondary"
+                                                    onClick={() => navigate(`/updateJobs?id=${job.id}`)}
+                                                >
+                                                    Edit
+                                                </button>
+                                            )}
+                                            {(role === "employer" || role === "admin") && (
+                                                <button
+                                                    className="jl-btn jl-btn-secondary"
+                                                    onClick={() => openDeleteModal(job)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                }
 
                                 {modalOpen && jobToDelete?.id === job.id && (
                                     <ConfirmModal

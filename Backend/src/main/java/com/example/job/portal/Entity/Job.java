@@ -2,6 +2,9 @@ package com.example.job.portal.Entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Table(name = "jobs")
 public class Job {
@@ -19,16 +22,37 @@ public class Job {
     private String location;
     private String jobType;
     private int salary;
-    private String companyName;
+    //private String companyName;
+    private String skillsRequired;
 
-    public String getCompanyName() {
+    public Date getPostedDate() {
+        return postedDate;
+    }
+
+    public void setPostedDate(Date postedDate) {
+        this.postedDate = postedDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date postedDate;
+
+
+    public String getSkillsRequired() {
+        return skillsRequired;
+    }
+
+    public void setSkillsRequired(String skillsRequired) {
+        this.skillsRequired = skillsRequired;
+    }
+
+   /* public String getCompanyName() {
         return companyName;
     }
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-
+*/
     public Long getId() {
         return id;
     }

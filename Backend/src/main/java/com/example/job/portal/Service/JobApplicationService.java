@@ -119,7 +119,14 @@ public class JobApplicationService {
             if (optApp.isPresent()) {
                 Job job = optApp.get();
                 jobApplicationDTO.setJobTitle(job.getJobTitle());
-                jobApplicationDTO.setCompanyName(job.getCompanyName());
+
+                //comp name
+                Optional<Employer> optionalEmployer = employerRepo.findById(job.getEmployerId());
+                if (optionalEmployer.isPresent()) {
+                    Employer employer = optionalEmployer.get();
+                    jobApplicationDTO.setCompanyName(employer.getCompanyName());
+                }
+
             }
 
             appliedJobs.add(jobApplicationDTO);
@@ -173,7 +180,13 @@ public class JobApplicationService {
                 System.out.println("job found");
                 Job j = job.get();
 
-                dto.setCompanyName(j.getCompanyName());
+                //comp name
+                Optional<Employer> optionalEmployer = employerRepo.findById(j.getEmployerId());
+                if (optionalEmployer.isPresent()) {
+                    Employer employer = optionalEmployer.get();
+                    dto.setCompanyName(employer.getCompanyName());
+                }
+
                 dto.setJobTitle(j.getJobTitle());
                 count++;
             }
@@ -226,7 +239,12 @@ public class JobApplicationService {
                     .filter(job -> job.getId().equals(jobApplication.getJobId()))
                     .findFirst()
                     .ifPresent(job -> {
-                        dto.setCompanyName(job.getCompanyName());
+                        //comp name
+                        Optional<Employer> optEmployer = employerRepo.findById(job.getEmployerId());
+                        if (optEmployer.isPresent()) {
+                            Employer emp = optEmployer.get();
+                            dto.setCompanyName(emp.getCompanyName());
+                        }
                         dto.setJobTitle(job.getJobTitle());
                     });
 

@@ -1,5 +1,8 @@
 package com.example.job.portal.DTO;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class JobDTO {
 
     private Long id;
@@ -9,6 +12,25 @@ public class JobDTO {
     private String jobType;
     private int salary;
     private Long employerId;
+    private String skillsRequired;
+    private String days;
+
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public String getSkillsRequired() {
+        return skillsRequired;
+    }
+
+    public void setSkillsRequired(String skillsRequired) {
+        this.skillsRequired = skillsRequired;
+    }
 
     private String companyName;
 

@@ -16,6 +16,7 @@ export default function PostJobs() {
   const [location, setLocation] = useState('');
   const [salary, setSalary] = useState('');
   const [jobType, setJobType] = useState("");
+  const [skillsRequired, setSkillsRequired] = useState("");
 
 
   //const [err, toast.error] = useState("");
@@ -65,9 +66,11 @@ export default function PostJobs() {
         },
         body: JSON.stringify({
           jobTitle, jobDescription, location, salary: Number(salary),
-          jobType, id: jobId
+          jobType, id: jobId, skillsRequired: skillsRequired
         }),
+
       });
+      console.log("data sending ", body);
       //no existing job id ,so this is an adding job
       if (!jobId) {
         if (!response.ok) {
@@ -75,7 +78,7 @@ export default function PostJobs() {
         }
 
         const data = await response.text();
-        console.log("data ", data);
+        console.log("dresp received", data);
         toast.success(data);
         //navigate('/myJobs');
       } else {
@@ -117,6 +120,7 @@ export default function PostJobs() {
       setLocation(jobData.location);
       setSalary(jobData.salary);
       setJobType(jobData.jobType);
+      setSkillsRequired(jobData.skillsRequired);
 
     }
   }
@@ -169,6 +173,13 @@ export default function PostJobs() {
           placeholder="Job Type"
           value={jobType}
           onChange={setJobType}
+          required
+        />
+        <GetInput
+          type="text"
+          placeholder="Skills Required"
+          value={skillsRequired}
+          onChange={setSkillsRequired}
           required
         />
 

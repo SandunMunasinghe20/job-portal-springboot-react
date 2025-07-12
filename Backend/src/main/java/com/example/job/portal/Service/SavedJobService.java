@@ -2,9 +2,11 @@ package com.example.job.portal.Service;
 
 import com.example.job.portal.DTO.JobDTO;
 import com.example.job.portal.DTO.SavedJobDTO;
+import com.example.job.portal.Entity.Employer;
 import com.example.job.portal.Entity.Job;
 import com.example.job.portal.Entity.SavedJob;
 import com.example.job.portal.Entity.Seeker;
+import com.example.job.portal.Repository.EmployerRepo;
 import com.example.job.portal.Repository.JobRepo;
 import com.example.job.portal.Repository.SavedJobRepo;
 import com.example.job.portal.Repository.SeekerRepo;
@@ -28,6 +30,8 @@ public class SavedJobService {
     private SeekerRepo seekerRepo;
     @Autowired
     private JobRepo jobRepo;
+    @Autowired
+    private EmployerRepo employerRepo;
 
 
     public ResponseEntity<String> saveJob(SavedJobDTO savedJobDTO) {
@@ -83,7 +87,13 @@ public class SavedJobService {
             jobDTO.setLocation(job.getLocation());
             jobDTO.setJobType(job.getJobType());
             jobDTO.setSalary(job.getSalary());
-            jobDTO.setCompanyName(job.getCompanyName());
+
+            //comp name
+            Optional<Employer> optionalEmployer = employerRepo.findById(job.getEmployerId());
+            if (optionalEmployer.isPresent()) {
+                Employer employer = optionalEmployer.get();
+                jobDTO.setCompanyName(employer.getCompanyName());
+            }
 
             jobDTOList.add(jobDTO);
 

@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.example.job.portal.Repository.JobRepo;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 public class JobService {
@@ -36,7 +37,38 @@ public class JobService {
             dto.setJobDescription(job.getJobDescription());
             dto.setJobType(job.getJobType());
             dto.setSalary(job.getSalary());
-            dto.setCompanyName(job.getCompanyName());
+            dto.setSkillsRequired(job.getSkillsRequired());
+
+            //comp Name
+            Long compId = job.getEmployerId();
+            Optional<Employer> optEmployer = employerRepo.findById(compId);
+            if (optEmployer.isPresent()) {
+                Employer employer = optEmployer.get();
+                dto.setCompanyName(employer.getCompanyName());
+                System.out.println("company is : "+employer.getCompanyName());
+
+
+                //calc date
+                Date postedDate = job.getPostedDate();
+                String daysAgoStr = "Unknown";
+
+                if (postedDate != null) {
+                    LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate today = LocalDate.now();
+                    long daysBetween = ChronoUnit.DAYS.between(postDate, today);
+
+                    if (daysBetween == 0) {
+                        daysAgoStr = "Today";
+                    } else if (daysBetween == 1) {
+                        daysAgoStr = "1 day ago";
+                    } else {
+                        daysAgoStr = daysBetween + " days ago";
+                    }
+
+                    dto.setDays(daysAgoStr);
+
+                }
+            }
             dto.setLocation(job.getLocation());
 
             jobDTOs.add(dto);
@@ -56,9 +88,40 @@ public class JobService {
             dto.setJobType(job.getJobType());
             dto.setLocation(job.getLocation());
             dto.setSalary(job.getSalary());
-            dto.setCompanyName(job.getCompanyName());
-            System.out.println("company is : "+job.getCompanyName());
-            return ResponseEntity.ok(dto);
+            dto.setSkillsRequired(job.getSkillsRequired());
+
+            //comp Name
+            Long compId = job.getEmployerId();
+            Optional<Employer> optEmployer = employerRepo.findById(compId);
+            if (optEmployer.isPresent()) {
+                Employer employer = optEmployer.get();
+                dto.setCompanyName(employer.getCompanyName());
+                System.out.println("company is : "+employer.getCompanyName());
+
+
+                //calc date
+                Date postedDate = job.getPostedDate();
+                String daysAgoStr = "Unknown";
+
+                if (postedDate != null) {
+                    LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate today = LocalDate.now();
+                    long daysBetween = ChronoUnit.DAYS.between(postDate, today);
+
+                    if (daysBetween == 0) {
+                        daysAgoStr = "Today";
+                    } else if (daysBetween == 1) {
+                        daysAgoStr = "1 day ago";
+                    } else {
+                        daysAgoStr = daysBetween + " days ago";
+                    }
+
+                    dto.setDays(daysAgoStr);
+
+
+                }
+                return ResponseEntity.ok(dto);
+            }
         }
         //not found a job
         return ResponseEntity.notFound().build();
@@ -84,13 +147,12 @@ public class JobService {
             dto.setJobDescription(job.getJobDescription());
             dto.setJobType(job.getJobType());
             dto.setSalary(job.getSalary());
-            dto.setCompanyName(job.getCompanyName());
+            dto.setCompanyName(employer.getCompanyName());
             dto.setLocation(job.getLocation());
             jobDTOs.add(dto);
         }
             return ResponseEntity.ok(jobDTOs);
         }
-
 
 
     public ResponseEntity<String> addJob(JobDTO jobDTO, Authentication authentication) {
@@ -110,9 +172,11 @@ public class JobService {
             job.setJobTitle(jobDTO.getJobTitle());
             job.setJobDescription(jobDTO.getJobDescription());
             job.setJobType(jobDTO.getJobType());
+            job.setSkillsRequired(jobDTO.getSkillsRequired());
             job.setSalary(jobDTO.getSalary());
             job.setLocation(jobDTO.getLocation());
-            job.setCompanyName(employer.getCompanyName());
+            job.setEmployerId(employer.getId());
+            job.setPostedDate(new Date());
 
             //set employer
             job.setEmployerId(employer.getId());
@@ -139,11 +203,14 @@ public class JobService {
             Job job = jobOpt.get();
         try {
 
+
             job.setJobTitle(jobDTO.getJobTitle());
             job.setJobDescription(jobDTO.getJobDescription());
             job.setJobType(jobDTO.getJobType());
+            job.setSkillsRequired(jobDTO.getSkillsRequired());
             job.setSalary(jobDTO.getSalary());
             job.setLocation(jobDTO.getLocation());
+
             jobRepo.save(job);
             return ResponseEntity.ok("Job updated successfully");
         }catch (Exception e) {

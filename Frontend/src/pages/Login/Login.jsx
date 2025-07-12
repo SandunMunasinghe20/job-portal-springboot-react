@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [viewPass, setViewPass] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     const role = localStorage.getItem("role");
@@ -27,20 +28,20 @@ function Login() {
         }
     }, []);
 
-
-    useEffect(() => {
-        if (isDarkMode) {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-    }, [isDarkMode]);
-
-    const toggleTheme = () => {
-        const newTheme = !isDarkMode;
-        setIsDarkMode(newTheme);
-        localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    };
+    /*
+        useEffect(() => {
+            if (isDarkMode) {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        }, [isDarkMode]);
+    
+        const toggleTheme = () => {
+            const newTheme = !isDarkMode;
+            setIsDarkMode(newTheme);
+            localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+        };*/
 
     const handlesubmit = async (e) => {
         e.preventDefault();
@@ -115,7 +116,7 @@ function Login() {
                                         <GetInput
                                             type="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={setEmail}
                                             // className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
                                             placeholder="Enter your email"
                                             required
@@ -129,21 +130,54 @@ function Login() {
                                 </div>
                                 <div className="relative">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                                    <div className="relative">
-                                        <GetInput
-                                            type="password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            //className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                            placeholder="Enter your password"
-                                            required
-                                        />
-                                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        </div>
+                                    <div className='relative'>
+                                        <GetInput type={viewPass ? "text" : "password"} placeholder="Create a password" value={password} onChange={setPassword} />
+                                        <button
+                                            type="button"
+                                            onClick={() => setViewPass(!viewPass)}
+                                            className="absolute right-2 top-2/4 -translate-y-2/4 text-gray-500 hover:text-gray-700"
+                                            tabIndex={-1} // so it doesn't focus on tab
+                                        >
+                                            {viewPass ? (
+                                                // Eye open icon
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-5 w-5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    />
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                    />
+                                                </svg>
+                                            ) : (
+                                                // Eye closed icon
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-5 w-5"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.965 9.965 0 012.223-3.364M6.22 6.22l11.314 11.314M9.88 9.88a3 3 0 104.243 4.243"
+                                                    />
+                                                </svg>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
