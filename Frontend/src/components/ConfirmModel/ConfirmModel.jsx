@@ -1,4 +1,4 @@
-import './ConfirmModel.css'
+//import './ConfirmModel.css'
 
 export default function ConfirmModal({ message, onConfirm, onCancel }) {
     return (

@@ -1,4 +1,4 @@
-import './MyProfile.css';
+//import './MyProfile.css';
 import NavBar from './HomeComp/NavBar/NavBar';
 import { useEffect, useState } from 'react';
 

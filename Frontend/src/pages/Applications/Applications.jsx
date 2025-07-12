@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ApplicationCard from "../../components/ApplicationCard/ApplicationCard";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
-import './Applications.css';
+//import './Applications.css';
 import { toast } from "react-toastify";
 
 

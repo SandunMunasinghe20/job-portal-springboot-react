@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { fetchFromBackend } from "../../services/Service";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-import './UsersPage.css';
+//import './UsersPage.css';
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 

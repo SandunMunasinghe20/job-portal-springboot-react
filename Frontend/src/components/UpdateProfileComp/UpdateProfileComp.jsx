@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchFromBackend } from "../../services/Service";
-import './UpdateProfileComp.css'
+//import './UpdateProfileComp.css'
 import SubmitButton from "../submitButton/submitbutton";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

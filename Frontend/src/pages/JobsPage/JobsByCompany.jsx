@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-import './Jobs.css';
+//import './Jobs.css';
 import { toast } from "react-toastify";
 
 

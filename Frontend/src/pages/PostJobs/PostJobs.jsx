@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import GetInput from '../../components/GetInput/GetInput';
 import SubmitButton from '../../components/submitButton/submitbutton';
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-import './PostJobs.css';
+//import './PostJobs.css';
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 

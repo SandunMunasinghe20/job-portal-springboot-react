@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../ConfirmModel/ConfirmModel";
 import { toast } from "react-toastify";
-import "./JobListing.css";
+//import "./JobListing.css";
 
 export default function JobListing() {
     const [jobs, setJobs] = useState([]);
@@ -113,7 +113,7 @@ export default function JobListing() {
     });
 
     return (
-        <div className="jl-container">
+        <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
             <div className="jl-header">
                 <h1 className="jl-title">Job Board</h1>
                 <p className="jl-subtitle">
@@ -159,7 +159,8 @@ export default function JobListing() {
                 <div className="jl-jobs-grid">
                     {filteredJobs.length > 0 ? (
                         filteredJobs.map((job, index) => (
-                            <div key={index} className="jl-job-card">
+
+                            <div key={index} className="bg-white rounded-2xl shadow-md p-6 mb-6">
                                 <div className="jl-job-header">
                                     <h3 className="jl-job-title">{job.jobTitle}</h3>
                                     <div className="jl-job-badge">Featured</div>

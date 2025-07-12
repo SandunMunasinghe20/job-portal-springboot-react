@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import SubmitButton from "../../components/submitButton/submitbutton";
-import "./applyjob.css";
+//import "./applyjob.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";

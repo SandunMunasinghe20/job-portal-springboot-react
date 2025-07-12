@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import './ApplicationCard.css';
+//import './ApplicationCard.css';
 import SubmitButton from '../submitButton/submitbutton';
 import { fetchFromBackend } from '../../services/Service';
 import { toast } from "react-toastify";

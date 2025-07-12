@@ -4,7 +4,7 @@ import SubmitButton from '../../components/submitButton/submitbutton';
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import './ForgotPassword.css'
+//import './ForgotPassword.css'
 import { toast } from "react-toastify";
 
 

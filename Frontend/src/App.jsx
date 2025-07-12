@@ -18,8 +18,8 @@ import Home from './pages/Home/Home';
 import MyProfile from './components/MyProfile';
 import AdminHome from './pages/Admin/AdminHome';
 import AdminViewSeekers from './pages/Admin/AdminViewSeekers';
-import EmpReceivedApplications from './pages/Applications/EmpReceivedApplications';
-import './App.css'
+import Test from './pages/Test';
+//import './App.css'
 
 function App() {
   return (
@@ -43,8 +43,7 @@ function App() {
         <Route path='/myprof' element={<MyProfile />} />
         <Route path='/adminHome' element={<AdminHome />} />
         <Route path='/seekers' element={<AdminViewSeekers />} />
-        <Route path='/receivedApplications' element={<EmpReceivedApplications />} />
-
+        <Route path='/test' element={<Test />} />
       </Routes>
 
       <ToastContainer

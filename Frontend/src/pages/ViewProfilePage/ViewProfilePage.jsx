@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ViewProfile from "../../components/ViewProfile/ViewProfile";
 import { data, useSearchParams } from "react-router-dom";
-import './ViewProfilePage.css';
+//import './ViewProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";

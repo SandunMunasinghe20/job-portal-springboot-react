@@ -1,5 +1,5 @@
 import React from 'react';
-import './ViewProfile.css';
+//import './ViewProfile.css';
 
 export default function ViewProfile({ profile }) {
   if (!profile) return <div className="profile-error">Unable to see profile. Try again later..</div>;
