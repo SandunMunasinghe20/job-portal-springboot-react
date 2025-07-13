@@ -179,6 +179,7 @@ export default function JobListing() {
                         <span className="text-sm text-gray-600">Positions Filled</span>
                     </div>
                     */}
+
                 </div>
             )}
 
