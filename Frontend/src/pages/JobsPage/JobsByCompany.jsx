@@ -4,6 +4,7 @@ import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 //import './Jobs.css';
 import { toast } from "react-toastify";
+import Spinner from '../../components/Spinner/Spinner';
 
 
 export default function JobsByCompany() {
@@ -57,11 +58,9 @@ export default function JobsByCompany() {
 
 
       {loading ? (
-        <div className="jl-loading-spinner">
-          <div className="jl-spinner"></div>
-        </div>
+        <Spinner />
       ) : (
-        <JobListing jobs={jobs} navigate={navigate} />
+        <JobListing />
       )}
     </>
   );

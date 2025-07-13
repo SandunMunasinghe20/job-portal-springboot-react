@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../ConfirmModel/ConfirmModel";
 import { toast } from "react-toastify";
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import SubmitButton from "../submitButton/submitbutton";
+import Spinner from "../Spinner/Spinner";
 //import "./JobListing.css";
 
 export default function JobListing() {
@@ -104,79 +107,132 @@ export default function JobListing() {
         handleSubmit();
     }, []);
 
-    const filteredJobs = jobs.filter((job) => {
-        const title = job.jobTitle ?? "";
-        const desc = job.jobDescription ?? "";
-        const loc = job.location ?? "";
-        const company = job.companyName ?? "";
+    const filteredJobs = React.useMemo(() => {
+        return jobs.filter(job => {
+            const search = searchTerm.toLowerCase();
+            return (
+                (job.jobTitle ?? "").toLowerCase().includes(search) ||
+                (job.jobDescription ?? "").toLowerCase().includes(search) ||
+                (job.location ?? "").toLowerCase().includes(search) ||
+                (job.companyName ?? "").toLowerCase().includes(search) ||
+                (job.jobType ?? "").toLowerCase().includes(search) ||
+                (job.skillsRequired ?? "").toLowerCase().includes(search)
+            );
+        });
+    }, [jobs, searchTerm]);
 
-        return (
-            title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            loc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            company.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    });
 
     return (
         <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
 
-            <div className="available-jobs">
-                <h1 className="flex justify-center items-center co text-blue-600">Job Board</h1>
-                <p className="text-center py-4">
-                    Discover exceptional career opportunities tailored for you
-                </p>
-                <div className="jl-stats">
-                    <div className="jl-stat-item">
-                        <span className="jl-stat-number">{jobs.length}</span>
-                        <span>Total Jobs</span>
+            <div>
+                <h1 className="text-center text-3xl items-center font-bold text-blue-600 mb-2">{(role === 'seeker' || role === 'admin') ? "Job Board" : "Your Jobs"}</h1>
+                {role === 'seeker'
+                    &&
+                    <p className="text-center text-gray-500 mb-6">
+                        Discover exceptional career opportunities tailored for you
+                    </p>}
+
+                {/*only for seekers and admins*/}
+                {(role === 'seeker' || role === 'admin')
+                    &&
+                    <div className="grid grid-cols-3 gap-4 text-center">
+
+                        <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+                            <span className="block text-2xl font-semibold text-blue-600">{jobs.length}</span>
+                            <span className="text-sm text-gray-600">Total Jobs</span>
+                        </div>
+
+                        <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+                            <span className="block text-2xl font-semibold text-blue-600">
+                                {new Set(jobs.map((job) => job.companyName)).size}
+                            </span>
+                            <span className="text-sm text-gray-600">Companies</span>
+                        </div>
+
+                        <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+                            <span className="block text-2xl font-semibold text-blue-600">
+                                {new Set(jobs.map((job) => job.location)).size}
+                            </span>
+                            <span className="text-sm text-gray-600">Locations</span>
+                        </div>
+
                     </div>
-                    <div className="jl-stat-item">
-                        <span className="jl-stat-number">
-                            {new Set(jobs.map((job) => job.companyName)).size}
-                        </span>
-                        <span>Companies</span>
-                    </div>
-                    <div className="jl-stat-item">
-                        <span className="jl-stat-number">
-                            {new Set(jobs.map((job) => job.location)).size}
-                        </span>
-                        <span>Locations</span>
-                    </div>
-                </div>
+                }
             </div>
 
+            {/*for emp*/}
+            {role === 'employer' && (
+                <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-4 bg-green-50 rounded-xl shadow-sm">
+                        <span className="block text-2xl font-semibold text-green-600">{jobs.length}</span>
+                        <span className="text-sm text-gray-600">Your Posted Jobs</span>
+                    </div>
 
+                    {/* <div className="p-4 bg-green-50 rounded-xl shadow-sm">
+                        <span className="block text-2xl font-semibold text-green-600">{totalApplicants}</span>
+                        <span className="text-sm text-gray-600">Total Applicants</span>
+                    </div>
+
+                    <div className="p-4 bg-green-50 rounded-xl shadow-sm">
+                        <span className="block text-2xl font-semibold text-green-600">{positionsFilled}</span>
+                        <span className="text-sm text-gray-600">Positions Filled</span>
+                    </div>
+                    */}
+                </div>
+            )}
+
+
+            {/*search bar*/}
             {!loading && jobs.length > 0 && (
-                <div className="jl-filter-bar">
+                <div className="mt-6 mb-4">
                     <input
                         type="text"
                         placeholder="Search jobs by title, company, location..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="jl-search-input"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-gray-800"
                     />
                 </div>
             )}
 
             {loading ? (
-                <div className="jl-spinner">Loading...</div>
+                <Spinner />
             ) : (
-                <div className="text-white">
+                <div className="text-black">
                     {filteredJobs.length > 0 ? (
                         filteredJobs.map((job, index) => (
 
-                            <div key={index} className="bg-black rounded-2xl shadow-md p-6 mb-6">
+                            <div key={job.id} className="bg-white rounded-2xl shadow-lg p-6 mb-6">
 
                                 <div className=" flex justify-between items-center w-full">
-                                    <h3 className="text-4xl">{job.jobTitle}</h3>
-                                    <div className="text-green-600 m-1">{job.days}</div>
-                                    <div>{job.skillsRequired}</div>
+                                    <h3 className="text-3xl font-semibold break-words my-4">{job.jobTitle}</h3>
+
+                                    {/*Job posted days + icon*/}
+                                    <div className="text-green-600 m-1"><div className="flex items-center space-x-1">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 text-gray-500"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                            />
+                                        </svg>
+                                        <span>{job.days}</span>
+                                    </div>
+                                    </div>
+
                                 </div>
 
                                 <div className="flex justify-between">
-                                    <ul className="flex space-x-6 text-gray-700">
-                                        <li className="flex items-center space-x-1">
+                                    <ul className="flex space-x-6 text-gray-700 mt-2">
+                                        <li className="flex items-center space-x-1 ">
                                             <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                                 <path d="M9 17v-6h6v6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3.5l1-1h2l1 1H17a2 2 0 012 2v12a2 2 0 01-2 2z" />
                                             </svg>
@@ -193,26 +249,42 @@ export default function JobListing() {
                                 </div>
 
 
-                                <div className=" text-right">
+                                <div className="text-right text-gray-700 font-semibold mt-4 text-lg">
                                     Rs. {job.salary?.toLocaleString()}
                                 </div>
 
-                                <button
-                                    className="text-blue-600 text-sm underline"
-                                    onClick={() => toggleExpand(job.id)}
-                                >
-                                    {expandedJobId === job.id ? "Hide Details" : "Show Details"}
-                                </button>
-
+                                {/*job description*/}
                                 {expandedJobId === job.id && (
-                                    <>
-                                        <p>
+                                    <div className="gap-6 px-4 py-4">
+                                        <p className="my-4 text-left font-semibold text-gray-800">
                                             {job.companyName || "Confidential"}
                                         </p>
-                                        <p className="jl-job-description">{job.jobDescription}</p>
-                                    </>
+                                        <p className=" max-w-xl text-gray-700 leading-relaxed my-4 text-left break-words">{job.jobDescription}</p>
+                                    </div>
                                 )}
 
+
+                                {/*skills + hide/view button*/}
+                                <div className="flex justify-between items-center">
+                                    <div className="flex flex-wrap gap-2 ">
+                                        {(job.skillsRequired || "")
+                                            .split(',')
+                                            .map((skill, index) => (
+                                                <span
+                                                    key={index}
+                                                    className="bg-gray-200 text-gray-800 px-2 py-1 mx-1 my-2 rounded-full text-s "
+                                                >
+                                                    {skill.trim()}
+                                                </span>
+                                            ))}
+                                    </div>
+                                    <button
+                                        className="text-blue-600 text-sm underline"
+                                        onClick={() => toggleExpand(job.id)}
+                                    >
+                                        {expandedJobId === job.id ? <FiChevronDown className="text-3xl" /> : <FiChevronRight className="text-3xl" />}
+                                    </button>
+                                </div>
 
 
                                 {/*Apply or save Job*/}
@@ -222,31 +294,33 @@ export default function JobListing() {
                                     <div className="flex justify-center ">
                                         <div className="flex justify-between items-center w-60 pt-4">
                                             {role === "seeker" && (
-                                                <button
-
+                                                <SubmitButton
+                                                    msg="Apply Now"
                                                     onClick={() => navigate(`/applyJob?id=${job.id}`)}
-                                                >
-                                                    Apply Now
-                                                </button>
+                                                />
+
+
                                             )}
                                             {role === "seeker" && (
-                                                <button >Save Job</button>
+                                                <SubmitButton msg="Save Job" />
                                             )}
                                             {role === "employer" && (
-                                                <button
+                                                <SubmitButton
                                                     className="jl-btn jl-btn-secondary"
+                                                    msg="Edit"
                                                     onClick={() => navigate(`/updateJobs?id=${job.id}`)}
-                                                >
-                                                    Edit
-                                                </button>
+                                                />
+
+
                                             )}
                                             {(role === "employer" || role === "admin") && (
-                                                <button
+                                                <SubmitButton
                                                     className="jl-btn jl-btn-secondary"
+                                                    msg=" Delete"
                                                     onClick={() => openDeleteModal(job)}
-                                                >
-                                                    Delete
-                                                </button>
+                                                />
+
+
                                             )}
                                         </div>
                                     </div>

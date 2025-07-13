@@ -1,4 +1,4 @@
-//import './GetInput.css';
+
 export default function GetInput(props) {
   return (
     <input

@@ -5,6 +5,8 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 //import './PostJobs.css';
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import GetSelect from "../../components/GetInput/GetSelect";
+import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
 
 
 export default function PostJobs() {
@@ -46,6 +48,7 @@ export default function PostJobs() {
     e.preventDefault();
 
 
+
     setPosting("");
 
 
@@ -70,7 +73,7 @@ export default function PostJobs() {
         }),
 
       });
-      console.log("data sending ", body);
+
       //no existing job id ,so this is an adding job
       if (!jobId) {
         if (!response.ok) {
@@ -129,8 +132,9 @@ export default function PostJobs() {
   }, [jobId, token])
 
   return (
-    <><NavBar role={role} />
-      <div className="job-post-controller">
+    <>
+      <NavBar role={role} />
+      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg space-y-4">
         <GetInput
           type="text"
           placeholder="Job Title"
@@ -138,7 +142,6 @@ export default function PostJobs() {
           onChange={setJobTitle}
           required
         />
-        <br />
 
         <GetInput
           type="text"
@@ -147,7 +150,6 @@ export default function PostJobs() {
           onChange={setJobDescription}
           required
         />
-        <br />
         <GetInput
           type="text"
           placeholder="Location"
@@ -155,7 +157,6 @@ export default function PostJobs() {
           onChange={setLocation}
           required
         />
-        <br />
 
         <GetInput
           type="number"
@@ -164,29 +165,133 @@ export default function PostJobs() {
           onChange={setSalary}
           required
         />
-        <br />
 
-
-
-        <GetInput
-          type="text"
-          placeholder="Job Type"
+        <GetSelect
           value={jobType}
           onChange={setJobType}
+          placeholder="Select Job Type"
           required
+          options={[
+            "Full-time",
+            "Part-time",
+            "Contract",
+            "Internship",
+            "Temporary",
+            "Freelance",
+            "Remote",
+            "Hybrid"
+          ]}
         />
-        <GetInput
-          type="text"
-          placeholder="Skills Required"
+
+
+        <GetMultiSelect
           value={skillsRequired}
           onChange={setSkillsRequired}
           required
+          placeholder="Select Required Skills"
+          options={[
+            // Frontend
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "TypeScript",
+            "React",
+            "Vue.js",
+            "Angular",
+            "Tailwind CSS",
+            "Bootstrap",
+            "Next.js",
+            "SASS",
+
+            // Backend
+            "Node.js",
+            "Express.js",
+            "Java",
+            "Spring Boot",
+            "Python",
+            "Django",
+            "Flask",
+            "C#",
+            ".NET Core",
+            "PHP",
+            "Laravel",
+            "Ruby on Rails",
+
+            // Mobile Development
+            "Flutter",
+            "React Native",
+            "Kotlin",
+            "Swift",
+            "Android SDK",
+            "iOS Development",
+
+            // Databases
+            "MySQL",
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "SQLite",
+            "Firebase",
+
+            // DevOps & Tools
+            "Docker",
+            "Kubernetes",
+            "AWS",
+            "Azure",
+            "Google Cloud",
+            "Git",
+            "GitHub",
+            "CI/CD",
+            "Linux",
+            "Bash",
+            "Nginx",
+            "Jenkins",
+
+            // Testing
+            "JUnit",
+            "Selenium",
+            "Postman",
+            "Cypress",
+            "Jest",
+            "Mocha",
+
+            // ML
+            "NumPy",
+            "Pandas",
+            "TensorFlow",
+            "Keras",
+            "Scikit-learn",
+            "OpenCV",
+            "Matplotlib",
+            "PyTorch",
+
+            // Programming Languages
+            "C",
+            "C++",
+            "C#",
+            "Java",
+            "Python",
+            "Go",
+            "Rust",
+            "R",
+            "MATLAB",
+
+            // other
+            "Agile",
+            "Scrum",
+            "Problem Solving",
+            "Communication",
+            "Teamwork",
+            "Time Management",
+            "Project Management"
+          ]}
+
         />
 
-        <br />
-        {posting && <p>{posting}</p>}
 
-        {/*edit or update button */}
+        {posting && <p className="text-center text-sm text-red-600 font-medium">{posting}</p>}
+
+        {/*post or update button */}
         {!jobId && <SubmitButton msg="Post Job" onClick={handleSubmit} />}
         {jobId && <SubmitButton msg="Update Job" onClick={handleSubmit} />}
 

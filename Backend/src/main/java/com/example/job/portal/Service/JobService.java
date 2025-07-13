@@ -45,33 +45,18 @@ public class JobService {
             if (optEmployer.isPresent()) {
                 Employer employer = optEmployer.get();
                 dto.setCompanyName(employer.getCompanyName());
-                System.out.println("company is : "+employer.getCompanyName());
-
+                System.out.println("company is : " + employer.getCompanyName());
 
                 //calc date
                 Date postedDate = job.getPostedDate();
-                String daysAgoStr = "Unknown";
+                dto.setDays(calculateDays(postedDate));
 
-                if (postedDate != null) {
-                    LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    LocalDate today = LocalDate.now();
-                    long daysBetween = ChronoUnit.DAYS.between(postDate, today);
-
-                    if (daysBetween == 0) {
-                        daysAgoStr = "Today";
-                    } else if (daysBetween == 1) {
-                        daysAgoStr = "1 day ago";
-                    } else {
-                        daysAgoStr = daysBetween + " days ago";
-                    }
-
-                    dto.setDays(daysAgoStr);
-
-                }
             }
+
             dto.setLocation(job.getLocation());
 
             jobDTOs.add(dto);
+
         }
         return ResponseEntity.ok(jobDTOs);
     }
@@ -101,25 +86,8 @@ public class JobService {
 
                 //calc date
                 Date postedDate = job.getPostedDate();
-                String daysAgoStr = "Unknown";
+                dto.setDays(calculateDays(postedDate));
 
-                if (postedDate != null) {
-                    LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    LocalDate today = LocalDate.now();
-                    long daysBetween = ChronoUnit.DAYS.between(postDate, today);
-
-                    if (daysBetween == 0) {
-                        daysAgoStr = "Today";
-                    } else if (daysBetween == 1) {
-                        daysAgoStr = "1 day ago";
-                    } else {
-                        daysAgoStr = daysBetween + " days ago";
-                    }
-
-                    dto.setDays(daysAgoStr);
-
-
-                }
                 return ResponseEntity.ok(dto);
             }
         }
@@ -149,6 +117,11 @@ public class JobService {
             dto.setSalary(job.getSalary());
             dto.setCompanyName(employer.getCompanyName());
             dto.setLocation(job.getLocation());
+            
+            //calc days
+            Date postedDate = job.getPostedDate();
+            dto.setDays(calculateDays(postedDate));
+
             jobDTOs.add(dto);
         }
             return ResponseEntity.ok(jobDTOs);
@@ -202,8 +175,8 @@ public class JobService {
             }
             Job job = jobOpt.get();
         try {
-
-
+            
+            
             job.setJobTitle(jobDTO.getJobTitle());
             job.setJobDescription(jobDTO.getJobDescription());
             job.setJobType(jobDTO.getJobType());
@@ -233,4 +206,21 @@ public class JobService {
         }
     }
 
+public String calculateDays(Date postedDate) {
+    if (postedDate != null) {
+        LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate today = LocalDate.now();
+        long daysBetween = ChronoUnit.DAYS.between(postDate, today);
+
+        if (daysBetween == 0) {
+            return "Today";
+        } else if (daysBetween == 1) {
+            return "1 day ago";
+        } else {
+            return daysBetween + " days ago";
+        }
+    }
+    return "Unknown date";
 }
+}
+

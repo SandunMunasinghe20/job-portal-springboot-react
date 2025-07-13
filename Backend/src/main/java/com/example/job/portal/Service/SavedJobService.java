@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public class SavedJobService {
     private JobRepo jobRepo;
     @Autowired
     private EmployerRepo employerRepo;
+    @Autowired
+    private JobService jobService;
 
 
     public ResponseEntity<String> saveJob(SavedJobDTO savedJobDTO) {
@@ -94,6 +97,9 @@ public class SavedJobService {
                 Employer employer = optionalEmployer.get();
                 jobDTO.setCompanyName(employer.getCompanyName());
             }
+            //calc date
+            Date postedDate = job.getPostedDate();
+            jobDTO.setDays(jobService.calculateDays(postedDate));
 
             jobDTOList.add(jobDTO);
 
