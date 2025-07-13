@@ -4,7 +4,7 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
 //import './Applications.css';
 import { toast } from "react-toastify";
-
+import Spinner from '../../components/Spinner/Spinner';
 
 export default function Applications() {
     const [applications, setApplications] = useState([]);
@@ -57,10 +57,16 @@ export default function Applications() {
 
     return (
         <> <NavBar role={role} />
-            <div className="Applications-container">
+            <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
 
-                <h1>My Applications</h1>
-                {loading && <p>Loading applications...</p>}
+                <h1 className="text-3xl font-extrabold text-center text-blue-600 mb-8">
+                    My Applications
+                </h1>
+
+                {loading && (
+                    <Spinner />
+                )}
+
 
                 <ApplicationCard applications={applications} />
             </div>

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import SubmitButton from '../submitButton/submitbutton';
 import { fetchFromBackend } from '../../services/Service';
 import { toast } from "react-toastify";
+import ConfirmModal from '../ConfirmModel/ConfirmModel';
 
 
 export default function ApplicationCard({ applications }) {
@@ -17,13 +18,19 @@ export default function ApplicationCard({ applications }) {
 
     //const [err, toast.error] = useState("");
     //const [success, toast.success] = useState("");
-    const [app, setApp] = useState();
-    const [isEditClicked, setIsEditClicked] = useState(false);
+
     const [resume, setResume] = useState(null);
     const [editAppId, setEditAppId] = useState(null);
 
-    const [confirmationAppId, setConfirmationAppId] = useState(null);
-    const [actionType, setActionType] = useState(""); // APPROVED/REJECTED
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [pendingApp, setPendingApp] = useState(null);
+    const [pendingActionType, setPendingActionType] = useState("");
+
+    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+    const [appToDelete, setAppToDelete] = useState(null);
+
+    const [showEditConfirmModal, setShowEditConfirmModal] = useState(false);
+    const [appToEdit, setAppToEdit] = useState(null);
 
 
     const navigate = useNavigate();
@@ -173,76 +180,181 @@ export default function ApplicationCard({ applications }) {
 
 
     return (
-        <div className='ApplicationCard-container'>
-            {applications.map((app, index) => (
-                <div key={index} className="application-item">
-                    <p><strong>Job Title:</strong> {app.jobTitle}</p>
-                    <p><strong>Company:</strong> {app.companyName}</p>
-                    <p>
-                        <strong>Resume:</strong>{' '}
-                        {app.resumeBase64 ? (
-                            <button onClick={() => openPdf(app.resumeBase64)}>View Resume</button>
+        <div className='bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto'>
 
-                        ) : (
-                            'No resume uploaded'
+            <div className='space-y-6'>
+                {applications.map((app, index) => (
+
+                    <div key={index} className="bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-300">
+
+                        <p className='text-gray-700'>
+                            <strong className='text-gray-900'>Job Title:</strong>
+                            {app.jobTitle}
+                        </p>
+                        <p className='text-gray-700'><strong className="text-gray-900">Company:</strong> {app.companyName}</p>
+                        <p className='text-gray-700'>
+                            <strong className="text-gray-900">Resume:</strong>{' '}
+
+                            {app.resumeBase64 ? (
+                                <button
+                                    onClick={() => openPdf(app.resumeBase64)}
+                                    className="text-blue-600 hover:text-blue-800 underline font-medium transition-all cursor-pointer"
+                                >
+                                    View Resume
+                                </button>
+
+
+                            ) : (
+                                'No resume uploaded'
+                            )}
+
+                        </p>
+
+                        {/*each status has diff colours*/}
+
+                        <div className='flex gap-1'>
+                            <p className="text-gray-700 font-medium">Status:</p>
+                            <p className={`font-semibold ${app.status === 'APPROVED' ? 'text-green-600' :
+                                app.status === 'REJECTED' ? 'text-red-600' :
+                                    'text-yellow-600'
+                                }`}>
+                                {app.status}
+                            </p>
+                        </div>
+
+
+
+                        <p className='text-gray-700'><strong className="text-gray-900">Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
+
+                        {/*edit/del button*/}
+                        <div className='flex items-center gap-x-4'>
+                            {(role === 'seeker' || role === 'employer')
+                                &&
+                                <SubmitButton
+                                    onClick={() => {
+                                        setAppToDelete(app);
+                                        setShowDeleteConfirmModal(true);
+                                    }}
+                                    msg="Delete"
+                                />
+                            }
+
+                            {role === 'seeker'
+                                &&
+                                <SubmitButton onClick={() => handleEditClicked(app.id)} msg="Edit" />}
+                        </div>
+
+
+                        {/*approve/reject button*/}
+                        {role === 'employer' && (
+                            <div className="flex gap-2">
+                                <button
+                                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                                    onClick={() => {
+                                        setPendingApp(app);
+                                        setPendingActionType("APPROVED");
+                                        setShowConfirmModal(true);
+                                    }}
+                                >
+                                    Approve
+                                </button>
+
+                                <button
+                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                    onClick={() => {
+                                        setPendingApp(app);
+                                        setPendingActionType("REJECTED");
+                                        setShowConfirmModal(true);
+                                    }}
+                                >
+                                    Reject
+                                </button>
+                            </div>
                         )}
 
-                    </p>
+
+                        {role === 'seeker' && editAppId === app.id && (
+                            <div className='mt-4 space-y-2'>
+                                <input
+                                    type='file'
+                                    onChange={handleFileChange}
+                                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                                />
+                                {/*update and cancel buttons*/}
+                                <div className="flex justify-center items-center gap-4">
+                                    <SubmitButton msg="Update" onClick={() => {
+                                        setAppToEdit(app);
+                                        setShowEditConfirmModal(true);
+                                    }} />
+
+                                    <button
+                                        onClick={() => {
+                                            setEditAppId(null);
+                                            setResume(null);
+                                        }}
+                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
 
-                    {(app.status === 'APPROVED')
-                        &&
-                        <p style={{ color: 'green' }}><strong>Status:</strong> {app.status}</p>
-                    }
-                    {(app.status == 'REJECTED')
-                        &&
-                        <p style={{ color: 'red' }}><strong>Status:</strong> {app.status}</p>
-                    }
-                    {(app.status == 'PENDING')
-                        &&
-                        <p><strong>Status:</strong> {app.status}</p>
-                    }
+                    </div>
+
+                ))}
+            </div>
+            {/*confirmation of actions */}
+            {showConfirmModal && (
+                <ConfirmModal
+                    message={`Are you sure you want to ${pendingActionType.toLowerCase()} this application?`}
+                    onConfirm={() => {
+                        handleStatusChange({ app: pendingApp, newStatus: pendingActionType });
+                        setShowConfirmModal(false);
+                        setPendingApp(null);
+                        setPendingActionType("");
+                    }}
+                    onCancel={() => {
+                        setShowConfirmModal(false);
+                        setPendingApp(null);
+                        setPendingActionType("");
+                    }}
+                />
+            )}
+
+            {showDeleteConfirmModal && (
+                <ConfirmModal
+                    message="Are you sure you want to delete this application?"
+                    onConfirm={() => {
+                        handleDelete({ app: appToDelete });
+                        setShowDeleteConfirmModal(false);
+                        setAppToDelete(null);
+                    }}
+                    onCancel={() => {
+                        setShowDeleteConfirmModal(false);
+                        setAppToDelete(null);
+                    }}
+                />
+            )}
+
+            {showEditConfirmModal && (
+                <ConfirmModal
+                    message="Are you sure you want to update this resume?"
+                    onConfirm={() => {
+                        handleEdit({ app: appToEdit });
+                        setShowEditConfirmModal(false);
+                        setAppToEdit(null);
+                    }}
+                    onCancel={() => {
+                        setShowEditConfirmModal(false);
+                        setAppToEdit(null);
+                    }}
+                />
+            )}
 
 
 
-                    <p><strong>Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
-                    {(role === 'seeker' || role === 'admin') && <button className='delete-button' onClick={() => { handleDelete({ app }) }}>Delete</button>}
-                    {role === 'seeker' && <button className='edit-button' onClick={() => handleEditClicked(app.id)}>Edit</button>}
-
-                    {/*approve/reject button*/}
-                    {role === 'employer' && (
-                        confirmationAppId === app.id ? (
-                            <>
-                                <p>Are you sure you want to {actionType.toLowerCase()} this application?</p>
-                                <button onClick={() => handleStatusChange({ app, newStatus: actionType })}>Yes</button>
-                                <button onClick={() => setConfirmationAppId(null)}>No</button>
-                            </>
-                        ) : (
-                            <>
-                                <button className='edit-button' onClick={() => {
-                                    setConfirmationAppId(app.id);
-                                    setActionType("APPROVED");
-                                }}>Approve</button>
-
-                                <button className='delete-button' style={{ marginLeft: '8px' }} onClick={() => {
-                                    setConfirmationAppId(app.id);
-                                    setActionType("REJECTED");
-                                }}>Reject</button>
-                            </>
-                        )
-                    )
-                    }
-
-                    {role === 'seeker' && editAppId === app.id && (
-                        <>
-                            <input type='file' onChange={handleFileChange} />
-                            <SubmitButton msg="Update" onClick={() => handleEdit({ app })} />
-                        </>
-                    )}
-
-
-                </div>
-            ))}
         </div>
     );
 }

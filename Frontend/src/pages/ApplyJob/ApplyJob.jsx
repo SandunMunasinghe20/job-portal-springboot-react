@@ -66,12 +66,12 @@ export default function ApplyJob() {
 
         const allowedTypes = [
             "application/pdf",
-            "application/msword", // .doc
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+            // "application/msword", // .doc
+            // "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
         ];
 
         if (!allowedTypes.includes(resume.type)) {
-            toast.error("Only PDF, DOC or DOCX files are allowed");
+            toast.error("Only PDF files are allowed");
             setResume(null);
             return;
         }
@@ -127,20 +127,27 @@ export default function ApplyJob() {
 
     return (
         <><NavBar role={role} />
-            <div className="apply-job-card">
+            <div className="min-h-screen bg-gray-50 p-6">
+                <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+                    <h2 className="text-3xl font-bold text-blue-600 mb-4 text-center">{jobData.title}</h2>
 
-                <h2>{jobData.title}</h2>
+                    <p className="text-gray-700 mb-4 text-justify">{jobData.description}</p>
+                    <img src={jobData.image} alt="Company Logo" className="w-32 h-32 object-contain mx-auto mb-6" />
 
-                <p>{jobData.description}</p>
-                <img src={jobData.image} alt="Company Logo" className="company-image" />
-                <p>Job Title: {jobData.jobTitle}</p>
-                <p>Company: {jobData.companyName}</p>
-                <p>Salary: {jobData.salary}</p>
-                <p>Location: {jobData.location}</p>
+                    <div className="space-y-2 mb-6 text-gray-800">
+                        <p><span className="font-semibold">Job Title:</span> {jobData.jobTitle}</p>
+                        <p><span className="font-semibold">Company:</span> {jobData.companyName}</p>
+                        <p><span className="font-semibold">Salary:</span> Rs. {jobData.salary}</p>
+                        <p><span className="font-semibold">Location:</span> {jobData.location}</p>
+                    </div>
 
-                <input type="file" onChange={handleFileChange} />
-                <SubmitButton msg="Apply" onClick={handlesubmit} />
-
+                    <input
+                        type="file"
+                        onChange={handleFileChange}
+                        className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                    />
+                    <SubmitButton msg="Apply" onClick={handlesubmit} />
+                </div>
             </div>
         </>
     );
