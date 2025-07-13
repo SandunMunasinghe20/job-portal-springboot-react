@@ -4,6 +4,8 @@ import { fetchFromBackend } from "../../services/Service";
 import SubmitButton from "../submitButton/submitbutton";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import GetInput from "../GetInput/GetInput";
+
 
 export default function UpdateProfileComp({ }) {
 
@@ -168,93 +170,245 @@ export default function UpdateProfileComp({ }) {
   if (loading) return <p>Loading profile...</p>;
 
   return (
-    <div className="update-profile">
-      <h2>Update Profile</h2>
+    <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 sm:p-10 space-y-6">
+        <h2 className="text-2xl font-semibold text-blue-600 text-center mb-4">Update Profile</h2>
 
+        <form className="space-y-5">
+          {role === 'seeker' ? (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <GetInput
+                  placeholder="First Name"
+                  value={fname}
+                  onChange={setFname}
+                  required
+                />
+              </div>
 
-      {localStorage.getItem("role") === "seeker" ? (
-        <>
-          <label>First Name</label>
-          <input type="text" value={fname} onChange={(e) => setFname(e.target.value)} placeholder="First Name" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <GetInput
+                  placeholder="Last Name"
+                  value={lname}
+                  onChange={setLname}
+                />
+              </div>
 
-          <label>Last Name</label>
-          <input type="text" value={lname} onChange={(e) => setLname(e.target.value)} placeholder="Last Name" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                <GetInput
+                  placeholder="Location"
+                  value={location}
+                  onChange={setLocation}
+                />
+              </div>
 
-          <label>Location</label>
-          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
+                <GetInput
+                  placeholder="Skills"
+                  value={skills.join(',')}
+                  onChange={(val) => setSkills(val.split(','))}
+                />
+              </div>
 
-          <label>Skills (comma separated)</label>
-          <input type="text" value={skills} onChange={(e) => setSkills(e.target.value.split(","))} placeholder="Skills" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Current Job Title</label>
+                <GetInput
+                  placeholder="Current Job Title"
+                  value={currentJobTitle}
+                  onChange={setCurrentJobTitle}
+                />
+              </div>
 
-          <label>Current Job Title</label>
-          <input type="text" value={currentJobTitle} onChange={(e) => setCurrentJobTitle(e.target.value)} placeholder="Current Job Title" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Total Experience (Years)</label>
+                <GetInput
+                  type="number"
+                  placeholder="Total Experience"
+                  value={totalExperience}
+                  onChange={setTotalExperience}
+                />
+              </div>
 
-          <label>Total Experience (Years)</label>
-          <input type="number" value={totalExperience} onChange={(e) => setTotalExperience(e.target.value)} placeholder="Total Experience" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Resume URL</label>
+                <GetInput
+                  placeholder="Resume URL"
+                  value={resumeUrl}
+                  onChange={setResumeUrl}
+                />
+              </div>
 
-          <label>Resume URL</label>
-          <input type="text" value={resumeUrl} onChange={(e) => setResumeUrl(e.target.value)} placeholder="Resume URL" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Job Type Preference</label>
+                <GetInput
+                  placeholder="Job Type Preference"
+                  value={jobTypePreference}
+                  onChange={setJobTypePreference}
+                />
+              </div>
 
-          <label>Job Type Preference</label>
-          <input type="text" value={jobTypePreference} onChange={(e) => setJobTypePreference(e.target.value)} placeholder="Job Type Preference" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Industry</label>
+                <GetInput
+                  placeholder="Preferred Industry"
+                  value={preferredIndustry}
+                  onChange={setPreferredIndustry}
+                />
+              </div>
 
-          <label>Preferred Industry</label>
-          <input type="text" value={preferredIndustry} onChange={(e) => setPreferredIndustry(e.target.value)} placeholder="Preferred Industry" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Expected Salary</label>
+                <GetInput
+                  type="number"
+                  placeholder="Expected Salary"
+                  value={expectedSalary}
+                  onChange={setExpectedSalary}
+                />
+              </div>
 
-          <label>Expected Salary</label>
-          <input type="number" value={expectedSalary} onChange={(e) => setExpectedSalary(e.target.value)} placeholder="Expected Salary" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+                <GetInput
+                  placeholder="Availability"
+                  value={availability}
+                  onChange={setAvailability}
+                />
+              </div>
 
-          <label>Availability</label>
-          <input type="text" value={availability} onChange={(e) => setAvailability(e.target.value)} placeholder="Availability" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
+                <GetInput
+                  placeholder="Profile Picture URL"
+                  value={profilePictureUrl}
+                  onChange={setProfilePictureUrl}
+                />
+              </div>
 
-          <label>Profile Picture URL</label>
-          <input type="text" value={profilePictureUrl} onChange={(e) => setProfilePictureUrl(e.target.value)} placeholder="Profile Picture URL" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                <GetInput
+                  placeholder="Education"
+                  value={education}
+                  onChange={setEducation}
+                />
+              </div>
 
-          <label>Education</label>
-          <input type="text" value={education} onChange={(e) => setEducation(e.target.value)} placeholder="Education" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Work Experience</label>
+                <textarea
+                  value={workExperience}
+                  onChange={(e) => setWorkExperience(e.target.value)}
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                />
+              </div>
 
-          <label>Work Experience</label>
-          <textarea value={workExperience} onChange={(e) => setWorkExperience(e.target.value)} placeholder="Work Experience" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Certifications</label>
+                <textarea
+                  value={certifications}
+                  onChange={(e) => setCertifications(e.target.value)}
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                <GetInput
+                  placeholder="Company Name"
+                  value={companyName}
+                  onChange={setCompanyName}
+                />
+              </div>
 
-          <label>Certifications</label>
-          <textarea value={certifications} onChange={(e) => setCertifications(e.target.value)} placeholder="Certifications" />
-        </>
-      ) : (
-        <>
-          <label>Company Name</label>
-          <input type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="Company Name" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <GetInput
+                  placeholder="Address"
+                  value={address}
+                  onChange={setAddress}
+                />
+              </div>
 
-          <label>Address</label>
-          <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Registration Number</label>
+                <GetInput
+                  type="number"
+                  placeholder="Registration Number"
+                  value={registrationNumber}
+                  onChange={setRegistrationNumber}
+                />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                <GetInput
+                  placeholder="Industry"
+                  value={industry}
+                  onChange={setIndustry}
+                />
+              </div>
 
-          <label>Registration Number</label>
-          <input type="number" value={registrationNumber} onChange={(e) => setRegistrationNumber(e.target.value)} placeholder="Registration Number" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Company Size</label>
+                <GetInput
+                  placeholder="Company Size"
+                  value={companySize}
+                  onChange={setCompanySize}
+                />
+              </div>
 
-          <label>Industry</label>
-          <input type="text" value={industry} onChange={(e) => setIndustry(e.target.value)} placeholder="Industry" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                <GetInput
+                  placeholder="Website"
+                  value={website}
+                  onChange={setWebsite}
+                />
+              </div>
 
-          <label>Company Size</label>
-          <input type="text" value={companySize} onChange={(e) => setCompanySize(e.target.value)} placeholder="Company Size" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Logo URL</label>
+                <GetInput
+                  placeholder="Logo URL"
+                  value={logoUrl}
+                  onChange={setLogoUrl}
+                />
+              </div>
 
-          <label>Website</label>
-          <input type="text" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="Website" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Company Description</label>
+                <textarea
+                  value={companyDescription}
+                  onChange={(e) => setCompanyDescription(e.target.value)}
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                />
+              </div>
+            </>
+          )}
+        </form>
 
-          <label>Logo URL</label>
-          <input type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="Logo URL" />
-
-          <label>Company Description</label>
-          <textarea value={companyDescription} onChange={(e) => setCompanyDescription(e.target.value)} placeholder="Company Description" />
-        </>
-      )}
-
-
-      <SubmitButton msg="Update Profile" onClick={handlesubmit} />
-      <SubmitButton msg="Cancel" onClick={() => navigate('/profile')} />
-
-
+        <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4">
+          <SubmitButton
+            onClick={handlesubmit}
+            msg="Update Profile"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition w-full sm:w-auto"
+          />
+          <SubmitButton
+            onClick={() => navigate('/profile')}
+            msg="Cancel"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-md transition w-full sm:w-auto"
+          />
+        </div>
+      </div>
     </div>
   );
-
-
 }

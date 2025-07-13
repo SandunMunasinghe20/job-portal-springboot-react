@@ -170,11 +170,11 @@ export default function ApplicationCard({ applications }) {
                 return;
             }
             toast.success(data);
-            setConfirmationAppId(null);
+            setPendingApp(null);
             navigate(0);
         } catch {
             toast.error("An error occurred while updating the job application");
-            setConfirmationAppId(null);
+            setPendingApp(null);
         }
     };
 
@@ -228,7 +228,7 @@ export default function ApplicationCard({ applications }) {
 
                         {/*edit/del button*/}
                         <div className='flex items-center gap-x-4'>
-                            {(role === 'seeker' || role === 'employer')
+                            {(role === 'seeker')
                                 &&
                                 <SubmitButton
                                     onClick={() => {
@@ -245,32 +245,44 @@ export default function ApplicationCard({ applications }) {
                         </div>
 
 
-                        {/*approve/reject button*/}
-                        {role === 'employer' && (
-                            <div className="flex gap-2">
-                                <button
-                                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                        {/*approve/reject/del button for emp*/}
+                        <div className='flex items-center gap-x-4'>
+                            {(role === 'employer')
+                                &&
+                                <SubmitButton
                                     onClick={() => {
-                                        setPendingApp(app);
-                                        setPendingActionType("APPROVED");
-                                        setShowConfirmModal(true);
+                                        setAppToDelete(app);
+                                        setShowDeleteConfirmModal(true);
                                     }}
-                                >
-                                    Approve
-                                </button>
+                                    msg="Delete"
+                                />}
 
-                                <button
-                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    onClick={() => {
-                                        setPendingApp(app);
-                                        setPendingActionType("REJECTED");
-                                        setShowConfirmModal(true);
-                                    }}
-                                >
-                                    Reject
-                                </button>
-                            </div>
-                        )}
+                            {role === 'employer' && (
+                                <div className="flex gap-2">
+                                    <button
+                                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                                        onClick={() => {
+                                            setPendingApp(app);
+                                            setPendingActionType("APPROVED");
+                                            setShowConfirmModal(true);
+                                        }}
+                                    >
+                                        Approve
+                                    </button>
+
+                                    <button
+                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                        onClick={() => {
+                                            setPendingApp(app);
+                                            setPendingActionType("REJECTED");
+                                            setShowConfirmModal(true);
+                                        }}
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            )}
+                        </div>
 
 
                         {role === 'seeker' && editAppId === app.id && (

@@ -64,22 +64,16 @@ export default function ViewProfilePage() {
 
   return (
     <><NavBar role={role} />
-      <div className="viewprofilepage-container">
-        <div className="viewprofilepage-content">
-          <h1 className="viewprofilepage-title">Your Profile</h1>
+      <div className="bg-gray-50 min-h-screen px-4 py-8">
+
+        <h1 className="text-4xl font-semibold text-center text-blue-600 mb-8 ">Your Profile</h1>
 
 
-          <div className="viewprofile-card">
-            <ViewProfile profile={profile} />
 
-            {/*button inside the card */}
-            <div className="Edit-profile-button">
-              <button className="jl-btn jl-btn-primary" onClick={() => navigate('/updateProfile')}>Edit Profile</button>
-            </div>
-          </div>
+        <ViewProfile profile={profile} />
 
-        </div>
       </div>
+
     </>
   );
 }
