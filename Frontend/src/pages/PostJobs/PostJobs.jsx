@@ -206,9 +206,9 @@ export default function PostJobs() {
             // Backend
             "Node.js",
             "Express.js",
-            "Java",
+
             "Spring Boot",
-            "Python",
+
             "Django",
             "Flask",
             "C#",

@@ -19,7 +19,7 @@ public class SeekerDTO {
     private String location;
 
     // Professional data
-    private List<String> skills;
+    private String skills;
 
     private String currentJobTitle;
 
@@ -91,11 +91,11 @@ public class SeekerDTO {
         this.location = location;
     }
 
-    public List<String> getSkills() {
+    public String getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 

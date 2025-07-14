@@ -8,6 +8,12 @@ import { toast } from "react-toastify";
 import ConfirmModal from '../ConfirmModel/ConfirmModel';
 
 
+//import { MdMessage } from 'react-icons/md';
+import { FaRegEnvelope } from 'react-icons/fa';
+//import { HiOutlineChat } from 'react-icons/hi';
+//import { AiOutlineMessage } from 'react-icons/ai';
+
+
 export default function ApplicationCard({ applications }) {
 
     const role = localStorage.getItem("role");
@@ -183,139 +189,154 @@ export default function ApplicationCard({ applications }) {
         <div className='bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto'>
 
             <div className='space-y-6'>
-                {applications.map((app, index) => (
+                {applications.length === 0 ? (
+                    <p className="text-center text-gray-500 text-lg">No job applications available.</p>
+                ) : (
 
-                    <div key={index} className="bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-300">
+                    applications.map((app, index) => (
 
-                        <p className='text-gray-700'>
-                            <strong className='text-gray-900'>Job Title:</strong>
-                            {app.jobTitle}
-                        </p>
-                        <p className='text-gray-700'><strong className="text-gray-900">Company:</strong> {app.companyName}</p>
-                        <p className='text-gray-700'>
-                            <strong className="text-gray-900">Resume:</strong>{' '}
-
-                            {app.resumeBase64 ? (
-                                <button
-                                    onClick={() => openPdf(app.resumeBase64)}
-                                    className="text-blue-600 hover:text-blue-800 underline font-medium transition-all cursor-pointer"
-                                >
-                                    View Resume
-                                </button>
+                        <div key={index} className="bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-300">
 
 
-                            ) : (
-                                'No resume uploaded'
-                            )}
+                            <div className='flex justify-between items-center'>
+                                <p className='text-gray-700'>
+                                    <strong className='text-gray-900'>Job Title:</strong>
+                                    {app.jobTitle}
+                                </p>
+                                <div onClick={() => navigate('/msg')} className='cursor-pointer inline-block hover:text-blue-800 transition-colors duration-200'>
+                                    {/*msg icon*/}
+                                    <FaRegEnvelope size={24} color="#0d6efd" />
 
-                        </p>
-
-                        {/*each status has diff colours*/}
-
-                        <div className='flex gap-1'>
-                            <p className="text-gray-700 font-medium">Status:</p>
-                            <p className={`font-semibold ${app.status === 'APPROVED' ? 'text-green-600' :
-                                app.status === 'REJECTED' ? 'text-red-600' :
-                                    'text-yellow-600'
-                                }`}>
-                                {app.status}
-                            </p>
-                        </div>
-
-
-
-                        <p className='text-gray-700'><strong className="text-gray-900">Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
-
-                        {/*edit/del button*/}
-                        <div className='flex items-center gap-x-4'>
-                            {(role === 'seeker')
-                                &&
-                                <SubmitButton
-                                    onClick={() => {
-                                        setAppToDelete(app);
-                                        setShowDeleteConfirmModal(true);
-                                    }}
-                                    msg="Delete"
-                                />
-                            }
-
-                            {role === 'seeker'
-                                &&
-                                <SubmitButton onClick={() => handleEditClicked(app.id)} msg="Edit" />}
-                        </div>
-
-
-                        {/*approve/reject/del button for emp*/}
-                        <div className='flex items-center gap-x-4'>
-                            {(role === 'employer')
-                                &&
-                                <SubmitButton
-                                    onClick={() => {
-                                        setAppToDelete(app);
-                                        setShowDeleteConfirmModal(true);
-                                    }}
-                                    msg="Delete"
-                                />}
-
-                            {role === 'employer' && (
-                                <div className="flex gap-2">
-                                    <button
-                                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
-                                        onClick={() => {
-                                            setPendingApp(app);
-                                            setPendingActionType("APPROVED");
-                                            setShowConfirmModal(true);
-                                        }}
-                                    >
-                                        Approve
-                                    </button>
-
-                                    <button
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                        onClick={() => {
-                                            setPendingApp(app);
-                                            setPendingActionType("REJECTED");
-                                            setShowConfirmModal(true);
-                                        }}
-                                    >
-                                        Reject
-                                    </button>
                                 </div>
-                            )}
-                        </div>
 
-
-                        {role === 'seeker' && editAppId === app.id && (
-                            <div className='mt-4 space-y-2'>
-                                <input
-                                    type='file'
-                                    onChange={handleFileChange}
-                                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                                />
-                                {/*update and cancel buttons*/}
-                                <div className="flex justify-center items-center gap-4">
-                                    <SubmitButton msg="Update" onClick={() => {
-                                        setAppToEdit(app);
-                                        setShowEditConfirmModal(true);
-                                    }} />
-
-                                    <button
-                                        onClick={() => {
-                                            setEditAppId(null);
-                                            setResume(null);
-                                        }}
-                                        className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
                             </div>
-                        )}
+
+                            <p className='text-gray-700'><strong className="text-gray-900">Company:</strong> {app.companyName}</p>
+                            <p className='text-gray-700'>
+                                <strong className="text-gray-900">Resume:</strong>{' '}
+
+                                {app.resumeBase64 ? (
+                                    <button
+                                        onClick={() => openPdf(app.resumeBase64)}
+                                        className="text-blue-600 hover:text-blue-800 underline font-medium transition-all cursor-pointer"
+                                    >
+                                        View Resume
+                                    </button>
 
 
-                    </div>
+                                ) : (
+                                    'No resume uploaded'
+                                )}
 
-                ))}
+                            </p>
+
+                            {/*each status has diff colours*/}
+
+                            <div className='flex gap-1'>
+                                <p className="text-gray-700 font-medium">Status:</p>
+                                <p className={`font-semibold ${app.status === 'APPROVED' ? 'text-green-600' :
+                                    app.status === 'REJECTED' ? 'text-red-600' :
+                                        'text-yellow-600'
+                                    }`}>
+                                    {app.status}
+                                </p>
+                            </div>
+
+
+
+                            <p className='text-gray-700'><strong className="text-gray-900">Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
+
+                            {/*edit/del button*/}
+                            <div className='flex items-center gap-x-4'>
+                                {(role === 'seeker')
+                                    &&
+                                    <SubmitButton
+                                        onClick={() => {
+                                            setAppToDelete(app);
+                                            setShowDeleteConfirmModal(true);
+                                        }}
+                                        msg="Delete"
+                                    />
+                                }
+
+                                {role === 'seeker'
+                                    &&
+                                    <SubmitButton onClick={() => handleEditClicked(app.id)} msg="Edit" />}
+                            </div>
+
+
+                            {/*approve/reject/del button for emp*/}
+                            <div className='flex items-center gap-x-4'>
+                                {(role === 'employer')
+                                    &&
+                                    <SubmitButton
+                                        onClick={() => {
+                                            setAppToDelete(app);
+                                            setShowDeleteConfirmModal(true);
+                                        }}
+                                        msg="Delete"
+                                    />}
+
+                                {role === 'employer' && (
+                                    <div className="flex gap-2">
+                                        <button
+                                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                                            onClick={() => {
+                                                setPendingApp(app);
+                                                setPendingActionType("APPROVED");
+                                                setShowConfirmModal(true);
+                                            }}
+                                        >
+                                            Approve
+                                        </button>
+
+                                        <button
+                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                            onClick={() => {
+                                                setPendingApp(app);
+                                                setPendingActionType("REJECTED");
+                                                setShowConfirmModal(true);
+                                            }}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+
+                            {role === 'seeker' && editAppId === app.id && (
+                                <div className='mt-4 space-y-2'>
+                                    <input
+                                        type='file'
+                                        onChange={handleFileChange}
+                                        className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                                    />
+                                    {/*update and cancel buttons*/}
+                                    <div className="flex justify-center items-center gap-4">
+                                        <SubmitButton msg="Update" onClick={() => {
+                                            setAppToEdit(app);
+                                            setShowEditConfirmModal(true);
+                                        }} />
+
+                                        <button
+                                            onClick={() => {
+                                                setEditAppId(null);
+                                                setResume(null);
+                                            }}
+                                            className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+
+                        </div>
+
+                    ))
+                )}
             </div>
             {/*confirmation of actions */}
             {showConfirmModal && (

@@ -1,99 +1,126 @@
 import React from 'react';
-//import './ViewProfile.css';
 import SubmitButton from '../submitButton/submitbutton';
 import { useNavigate } from 'react-router-dom';
 
 export default function ViewProfile({ profile }) {
-
   const navigate = useNavigate();
 
-  if (!profile) return <div className="profile-error">Unable to see profile. Try again later..</div>;
+  if (!profile) {
+    return (
+      <div className="text-center text-red-600 font-medium py-10">
+        Unable to load profile. Try again later.
+      </div>
+    );
+  }
 
   const isSeeker = profile.role === 'seeker';
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 space-y-8 ">
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg space-y-8 mt-6">
 
-      <div className="flex items-center space-x-6 ">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 text-center sm:text-left">
         <img
           src={isSeeker ? profile.profilePictureUrl : profile.logoUrl}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-sm"
         />
-
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-800">{isSeeker ? `${profile.fname || ''} ${profile.lname || ''}`.trim() : profile.companyName}</h2>
-          {!isSeeker && <p className="text-gray-600 text-sm">{profile.email}</p>}
+        <div className="mt-4 sm:mt-0">
+          <h2 className="text-2xl font-bold text-gray-800">
+            {isSeeker
+              ? `${profile.fname || ''} ${profile.lname || ''}`.trim()
+              : profile.companyName}
+          </h2>
+          {!isSeeker && (
+            <p className="text-gray-500 text-sm mt-1">{profile.email}</p>
+          )}
         </div>
       </div>
 
-      <div className="grid gap-4 text-gray-700">
+      {/* Details */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-700 text-sm">
         {isSeeker ? (
           <>
-            <p><strong>Current Job Title:</strong> {profile.currentJobTitle || 'N/A'}</p>
-            <p><strong>Total Experience:</strong> {profile.totalExperience ?? 'N/A'}</p>
-            <p><strong>Expected Salary:</strong> {profile.expectedSalary ?? 'N/A'}</p>
-            <p><strong>Availability:</strong> {profile.availability || 'N/A'}</p>
-            <p><strong>Job Type Preference:</strong> {profile.jobTypePreference || 'N/A'}</p>
-            <p><strong>Preferred Industry:</strong> {profile.preferredIndustry || 'N/A'}</p>
-            <p><strong>Location:</strong> {profile.location || 'N/A'}</p>
-            <p><strong>Skills:</strong> {profile.skills ? profile.skills.join(', ') : 'N/A'}</p>
-            <p><strong>Education:</strong> {profile.education || 'N/A'}</p>
-            <p><strong>Work Experience:</strong> {profile.workExperience || 'N/A'}</p>
-            <p><strong>Certifications:</strong> {profile.certifications || 'N/A'}</p>
+            <Detail label="Current Job Title" value={profile.currentJobTitle} />
+            <Detail label="Total Experience" value={profile.totalExperience} />
+            <Detail label="Expected Salary" value={profile.expectedSalary} />
+            <Detail label="Availability" value={profile.availability} />
+            <Detail label="Job Type Preference" value={profile.jobTypePreference} />
+            <Detail label="Preferred Industry" value={profile.preferredIndustry} />
+            <Detail label="Location" value={profile.location} />
+            <Detail
+              label="Skills"
+              value={typeof profile.skills === 'string'
+                ? profile.skills.split(',').map(s => s.trim()).join(', ')
+                : (Array.isArray(profile.skills) ? profile.skills.join(', ') : '')}
+            />
+            <Detail label="Education" value={profile.education} />
+            <Detail label="Work Experience" value={profile.workExperience} />
+            <Detail label="Certifications" value={profile.certifications} />
 
-            {/* resume*/}
-            {profile.resumeBase64 ? (
-              <div className="flex items-center space-x-4">
-                <a
-                  href={`data:application/pdf;base64,${profile.resumeBase64}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  View Resume
-                </a>
-                <a
-                  href={`data:application/pdf;base64,${profile.resumeBase64}`}
-                  download="resume.pdf"
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  Download PDF
-                </a>
-              </div>
-            ) : (
-              <div className='flex items-center space-x-1'>
-                <strong>Resume: </strong>
-                <p>N/A</p>
-              </div>
-
-            )}
-
+            <div className="sm:col-span-2">
+              <span className="font-semibold text-gray-900 mr-1">Resume:</span>
+              {profile.resumeBase64 ? (
+                <span className="space-x-4">
+                  <a
+                    href={`data:application/pdf;base64,${profile.resumeBase64}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    View
+                  </a>
+                  <a
+                    href={`data:application/pdf;base64,${profile.resumeBase64}`}
+                    download="resume.pdf"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    Download
+                  </a>
+                </span>
+              ) : (
+                <span className="italic text-gray-400">Not Provided</span>
+              )}
+            </div>
           </>
         ) : (
-
           <>
-            {/*employer*/}
-            <p><strong>Company Description:</strong> {profile.companyDescription}</p>
-            <p><strong>Address:</strong> {profile.address}</p>
-
-            <p><strong>Registration Number:</strong> {profile.registrationNumber}</p>
-            <p><strong>Industry:</strong> {profile.industry}</p>
-            <p><strong>Company Size:</strong> {profile.companySize}</p>
-            <p>
-              <strong>Website:</strong>{' '}
-              <a href={profile.website} className="profile-link" target="_blank" rel="noopener noreferrer">
+            <Detail label="Company Description" value={profile.companyDescription} />
+            <Detail label="Address" value={profile.address} />
+            <Detail label="Registration Number" value={profile.registrationNumber} />
+            <Detail label="Industry" value={profile.industry} />
+            <Detail label="Company Size" value={profile.companySize} />
+            <div className="sm:col-span-2">
+              <span className="font-semibold text-gray-900 mr-1">Website:</span>
+              <a
+                href={profile.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline hover:text-blue-800"
+              >
                 {profile.website}
               </a>
-            </p>
-
+            </div>
           </>
         )}
       </div>
 
-      <SubmitButton onClick={() => navigate('/updateProfile')} msg="Edit Profile" />
-
-
+      {/* Button */}
+      <div className="text-center">
+        <SubmitButton
+          onClick={() => navigate('/updateProfile')}
+          msg="Edit Profile"
+        />
+      </div>
     </div>
+  );
+}
+
+function Detail({ label, value }) {
+  return (
+    <p>
+      <span className="font-semibold text-gray-900">{label}:</span>{' '}
+      {value ? value : <span className="italic text-gray-400">Not Provided</span>}
+    </p>
   );
 }

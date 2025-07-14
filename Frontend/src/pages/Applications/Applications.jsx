@@ -60,7 +60,16 @@ export default function Applications() {
             <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
 
                 <h1 className="text-3xl font-extrabold text-center text-blue-600 mb-8">
-                    My Applications
+                    {role === 'seeker' ? (
+                        "My Applications"
+                    ) : role === 'employer' ? (
+                        "Received Applications"
+                    ) : role === 'admin' ? (
+                        "All Applications"
+                    ) : (
+                        "Applications"
+                    )}
+
                 </h1>
 
                 {loading && (

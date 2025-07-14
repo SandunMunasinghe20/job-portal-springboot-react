@@ -5,7 +5,7 @@ import SubmitButton from "../submitButton/submitbutton";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import GetInput from "../GetInput/GetInput";
-
+import GetMultiSelect from '../../components/GetInput/GetMultiSelect';
 
 export default function UpdateProfileComp({ }) {
 
@@ -21,7 +21,7 @@ export default function UpdateProfileComp({ }) {
   const [lname, setLname] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState("");
   const [totalExperience, setTotalExperience] = useState(0);
   const [resumeUrl, setResumeUrl] = useState("");
@@ -71,7 +71,7 @@ export default function UpdateProfileComp({ }) {
           setLname(data.lname || "");
           setPhone(data.phone || "");
           setLocation(data.location || "");
-          setSkills(data.skills || []);
+          setSkills(data.skills || "");
           setCurrentJobTitle(data.currentJobTitle || "");
           setTotalExperience(data.totalExperience || 0);
           setResumeUrl(data.resumeUrl || "");
@@ -205,14 +205,109 @@ export default function UpdateProfileComp({ }) {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
-                <GetInput
-                  placeholder="Skills"
-                  value={skills.join(',')}
-                  onChange={(val) => setSkills(val.split(','))}
-                />
-              </div>
+
+              <GetMultiSelect
+                value={skills}
+                onChange={setSkills}
+                required
+                placeholder="Select Your Skills"
+                options={[
+                  // Frontend
+                  "HTML",
+                  "CSS",
+                  "JavaScript",
+                  "TypeScript",
+                  "React",
+                  "Vue.js",
+                  "Angular",
+                  "Tailwind CSS",
+                  "Bootstrap",
+                  "Next.js",
+                  "SASS",
+
+                  // Backend
+                  "Node.js",
+                  "Express.js",
+                  "Java",
+                  "Spring Boot",
+
+                  "Django",
+                  "Flask",
+                  "C#",
+                  ".NET Core",
+                  "PHP",
+                  "Laravel",
+                  "Ruby on Rails",
+
+                  // Mobile Development
+                  "Flutter",
+                  "React Native",
+                  "Kotlin",
+                  "Swift",
+                  "Android SDK",
+                  "iOS Development",
+
+                  // Databases
+                  "MySQL",
+                  "PostgreSQL",
+                  "MongoDB",
+                  "Redis",
+                  "SQLite",
+                  "Firebase",
+
+                  // DevOps & Tools
+                  "Docker",
+                  "Kubernetes",
+                  "AWS",
+                  "Azure",
+                  "Google Cloud",
+                  "Git",
+                  "GitHub",
+                  "CI/CD",
+                  "Linux",
+                  "Bash",
+                  "Nginx",
+                  "Jenkins",
+
+                  // Testing
+                  "JUnit",
+                  "Selenium",
+                  "Postman",
+                  "Cypress",
+                  "Jest",
+                  "Mocha",
+
+                  // ML
+                  "NumPy",
+                  "Pandas",
+                  "TensorFlow",
+                  "Keras",
+                  "Scikit-learn",
+                  "OpenCV",
+                  "Matplotlib",
+                  "PyTorch",
+
+                  // Programming Languages
+                  "C",
+                  "C++",
+                  "C#",
+                  "Python",
+                  "Go",
+                  "Rust",
+                  "R",
+                  "MATLAB",
+
+                  // other
+                  "Agile",
+                  "Scrum",
+                  "Problem Solving",
+                  "Communication",
+                  "Teamwork",
+                  "Time Management",
+                  "Project Management"
+                ]}
+              />
+
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Current Job Title</label>

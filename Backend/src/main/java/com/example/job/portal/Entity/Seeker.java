@@ -15,10 +15,10 @@ public class Seeker extends User {
 
 
     // Professional Data
-    @ElementCollection
-    @CollectionTable(name = "seeker_skills", joinColumns = @JoinColumn(name = "id"))
+    //@ElementCollection
+    //@CollectionTable(name = "seeker_skills", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "skill")
-    private List<String> skills;
+    private String skills;
 
     private String currentJobTitle;
 
@@ -76,11 +76,11 @@ public class Seeker extends User {
         this.location = location;
     }
 
-    public List<String> getSkills() {
+    public String getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 

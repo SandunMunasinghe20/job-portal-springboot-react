@@ -19,6 +19,7 @@ import MyProfile from './components/MyProfile';
 import AdminHome from './pages/Admin/AdminHome';
 import AdminViewSeekers from './pages/Admin/AdminViewSeekers';
 import Test from './pages/Test';
+import MsgPage from './pages/MsgPage/MsgPage';
 //import './App.css'
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path='/adminHome' element={<AdminHome />} />
         <Route path='/seekers' element={<AdminViewSeekers />} />
         <Route path='/test' element={<Test />} />
+        <Route path='/msg' element={<MsgPage />} />
       </Routes>
 
       <ToastContainer
