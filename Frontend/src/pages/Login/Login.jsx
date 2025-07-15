@@ -73,6 +73,8 @@ function Login() {
             //save token
             localStorage.setItem("auth-token", data.token);
             localStorage.setItem("role", data.role);
+            localStorage.setItem("id",data.id);
+            console.log("id is : ",data.id);
             console.log("Role ", data.role);
             //setSuccess("Login Successful");
             toast.success('Login Successful');

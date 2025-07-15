@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,23 +25,26 @@ import java.util.stream.Collectors;
 @Service
 public class MessageService {
 
-    @Autowired
     private final UserRepo userRepo;
-    @Autowired
-    private MessageRepo messageRepo;
-    @Autowired
-    private SeekerRepo seekerRepo;
-    @Autowired
-    private EmployerRepo employerRepo;
+    private final MessageRepo messageRepo;
+    private final SeekerRepo seekerRepo;
+    private final EmployerRepo employerRepo;
 
-    public MessageService(UserRepo userRepo) {
+    @Autowired
+    public MessageService(UserRepo userRepo, MessageRepo messageRepo,
+                          SeekerRepo seekerRepo, EmployerRepo employerRepo) {
         this.userRepo = userRepo;
+        this.messageRepo = messageRepo;
+        this.seekerRepo = seekerRepo;
+        this.employerRepo = employerRepo;
     }
 
     //send
-    public ResponseEntity<String> sendMessage(MessageDTO messageDTO) {
+    public ResponseEntity<String> sendMessage(MessageDTO messageDTO, Authentication authentication) {
+        String email = authentication.getName();
+
         //sender
-        Optional<User> optionalSender = userRepo.findById(messageDTO.getSenderId());
+        Optional<User> optionalSender = userRepo.findByEmail(email);
         if (optionalSender.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sender not found");
         }
@@ -66,7 +70,6 @@ public class MessageService {
     //receive
     public ResponseEntity<?> getConversation(MessageDTO messageDTO) {
 
-
         //sender
         Optional<User> optionalSender = userRepo.findById(messageDTO.getSenderId());
         if (optionalSender.isEmpty()) {
@@ -74,9 +77,7 @@ public class MessageService {
         }
         User sender = optionalSender.get();
 
-
-
-       //receiver
+        //receiver
         Optional<User> optionalReceiver = userRepo.findById(messageDTO.getReceiverId());
         if (optionalReceiver.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Receiver not found");
@@ -97,37 +98,46 @@ public class MessageService {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Messaging allowed only between Seeker, Employer, and Admin");
         }
 
+        System.out.println("Sender role: " + sender.getRole());
+        System.out.println("Receiver role: " + receiver.getRole());
+
         final String senderName;
-        final String receiverName ;
+        final String receiverName;
 
 // Get sender's name based on role
         if (sender.getRole().equalsIgnoreCase("seeker")) {
             Optional<Seeker> seeker = seekerRepo.findById(sender.getId());
-            senderName = seeker.get().getFname()+" "+seeker.get().getLname();
+            senderName = seeker.get().getFname() + " " + seeker.get().getLname();
         } else if (sender.getRole().equalsIgnoreCase("employer")) {
             Optional<Employer> employer = employerRepo.findById(sender.getId());
             senderName = employer.get().getCompanyName();
         } else {
+            System.out.println("sender is a admin");
             senderName = "Admin";
         }
+
 
 // Get receiver's name based on role
         if (receiver.getRole().equalsIgnoreCase("seeker")) {
             Optional<Seeker> seeker = seekerRepo.findById(receiver.getId());
-            receiverName = seeker.get().getFname()+" "+seeker.get().getLname();
+            receiverName = seeker.get().getFname() + " " + seeker.get().getLname();
         } else if (receiver.getRole().equalsIgnoreCase("employer")) {
             Optional<Employer> employer = employerRepo.findById(receiver.getId());
             receiverName = employer.get().getCompanyName();
         } else {
+            System.out.println("receiver is a admin");
             receiverName = "Admin";
         }
 
-        System.out.println("senderName: " + senderName+" receiverName: " + receiverName);
+        System.out.println("senderName: " + senderName + " receiverName: " + receiverName);
 
+        System.out.println("Calling findConversation with senderId=" + sender.getId() + ", receiverId=" + receiver.getId());
 
         //get all msg entities
         List<Message> messages = messageRepo.findConversation(sender.getId(), receiver.getId());
 
+
+        System.out.println("Message count: " + messages.size());
 
 
         //map into a dto
@@ -154,24 +164,28 @@ public class MessageService {
     public ResponseEntity<String> markAsRead(MessageDTO messageDTO, Authentication authentication) {
         Long msgId = messageDTO.getMsgId();
 
-        String email = authentication.getName();
-        Optional<User> optionalSender = userRepo.findById(messageDTO.getSenderId());
-        if (optionalSender.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sender not found");
-        }
-        User sender = optionalSender.get();
-
-        if (!sender.getId().equals(messageDTO.getSenderId())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not allowed to read these messages");
-        }
-
         Optional<Message> message = messageRepo.findById(msgId);
         if (message.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found");
         }
         Message msg = message.get();
 
+        // Get currently logged-in user
+        String email = authentication.getName();
+        Optional<User> userOpt = userRepo.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+
+        User currentUser = userOpt.get();
+
+        // Only receiver can mark message as read
+        if (!msg.getReceiver().getId().equals(currentUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not allowed to mark this message as read");
+        }
+
         msg.setStatus("READ");
+        msg.setReceiveTime(LocalDateTime.now());
         messageRepo.save(msg);
         return ResponseEntity.ok("Message marked READ successfully");
     }
@@ -245,5 +259,62 @@ public class MessageService {
             return ResponseEntity.ok(("Message edited successfully"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("You are not allowed to edit these messages");
+    }
+
+    public ResponseEntity<?> getInbox(Long userId) {
+        Optional<User> optionalUser = userRepo.findById(userId);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        List<Message> messages = messageRepo.findLatestMessagesInUserConversations(userId);
+        if (messages.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Your Inbox is empty");
+        }
+
+        List<MessageDTO> dtoList = new ArrayList<>();
+        for (Message message : messages) {
+            MessageDTO dto = new MessageDTO();
+            dto.setMsgId(message.getMsgId());
+            dto.setSenderId(message.getSender().getId());
+            dto.setReceiverId(message.getReceiver().getId());
+            dto.setContent(message.getContent());
+            dto.setSendTime(message.getSendTime());
+            dto.setReceiveTime(message.getReceiveTime());
+            dto.setStatus(message.getStatus());
+
+
+            User chatUser;
+            if (message.getSender().getId().equals(userId)) {
+                chatUser = message.getReceiver();
+            } else {
+                chatUser = message.getSender();
+            }
+
+
+            //chat username
+            String chatUserName;
+            if (chatUser.getRole().equalsIgnoreCase("seeker")) {
+                chatUserName = seekerRepo.findById(chatUser.getId())
+                        .map(s -> s.getFname() + " " + s.getLname())
+                        .orElse("Seeker");
+            } else if (chatUser.getRole().equalsIgnoreCase("employer")) {
+                chatUserName = employerRepo.findById(chatUser.getId())
+                        .map(Employer::getCompanyName)
+                        .orElse("Employer");
+            } else {
+                chatUserName = "Admin";
+            }
+            dto.setSenderName(chatUserName);  // you might want to rename this to chatUserName in DTO for clarity
+
+            // unread msg count
+            Long unreadCount = messageRepo.countUnreadMessages(userId, chatUser.getId());
+            dto.setUnreadCount(unreadCount);
+
+            dtoList.add(dto);
+        }
+
+        System.out.println("messages for get Inbox: " + messages);
+        return ResponseEntity.ok(dtoList);
     }
 }

@@ -21,7 +21,15 @@ public class MessageController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login first");
         }
-        return messageService.sendMessage(messageDTO);
+        return messageService.sendMessage(messageDTO,authentication);
+    }
+    
+    @GetMapping("/inbox")
+    public ResponseEntity<?> getInbox(Authentication authentication,@RequestParam Long userId) {
+        if(authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login first");
+        }
+        return messageService.getInbox(userId);
     }
 
     @GetMapping("/chat")

@@ -10,6 +10,7 @@ import lombok.*;
 public class LoginResponseDTO {
     private String token;
     private String role;
+    private Long id;
     private String message;
     private boolean success;
 
@@ -37,5 +38,10 @@ public class LoginResponseDTO {
     public void setRole(String role) {
         this.role = role;
     }
-
+public Long getId() {
+        return id;
+}
+public void setId(Long id) {
+        this.id = id;
+}
 }

@@ -13,6 +13,7 @@ export default function Applications() {
 
     const token = localStorage.getItem("auth-token");
     const role = localStorage.getItem("role");
+    
 
     let url;
     if (role === 'seeker')
@@ -75,7 +76,6 @@ export default function Applications() {
                 {loading && (
                     <Spinner />
                 )}
-
 
                 <ApplicationCard applications={applications} />
             </div>

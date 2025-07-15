@@ -177,9 +177,11 @@ public class AuthService {
 
             Optional<User> user = userRepo.findByEmail(loginRequestDTO.getEmail());
             if (user.isEmpty()) {
-                return new LoginResponseDTO(null, null, "User not found", false);
+                return new LoginResponseDTO(null, null,null, "User not found", false);
             }
+            //get id and role
             String role = user.get().getRole();
+            Long id = user.get().getId();
 
             //save/update jwt token
             Optional<JWTToken> existingToken = jwtTokenRepo.findByUser(user);
@@ -197,9 +199,11 @@ public class AuthService {
                 jwtTokenRepo.save(newToken);
             }
 
-            return new LoginResponseDTO(token,role, "Login successful", true);
+
+
+            return new LoginResponseDTO(token,role, id,"Login successful", true);
         }catch (Exception e) {
-            return new LoginResponseDTO(null,null, "Login failed.Check your email and password", false);
+            return new LoginResponseDTO(null,null,null, "Login failed.Check your email and password", false);
         }
     }
 

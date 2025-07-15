@@ -21,7 +21,6 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long msgId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

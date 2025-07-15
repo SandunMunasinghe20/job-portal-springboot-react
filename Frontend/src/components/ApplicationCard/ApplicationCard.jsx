@@ -184,6 +184,11 @@ export default function ApplicationCard({ applications }) {
         }
     };
 
+    //handle msg
+    const handleMessage = ({ app }) => {
+        navigate(`/msg?receiverId=${app.seekerId}&senderId=${app.id}`);
+    }
+
 
     return (
         <div className='bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto'>
@@ -203,9 +208,12 @@ export default function ApplicationCard({ applications }) {
                                     <strong className='text-gray-900'>Job Title:</strong>
                                     {app.jobTitle}
                                 </p>
-                                <div onClick={() => navigate('/msg')} className='cursor-pointer inline-block hover:text-blue-800 transition-colors duration-200'>
-                                    {/*msg icon*/}
+                                <div onClick={() => handleMessage({ app })} className='cursor-pointer inline-block hover:text-blue-800 transition-colors duration-200'>
+                                    {/*msg icon only for emp*/}
+                                    { role === 'employer'
+                                    &&
                                     <FaRegEnvelope size={24} color="#0d6efd" />
+                                    }
 
                                 </div>
 

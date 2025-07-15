@@ -20,9 +20,28 @@ import AdminHome from './pages/Admin/AdminHome';
 import AdminViewSeekers from './pages/Admin/AdminViewSeekers';
 import Test from './pages/Test';
 import MsgPage from './pages/MsgPage/MsgPage';
+import MsgConversationPage from './pages/MsgPage/MsgConversationPage';
 //import './App.css'
+import { useNavigate } from 'react-router-dom';
+import { MdMessage } from 'react-icons/md';
+
 
 function App() {
+
+  function FloatingMessageIcon() {
+  const navigate = useNavigate();
+  const id = localStorage.getItem("id");
+  return (
+    <div
+      onClick={() => navigate(`/conversation`)}
+      className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg cursor-pointer z-50"
+      title="Messages"
+    >
+      <MdMessage size={24} />
+    </div>
+   ); 
+}
+
   return (
     <BrowserRouter>
       <Routes>
@@ -46,8 +65,10 @@ function App() {
         <Route path='/seekers' element={<AdminViewSeekers />} />
         <Route path='/test' element={<Test />} />
         <Route path='/msg' element={<MsgPage />} />
+        <Route path='/conversation' element={<MsgConversationPage/>} />
       </Routes>
 
+{/*toast msges*/}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -60,6 +81,22 @@ function App() {
         pauseOnHover
         theme="colored"
       />
+
+      {/*msg icon*/}
+      <FloatingMessageIcon />
+<ToastContainer
+    position="top-right"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="colored"
+  />
+
     </BrowserRouter>
   );
 }

@@ -18,4 +18,6 @@ public class MessageDTO {
     private LocalDateTime sendTime;
     private LocalDateTime receiveTime;
     private String status;
+    private Long unreadCount;
+
 }
