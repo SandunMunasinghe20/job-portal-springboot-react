@@ -90,6 +90,7 @@ public class AuthService {
                 newSeeker.setAccountCreatedAt(new Date());
                 newSeeker.setAccountUpdatedAt(new Date());
                 newSeeker.setRole("seeker");
+                newSeeker.setAccountStatus("active");
                 seekerRepo.save(newSeeker);
                 return ResponseEntity.ok().body("Successfully registered");
 
@@ -121,6 +122,7 @@ public class AuthService {
                 newEmployer.setAccountCreatedAt(new Date());
                 newEmployer.setAccountUpdatedAt(new Date());
                 newEmployer.setRole("employer");
+                newEmployer.setAccountStatus("active");
                 employerRepo.save(newEmployer);
                 System.out.println("Account successfully registered");
                 return ResponseEntity.ok().body("Account successfully registered");
@@ -155,6 +157,7 @@ public class AuthService {
                 newAdmin.setAccountCreatedAt(new Date());
                 newAdmin.setAccountUpdatedAt(new Date());
                 newAdmin.setRole("admin");
+                newAdmin.setAccountStatus("active");
                 adminRepo.save(newAdmin);
                 return ResponseEntity.ok().body("Successfully registered");
 

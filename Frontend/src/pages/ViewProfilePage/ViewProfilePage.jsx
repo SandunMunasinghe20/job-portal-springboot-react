@@ -1,31 +1,29 @@
 import { useEffect, useState } from "react";
 import ViewProfile from "../../components/ViewProfile/ViewProfile";
-import { data, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 //import './ViewProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function ViewProfilePage() {
-
   const navigate = useNavigate();
 
-  //const [error, toast.error] = useState("");
-  //const [success, toast.success] = useState("");
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("auth-token");
   const role = localStorage.getItem("role");
 
+  const [searchParams] = useSearchParams();
+  const paramSeekerId = searchParams.get("seekerId");
+  const paramEmployerId = searchParams.get("employerId");
+
   const fetchProfile = async () => {
-
-
     setLoading(true);
-
-    try {
-      console.log("Token:", token);
-      let url;
+    let url;
+    //view own profile
+    if (!paramSeekerId && !paramEmployerId) {
       if (role === "employer") {
         url = "http://localhost:8080/api/employers/profile";
       } else if (role === "seeker") {
@@ -33,10 +31,22 @@ export default function ViewProfilePage() {
       } else {
         url = "http://localhost:8080/api/admin/profile";
       }
+    } else {
+      //someone view other users profile
+      if (paramSeekerId) {
+        url = `http://localhost:8080/api/seekers/${paramSeekerId}`;
+      } else {
+        url = `http://localhost:8080/api/employers/${paramEmployerId}`;
+      }
+    }
+
+    try {
+      console.log("Token:", token);
+
       console.log("Fetching profile from URL:", url);
       const response = await fetch(url, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -50,7 +60,6 @@ export default function ViewProfilePage() {
       setProfile(data);
       console.log("data :", data);
       console.log("data.role : ", data.role);
-
     } catch (err) {
       toast.error("Something went wrong");
     } finally {
@@ -63,17 +72,11 @@ export default function ViewProfilePage() {
   }, []);
 
   return (
-    <><NavBar role={role} />
+    <>
+      <NavBar role={role} />
       <div className="bg-gray-50 min-h-screen px-4 py-8">
-
-        <h1 className="text-4xl font-semibold text-center text-blue-600 mb-8 ">Your Profile</h1>
-
-
-
         <ViewProfile profile={profile} />
-
       </div>
-
     </>
   );
 }

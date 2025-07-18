@@ -1,401 +1,372 @@
-
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-//import './ApplicationCard.css';
-import SubmitButton from '../submitButton/submitbutton';
-import { fetchFromBackend } from '../../services/Service';
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import SubmitButton from "../submitButton/submitbutton";
+import { fetchFromBackend } from "../../services/Service";
 import { toast } from "react-toastify";
-import ConfirmModal from '../ConfirmModel/ConfirmModel';
-
-
-//import { MdMessage } from 'react-icons/md';
-import { FaRegEnvelope } from 'react-icons/fa';
-//import { HiOutlineChat } from 'react-icons/hi';
-//import { AiOutlineMessage } from 'react-icons/ai';
-
+import ConfirmModal from "../ConfirmModel/ConfirmModel";
+import { FaRegEnvelope } from "react-icons/fa";
 
 export default function ApplicationCard({ applications }) {
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("auth-token");
 
-    const role = localStorage.getItem("role");
-    const token = localStorage.getItem("auth-token");
-    console.log("token is ", token);
-    console.log("role : ", role);
+  const [resume, setResume] = useState(null);
+  const [editAppId, setEditAppId] = useState(null);
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingApp, setPendingApp] = useState(null);
+  const [pendingActionType, setPendingActionType] = useState("");
 
-    //const [err, toast.error] = useState("");
-    //const [success, toast.success] = useState("");
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [appToDelete, setAppToDelete] = useState(null);
 
-    const [resume, setResume] = useState(null);
-    const [editAppId, setEditAppId] = useState(null);
+  const [showEditConfirmModal, setShowEditConfirmModal] = useState(false);
+  const [appToEdit, setAppToEdit] = useState(null);
 
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [pendingApp, setPendingApp] = useState(null);
-    const [pendingActionType, setPendingActionType] = useState("");
+  const navigate = useNavigate();
 
-    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
-    const [appToDelete, setAppToDelete] = useState(null);
-
-    const [showEditConfirmModal, setShowEditConfirmModal] = useState(false);
-    const [appToEdit, setAppToEdit] = useState(null);
-
-
-    const navigate = useNavigate();
-
-
-    const handleDelete = async ({ app }) => {
-        console.log("job id in delete: ", app.id);
-        try {
-            const response = await fetch(`http://localhost:8080/api/applyJobs/delete/${app.id}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                },
-            });
-            if (!response.ok) {
-                toast.error("Error occured while deleting Job Application");
-                console.log("Error occured while deleting Job Application");
-                return;
-            }
-            const data = await response.text();
-            console.log("data ", data);
-            toast.success(data);
-            navigate(0);
-
-        } catch (error) {
-            toast.error("Error occured while connecting to server.");
-            console.log("Error occured while connecting to server.")
-            return;
+  const handleDelete = async ({ app }) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/applyJobs/delete/${app.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
+      );
+      if (!response.ok) {
+        toast.error("Error occurred while deleting Job Application");
+        return;
+      }
+      const data = await response.text();
+      toast.success(data);
+      navigate(0);
+    } catch (error) {
+      toast.error("Error occurred while connecting to server.");
+    }
+  };
+
+  const handleEditClicked = (id) => {
+    setEditAppId(id);
+  };
+
+  const handleEdit = async ({ app }) => {
+    if (!resume) {
+      toast.error("Please upload a resume.");
+      return;
     }
 
-    const handleEditClicked = (id) => {
-        setEditAppId(id);
-    };
+    const maxSize = 10 * 1024 * 1024;
+    const allowedTypes = ["application/pdf"];
 
-
-    const handleEdit = async ({ app }) => {
-
-        if (!resume) {
-            toast.error("Please upload a resume.");
-            return;
-        }
-
-        const maxSize = 10 * 1024 * 1024;
-
-        const allowedTypes = [
-            "application/pdf",
-            //"application/msword", // .doc
-            //"application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
-        ];
-
-        if (!allowedTypes.includes(resume.type)) {
-            toast.error("Only PDF files are allowed");
-            setResume(null);
-            return;
-        }
-
-        if (resume.size > maxSize) {
-            toast.error("File size must be less than 10MB.");
-            setResume(null);
-            return;
-        }
-
-        try {
-
-            const formData = new FormData();
-            formData.append("id", app.id);
-            formData.append("resume", resume);
-
-            const response = await fetch(`http://localhost:8080/api/applyJobs/update/${app.id}`, {
-                method: "PUT",
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                },
-                body: formData,
-
-            });
-
-            if (!response.ok) {
-                const errmsg = await response.text();
-                console.log("err ", errmsg);
-                toast.error(errmsg);
-                return;
-            }
-
-            const data = await response.text();
-            toast.success(data);
-            console.log("data : ", data);
-
-            setResume(null);
-
-            setTimeout(() => {
-                navigate(0);
-            }, 1000);
-
-        } catch (e) {
-            toast.error("Error occured while updating your Job Application");
-            return;
-        }
-    };
-
-
-    const handleFileChange = (e) => {
-        setResume(e.target.files[0]);
+    if (!allowedTypes.includes(resume.type)) {
+      toast.error("Only PDF files are allowed");
+      setResume(null);
+      return;
     }
 
-    //send base 64 data to front
-    const openPdf = (base64String) => {
-        const byteCharacters = atob(base64String);
-        const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) =>
-            byteCharacters.charCodeAt(i)
-        );
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'application/pdf' });
-        const blobUrl = URL.createObjectURL(blob);
-        window.open(blobUrl);
-    };
-
-    //approve/reject a application
-    const handleStatusChange = async ({ app, newStatus }) => {
-
-        try {
-            const response = await fetch("http://localhost:8080/api/applyJobs/updateBYEmp", {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-                body: JSON.stringify({
-                    id: app.id,
-                    status: newStatus
-                })
-            });
-            const data = await response.text();
-            if (!response.ok) {
-                toast.error(data);
-                return;
-            }
-            toast.success(data);
-            setPendingApp(null);
-            navigate(0);
-        } catch {
-            toast.error("An error occurred while updating the job application");
-            setPendingApp(null);
-        }
-    };
-
-    //handle msg
-    const handleMessage = ({ app }) => {
-        navigate(`/msg?receiverId=${app.seekerId}&senderId=${app.id}`);
+    if (resume.size > maxSize) {
+      toast.error("File size must be less than 10MB.");
+      setResume(null);
+      return;
     }
 
+    try {
+      const formData = new FormData();
+      formData.append("id", app.id);
+      formData.append("resume", resume);
 
-    return (
-        <div className='bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto'>
+      const response = await fetch(
+        `http://localhost:8080/api/applyJobs/update/${app.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          body: formData,
+        }
+      );
 
-            <div className='space-y-6'>
-                {applications.length === 0 ? (
-                    <p className="text-center text-gray-500 text-lg">No job applications available.</p>
-                ) : (
+      if (!response.ok) {
+        const errmsg = await response.text();
+        toast.error(errmsg);
+        return;
+      }
 
-                    applications.map((app, index) => (
+      const data = await response.text();
+      toast.success(data);
+      setResume(null);
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    } catch (e) {
+      toast.error("Error occurred while updating your Job Application");
+    }
+  };
 
-                        <div key={index} className="bg-white shadow-md rounded-xl p-6 space-y-4 border border-gray-300">
+  const handleFileChange = (e) => {
+    setResume(e.target.files[0]);
+  };
 
+  const openPdf = (base64String) => {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length)
+      .fill()
+      .map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: "application/pdf" });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl);
+  };
 
-                            <div className='flex justify-between items-center'>
-                                <p className='text-gray-700'>
-                                    <strong className='text-gray-900'>Job Title:</strong>
-                                    {app.jobTitle}
-                                </p>
-                                <div onClick={() => handleMessage({ app })} className='cursor-pointer inline-block hover:text-blue-800 transition-colors duration-200'>
-                                    {/*msg icon only for emp*/}
-                                    { role === 'employer'
-                                    &&
-                                    <FaRegEnvelope size={24} color="#0d6efd" />
-                                    }
+  const handleStatusChange = async ({ app, newStatus }) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/applyJobs/updateBYEmp",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            id: app.id,
+            status: newStatus,
+          }),
+        }
+      );
+      const data = await response.text();
+      if (!response.ok) {
+        toast.error(data);
+        return;
+      }
+      toast.success(data);
+      setPendingApp(null);
+      navigate(0);
+    } catch {
+      toast.error("An error occurred while updating the job application");
+      setPendingApp(null);
+    }
+  };
 
-                                </div>
+  const handleMessage = ({ app }) => {
+    navigate(`/msg?receiverId=${app.seekerId}&senderId=${app.id}`);
+  };
 
-                            </div>
+  const viewApplicant = async (app) => {
+    navigate(`/profile?seekerId=${app.seekerId}`);
+  };
 
-                            <p className='text-gray-700'><strong className="text-gray-900">Company:</strong> {app.companyName}</p>
-                            <p className='text-gray-700'>
-                                <strong className="text-gray-900">Resume:</strong>{' '}
+  return (
+    <div className="bg-white rounded-3xl shadow-lg p-8 space-y-6">
+      {applications.length === 0 ? (
+        <p className="text-center text-gray-500 text-lg">
+          No job applications available.
+        </p>
+      ) : (
+        applications.map((app, index) => (
+          <div
+            key={index}
+            className="bg-gray-50 rounded-2xl shadow border border-gray-200 p-6 transition hover:shadow-md"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                  {app.jobTitle}
+                </h3>
+                <p className="text-sm text-gray-500">{app.companyName}</p>
+              </div>
 
-                                {app.resumeBase64 ? (
-                                    <button
-                                        onClick={() => openPdf(app.resumeBase64)}
-                                        className="text-blue-600 hover:text-blue-800 underline font-medium transition-all cursor-pointer"
-                                    >
-                                        View Resume
-                                    </button>
-
-
-                                ) : (
-                                    'No resume uploaded'
-                                )}
-
-                            </p>
-
-                            {/*each status has diff colours*/}
-
-                            <div className='flex gap-1'>
-                                <p className="text-gray-700 font-medium">Status:</p>
-                                <p className={`font-semibold ${app.status === 'APPROVED' ? 'text-green-600' :
-                                    app.status === 'REJECTED' ? 'text-red-600' :
-                                        'text-yellow-600'
-                                    }`}>
-                                    {app.status}
-                                </p>
-                            </div>
-
-
-
-                            <p className='text-gray-700'><strong className="text-gray-900">Applied At:</strong> {new Date(app.appliedAt).toLocaleString()}</p>
-
-                            {/*edit/del button*/}
-                            <div className='flex items-center gap-x-4'>
-                                {(role === 'seeker')
-                                    &&
-                                    <SubmitButton
-                                        onClick={() => {
-                                            setAppToDelete(app);
-                                            setShowDeleteConfirmModal(true);
-                                        }}
-                                        msg="Delete"
-                                    />
-                                }
-
-                                {role === 'seeker'
-                                    &&
-                                    <SubmitButton onClick={() => handleEditClicked(app.id)} msg="Edit" />}
-                            </div>
-
-
-                            {/*approve/reject/del button for emp*/}
-                            <div className='flex items-center gap-x-4'>
-                                {(role === 'employer')
-                                    &&
-                                    <SubmitButton
-                                        onClick={() => {
-                                            setAppToDelete(app);
-                                            setShowDeleteConfirmModal(true);
-                                        }}
-                                        msg="Delete"
-                                    />}
-
-                                {role === 'employer' && (
-                                    <div className="flex gap-2">
-                                        <button
-                                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
-                                            onClick={() => {
-                                                setPendingApp(app);
-                                                setPendingActionType("APPROVED");
-                                                setShowConfirmModal(true);
-                                            }}
-                                        >
-                                            Approve
-                                        </button>
-
-                                        <button
-                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                            onClick={() => {
-                                                setPendingApp(app);
-                                                setPendingActionType("REJECTED");
-                                                setShowConfirmModal(true);
-                                            }}
-                                        >
-                                            Reject
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-
-
-                            {role === 'seeker' && editAppId === app.id && (
-                                <div className='mt-4 space-y-2'>
-                                    <input
-                                        type='file'
-                                        onChange={handleFileChange}
-                                        className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                                    />
-                                    {/*update and cancel buttons*/}
-                                    <div className="flex justify-center items-center gap-4">
-                                        <SubmitButton msg="Update" onClick={() => {
-                                            setAppToEdit(app);
-                                            setShowEditConfirmModal(true);
-                                        }} />
-
-                                        <button
-                                            onClick={() => {
-                                                setEditAppId(null);
-                                                setResume(null);
-                                            }}
-                                            className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-
-                        </div>
-
-                    ))
-                )}
+              {role === "employer" && (
+                <button
+                  onClick={() => handleMessage({ app })}
+                  className="p-2 rounded-full hover:bg-blue-100 transition"
+                  title="Send Message"
+                >
+                  <FaRegEnvelope size={20} className="text-blue-600" />
+                </button>
+              )}
             </div>
-            {/*confirmation of actions */}
-            {showConfirmModal && (
-                <ConfirmModal
-                    message={`Are you sure you want to ${pendingActionType.toLowerCase()} this application?`}
-                    onConfirm={() => {
-                        handleStatusChange({ app: pendingApp, newStatus: pendingActionType });
-                        setShowConfirmModal(false);
-                        setPendingApp(null);
-                        setPendingActionType("");
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700 mb-4">
+              <div>
+                <span className="font-medium text-gray-900">Resume:</span>{" "}
+                {app.resumeBase64 ? (
+                  <button
+                    onClick={() => openPdf(app.resumeBase64)}
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    View Resume
+                  </button>
+                ) : (
+                  <span className="italic text-gray-400">Not uploaded</span>
+                )}
+              </div>
+
+              <div>
+                <span className="font-medium text-gray-900">Status:</span>{" "}
+                <span
+                  className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                    app.status === "APPROVED"
+                      ? "bg-green-100 text-green-700"
+                      : app.status === "REJECTED"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {app.status}
+                </span>
+              </div>
+
+              <div>
+                <span className="font-medium text-gray-900">Applicant:</span>{" "}
+                <button
+                  onClick={() => viewApplicant(app)}
+                  className="text-blue-600 hover:underline font-medium"
+                >
+                  View Profile
+                </button>
+              </div>
+
+              <div>
+                <span className="font-medium text-gray-900">Applied At:</span>{" "}
+                {new Date(app.appliedAt).toLocaleString()}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mt-4">
+              {role === "seeker" && (
+                <>
+                  <SubmitButton
+                    msg="Delete"
+                    onClick={() => {
+                      setAppToDelete(app);
+                      setShowDeleteConfirmModal(true);
                     }}
-                    onCancel={() => {
-                        setShowConfirmModal(false);
-                        setPendingApp(null);
-                        setPendingActionType("");
+                  />
+                  <SubmitButton
+                    msg="Edit"
+                    onClick={() => handleEditClicked(app.id)}
+                  />
+                </>
+              )}
+
+              {role === "employer" && (
+                <>
+                  <SubmitButton
+                    msg="Delete"
+                    onClick={() => {
+                      setAppToDelete(app);
+                      setShowDeleteConfirmModal(true);
                     }}
+                  />
+                  <button
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm"
+                    onClick={() => {
+                      setPendingApp(app);
+                      setPendingActionType("APPROVED");
+                      setShowConfirmModal(true);
+                    }}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
+                    onClick={() => {
+                      setPendingApp(app);
+                      setPendingActionType("REJECTED");
+                      setShowConfirmModal(true);
+                    }}
+                  >
+                    Reject
+                  </button>
+                </>
+              )}
+            </div>
+
+            {role === "seeker" && editAppId === app.id && (
+              <div className="mt-6 border-t pt-4">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
                 />
+                <div className="flex justify-end gap-4 mt-4">
+                  <SubmitButton
+                    msg="Update"
+                    onClick={() => {
+                      setAppToEdit(app);
+                      setShowEditConfirmModal(true);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      setEditAppId(null);
+                      setResume(null);
+                    }}
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             )}
+          </div>
+        ))
+      )}
 
-            {showDeleteConfirmModal && (
-                <ConfirmModal
-                    message="Are you sure you want to delete this application?"
-                    onConfirm={() => {
-                        handleDelete({ app: appToDelete });
-                        setShowDeleteConfirmModal(false);
-                        setAppToDelete(null);
-                    }}
-                    onCancel={() => {
-                        setShowDeleteConfirmModal(false);
-                        setAppToDelete(null);
-                    }}
-                />
-            )}
+      {/* Confirmation Modals */}
+      {showConfirmModal && (
+        <ConfirmModal
+          message={`Are you sure you want to ${pendingActionType.toLowerCase()} this application?`}
+          onConfirm={() => {
+            handleStatusChange({
+              app: pendingApp,
+              newStatus: pendingActionType,
+            });
+            setShowConfirmModal(false);
+            setPendingApp(null);
+            setPendingActionType("");
+          }}
+          onCancel={() => {
+            setShowConfirmModal(false);
+            setPendingApp(null);
+            setPendingActionType("");
+          }}
+        />
+      )}
 
-            {showEditConfirmModal && (
-                <ConfirmModal
-                    message="Are you sure you want to update this resume?"
-                    onConfirm={() => {
-                        handleEdit({ app: appToEdit });
-                        setShowEditConfirmModal(false);
-                        setAppToEdit(null);
-                    }}
-                    onCancel={() => {
-                        setShowEditConfirmModal(false);
-                        setAppToEdit(null);
-                    }}
-                />
-            )}
+      {showDeleteConfirmModal && (
+        <ConfirmModal
+          message="Are you sure you want to delete this application?"
+          onConfirm={() => {
+            handleDelete({ app: appToDelete });
+            setShowDeleteConfirmModal(false);
+            setAppToDelete(null);
+          }}
+          onCancel={() => {
+            setShowDeleteConfirmModal(false);
+            setAppToDelete(null);
+          }}
+        />
+      )}
 
-
-
-        </div>
-    );
+      {showEditConfirmModal && (
+        <ConfirmModal
+          message="Are you sure you want to update this resume?"
+          onConfirm={() => {
+            handleEdit({ app: appToEdit });
+            setShowEditConfirmModal(false);
+            setAppToEdit(null);
+          }}
+          onCancel={() => {
+            setShowEditConfirmModal(false);
+            setAppToEdit(null);
+          }}
+        />
+      )}
+    </div>
+  );
 }

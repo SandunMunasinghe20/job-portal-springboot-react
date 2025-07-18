@@ -55,7 +55,7 @@ public class AdminService {
         return ResponseEntity.ok(adminDTO);
     }
 
-    public ResponseEntity<String> updateAdmin( AdminDTO adminDTO,Authentication authentication) {
+    public ResponseEntity<String> updateAdmin(AdminDTO adminDTO, Authentication authentication) {
         String email = authentication.getName();
         Optional<Admin> optAdmin = adminRepo.findByEmail(email);
 
@@ -70,6 +70,53 @@ public class AdminService {
         adminRepo.save(admin);
         return ResponseEntity.ok("Profile updated successfully");
 
+    }
+
+    public ResponseEntity<String> activateUserAccount(Authentication authentication, Long userId) {
+        String email = authentication.getName();
+        Optional<Admin> optAdmin = adminRepo.findByEmail(email);
+        if (optAdmin.isEmpty()) {
+            return ResponseEntity.badRequest().body("You are not authorized.");
+        }
+
+        Optional<User> optUser = userRepo.findById(userId);
+        if (optUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        User user = optUser.get();
+
+        if ("active".equals(user.getAccountStatus())) {
+            return ResponseEntity.ok("User account is already active");
+        } else {
+            user.setAccountStatus("active");
+            userRepo.save(user);
+            return ResponseEntity.ok("User account activated");
+        }
+    }
+
+
+    public ResponseEntity<String> deactivateUserAccount(Authentication authentication, Long userId) {
+        String email = authentication.getName();
+        Optional<Admin> optAdmin = adminRepo.findByEmail(email);
+        if (optAdmin.isEmpty()) {
+            return ResponseEntity.badRequest().body("You are not authorized.");
+        }
+
+        Optional<User> optUser = userRepo.findById(userId);
+        if (optUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        User user = optUser.get();
+
+        if ("inactive".equals(user.getAccountStatus())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User account is already inactive");
+        } else {
+            user.setAccountStatus("inactive");
+            userRepo.save(user);
+            return ResponseEntity.ok("User account deactivated");
+        }
     }
 
 }

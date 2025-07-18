@@ -28,6 +28,16 @@ public class User {
     private String role;
 
 
+    @Column(name = "account_status",nullable = false)
+    private String accountStatus;
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
 
     public void setRole(String role) {
         this.role = role;

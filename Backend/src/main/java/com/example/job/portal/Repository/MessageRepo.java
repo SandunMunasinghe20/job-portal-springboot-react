@@ -20,19 +20,23 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
     List<Message> findConversation(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
 
     @Query("""
-    SELECT m FROM Message m
-    WHERE m.sendTime IN (
-        SELECT MAX(m2.sendTime) FROM Message m2
-        WHERE m2.sender.id = :userId OR m2.receiver.id = :userId
-        GROUP BY 
-            CASE 
-                WHEN m2.sender.id < m2.receiver.id THEN CONCAT(m2.sender.id, '-', m2.receiver.id)
-                ELSE CONCAT(m2.receiver.id, '-', m2.sender.id)
-            END
-    )
-    ORDER BY m.sendTime DESC
+SELECT m FROM Message m
+WHERE m.sendTime IN (
+    SELECT MAX(m2.sendTime) FROM Message m2
+    WHERE (m2.sender.id = :userId OR m2.receiver.id = :userId)
+      AND m2.sender.id <> m2.receiver.id
+    GROUP BY 
+        CASE 
+            WHEN m2.sender.id < m2.receiver.id THEN CONCAT(m2.sender.id, '-', m2.receiver.id)
+            ELSE CONCAT(m2.receiver.id, '-', m2.sender.id)
+        END
+)
+AND m.sender.id <> m.receiver.id
+ORDER BY m.sendTime DESC
 """)
     List<Message> findLatestMessagesInUserConversations(@Param("userId") Long userId);
+
+
 
     @Query("""
 SELECT COUNT(m) FROM Message m

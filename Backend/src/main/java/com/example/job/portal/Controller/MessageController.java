@@ -21,6 +21,7 @@ public class MessageController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login first");
         }
+
         return messageService.sendMessage(messageDTO,authentication);
     }
     

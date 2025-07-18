@@ -20,10 +20,12 @@ public class SeekerService {
 
     private final UserRepo userRepo;
     private final SeekerRepo seekerRepo;
+    private final EmployerService employerService;
 
-    public SeekerService(UserRepo userRepo, SeekerRepo seekerRepo) {
+    public SeekerService(UserRepo userRepo, SeekerRepo seekerRepo,EmployerService employerService) {
         this.userRepo = userRepo;
         this.seekerRepo = seekerRepo;
+        this.employerService = employerService;
     }
 
     public ResponseEntity<List<SeekerDTO>> getAllSeekers() {
@@ -42,7 +44,8 @@ public class SeekerService {
             seekerDTO.setSkills(seeker.getSkills());
             seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
             seekerDTO.setTotalExperience(seeker.getTotalExperience());
-            seekerDTO.setResumeUrl(seeker.getResumeUrl());
+
+            seekerDTO.setResume(employerService.byteResumeToBase64(seeker.getResume()));
 
             // Preferences
             seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
@@ -75,6 +78,7 @@ public class SeekerService {
             System.out.println("Email is empty");
             return ResponseEntity.badRequest().body("Email is empty");
         }
+
         //find existing user acc
         Optional<Seeker> user = seekerRepo.findByEmail(email);
         if (user.isEmpty()){
@@ -83,30 +87,27 @@ public class SeekerService {
         }
         Seeker seeker = user.get();
 
-        //seeker.setEmail(seekerDTO.getEmail());
-        //seeker.setPassword(seekerDTO.getPassword());
-
         System.out.println("Updating the user: "+seekerDTO.getEmail());
 
-// Personal Info
+        // Personal Info
         seeker.setFname(seekerDTO.getFname());
         seeker.setLname(seekerDTO.getLname());
         seeker.setPhone(seekerDTO.getPhone());
         seeker.setLocation(seekerDTO.getLocation());
 
-// Professional Data
+        // Professional Data
         seeker.setSkills(seekerDTO.getSkills());
         seeker.setCurrentJobTitle(seekerDTO.getCurrentJobTitle());
         seeker.setTotalExperience(seekerDTO.getTotalExperience());
-        seeker.setResumeUrl(seekerDTO.getResumeUrl());
+        seeker.setResume(employerService.base64ToByteImage(seekerDTO.getResume()));
 
-// Preferences
+        // Preferences
         seeker.setJobTypePreference(seekerDTO.getJobTypePreference());
         seeker.setPreferredIndustry(seekerDTO.getPreferredIndustry());
         seeker.setExpectedSalary(seekerDTO.getExpectedSalary());
         seeker.setAvailability(seekerDTO.getAvailability());
 
-// Media / Description
+        // Media / Description
         //profile pic
         String base64Image = seekerDTO.getProfilePicture();
         if (base64Image != null && base64Image.length() > 0) {
@@ -143,7 +144,7 @@ public class SeekerService {
         seekerDTO.setSkills(seeker.getSkills());
         seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
         seekerDTO.setTotalExperience(seeker.getTotalExperience());
-        seekerDTO.setResumeUrl(seeker.getResumeUrl());
+        seekerDTO.setResume(employerService.byteResumeToBase64(seeker.getResume()));
         seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
@@ -191,7 +192,7 @@ public class SeekerService {
         seekerDTO.setSkills(seeker.getSkills());
         seekerDTO.setCurrentJobTitle(seeker.getCurrentJobTitle());
         seekerDTO.setTotalExperience(seeker.getTotalExperience());
-        seekerDTO.setResumeUrl(seeker.getResumeUrl());
+        seekerDTO.setResume(employerService.byteResumeToBase64(seeker.getResume()));
         seekerDTO.setJobTypePreference(seeker.getJobTypePreference());
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());

@@ -26,7 +26,7 @@ public class SeekerDTO {
     @Min(value = 0, message = "Experience cannot be negative")
     private Integer totalExperience;
 
-    private String resumeUrl;
+    private String resume;
 
     // Preferences
     private String jobTypePreference;
@@ -115,12 +115,12 @@ public class SeekerDTO {
         this.totalExperience = totalExperience;
     }
 
-    public String getResumeUrl() {
-        return resumeUrl;
+    public String getResume() {
+        return resume;
     }
 
-    public void setResumeUrl(String resumeUrl) {
-        this.resumeUrl = resumeUrl;
+    public void setResume(String resume) {
+        this.resume = resume;
     }
 
     public String getJobTypePreference() {

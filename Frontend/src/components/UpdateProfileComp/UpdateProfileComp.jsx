@@ -5,10 +5,9 @@ import SubmitButton from "../submitButton/submitbutton";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import GetInput from "../GetInput/GetInput";
-import GetMultiSelect from '../../components/GetInput/GetMultiSelect';
+import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
 
-export default function UpdateProfileComp({ }) {
-
+export default function UpdateProfileComp({}) {
   const navigate = useNavigate();
 
   //set Error
@@ -65,6 +64,8 @@ export default function UpdateProfileComp({ }) {
 
         const data = await response.json();
 
+        console.log("data fetched to edit : ", data);
+
         // Fill states
         if (role === "seeker") {
           setFname(data.fname || "");
@@ -94,13 +95,11 @@ export default function UpdateProfileComp({ }) {
           setCompanyLogo(data.companyLogo || "");
           setCompanyDescription(data.companyDescription || "");
         }
-
       } catch (error) {
         toast.error("Unable to load profile data.");
       } finally {
         setLoading(false);
       }
-
     };
 
     fetchProfile();
@@ -110,12 +109,12 @@ export default function UpdateProfileComp({ }) {
     //const token = localStorage.getItem("auth-token");
 
     if (Number(totalExperience) < 0) {
-  setError('Experience must be a positive number');
-  toast.error("Experience must be a positive number");
-  return;
-}else{
-  setError("");
-}
+      setError("Experience must be a positive number");
+      toast.error("Experience must be a positive number");
+      return;
+    } else {
+      setError("");
+    }
 
     let url;
     let body = {};
@@ -138,7 +137,7 @@ export default function UpdateProfileComp({ }) {
         profilePicture,
         education,
         workExperience,
-        certifications
+        certifications,
       };
     } else if (role === "employer") {
       url = "http://localhost:8080/api/employers/update";
@@ -151,15 +150,12 @@ export default function UpdateProfileComp({ }) {
         companySize,
         website,
         companyLogo,
-        companyDescription
+        companyDescription,
       };
     }
 
-
-
-
     try {
-      const response = await fetchFromBackend({ url, method: 'PUT', body })
+      const response = await fetchFromBackend({ url, method: "PUT", body });
       console.log("response is: ", response);
       console.log("url is ; ", url);
 
@@ -167,44 +163,49 @@ export default function UpdateProfileComp({ }) {
         toast.error("Error occured while connecting with server.");
       } else {
         toast.success("Profile updated successfully!");
-        navigate('/profile');
+        navigate("/profile");
       }
-
-
     } catch (error) {
       toast.error("Failed to load your data to update");
     }
   };
 
-  const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    const base64String = reader.result.split(',')[1]; // Remove the base64 prefix
-     if (role === "seeker") {
-      setProfilePicture(base64String);
-    } else if (role === "employer") {
-      setCompanyLogo(base64String);
-    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result.split(",")[1]; // Remove base64 prefix
+
+      if (type === "profilePicture") {
+        setProfilePicture(base64String);
+      } else if (type === "companyLogo") {
+        setCompanyLogo(base64String);
+      } else if (type === "resume") {
+        setResume(base64String);
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-};
-
 
   if (loading) return <p>Loading profile...</p>;
 
   return (
     <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 py-10">
       <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 sm:p-10 space-y-6">
-        <h2 className="text-2xl font-semibold text-blue-600 text-center mb-4">Update Profile</h2>
+        <h2 className="text-2xl font-semibold text-blue-600 text-center mb-4">
+          Update Profile
+        </h2>
 
         <form className="space-y-5">
-          {role === 'seeker' ? (
+          {role === "seeker" ? (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  First Name
+                </label>
                 <GetInput
                   placeholder="First Name"
                   value={fname}
@@ -214,7 +215,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Last Name
+                </label>
                 <GetInput
                   placeholder="Last Name"
                   value={lname}
@@ -223,14 +226,15 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
                 <GetInput
                   placeholder="Location"
                   value={location}
                   onChange={setLocation}
                 />
               </div>
-
 
               <GetMultiSelect
                 value={skills}
@@ -330,13 +334,14 @@ export default function UpdateProfileComp({ }) {
                   "Communication",
                   "Teamwork",
                   "Time Management",
-                  "Project Management"
+                  "Project Management",
                 ]}
               />
 
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Current Job Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Current Job Title
+                </label>
                 <GetInput
                   placeholder="Current Job Title"
                   value={currentJobTitle}
@@ -345,30 +350,24 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Total Experience (Years)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Total Experience (Years)
+                </label>
                 <GetInput
                   type="number"
                   placeholder="Total Experience"
-                  min ={0}
+                  min={0}
                   value={totalExperience}
                   onChange={setTotalExperience}
                 />
               </div>
-              
+
               {error && <p className="text-red-600 text-sm">{error}</p>}
-              
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Resume URL</label>
-                <GetInput
-                  placeholder="Resume URL"
-                  value={resume}
-                  onChange={setResume}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Job Type Preference</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Job Type Preference
+                </label>
                 <GetInput
                   placeholder="Job Type Preference"
                   value={jobTypePreference}
@@ -377,7 +376,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Industry</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Preferred Industry
+                </label>
                 <GetInput
                   placeholder="Preferred Industry"
                   value={preferredIndustry}
@@ -386,7 +387,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Expected Salary</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Expected Salary
+                </label>
                 <GetInput
                   type="number"
                   placeholder="Expected Salary"
@@ -396,7 +399,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Availability
+                </label>
                 <GetInput
                   placeholder="Availability"
                   value={availability}
@@ -405,19 +410,21 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Profile Picture</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                  />
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Upload Profile Picture
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, "profilePicture")}
+                  className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                />
               </div>
 
-
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Education
+                </label>
                 <GetInput
                   placeholder="Education"
                   value={education}
@@ -426,7 +433,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Work Experience</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Work Experience
+                </label>
                 <textarea
                   value={workExperience}
                   onChange={(e) => setWorkExperience(e.target.value)}
@@ -436,7 +445,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Certifications</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Certifications
+                </label>
                 <textarea
                   value={certifications}
                   onChange={(e) => setCertifications(e.target.value)}
@@ -446,32 +457,35 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Resume</label>
-                  <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileChange}
-                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                  />
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Upload Resume
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => handleFileChange(e, "resume")}
+                  className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                />
               </div>
-
-
             </>
           ) : (
             <>
-
               <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Company Logo</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                  />
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Upload Company Logo
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, "companyLogo")}
+                  className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company Name
+                </label>
                 <GetInput
                   placeholder="Company Name"
                   value={companyName}
@@ -480,7 +494,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Address
+                </label>
                 <GetInput
                   placeholder="Address"
                   value={address}
@@ -489,7 +505,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Registration Number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Registration Number
+                </label>
                 <GetInput
                   type="number"
                   placeholder="Registration Number"
@@ -499,7 +517,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Industry
+                </label>
                 <GetInput
                   placeholder="Industry"
                   value={industry}
@@ -508,7 +528,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company Size</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company Size
+                </label>
                 <GetInput
                   placeholder="Company Size"
                   value={companySize}
@@ -517,7 +539,9 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Website
+                </label>
                 <GetInput
                   placeholder="Website"
                   value={website}
@@ -525,10 +549,10 @@ export default function UpdateProfileComp({ }) {
                 />
               </div>
 
-              
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Company Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company Description
+                </label>
                 <textarea
                   value={companyDescription}
                   onChange={(e) => setCompanyDescription(e.target.value)}
@@ -547,7 +571,7 @@ export default function UpdateProfileComp({ }) {
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition w-full sm:w-auto"
           />
           <SubmitButton
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate("/profile")}
             msg="Cancel"
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-md transition w-full sm:w-auto"
           />

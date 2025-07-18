@@ -32,8 +32,17 @@ public class EmployerService {
         if (byteImage == null || byteImage.length == 0) {
             return null;
         }
-        return "data:image/png;base64," +Base64.getEncoder().encodeToString(byteImage);
+        return Base64.getEncoder().encodeToString(byteImage);
     }
+
+    public String byteResumeToBase64(byte[] byteResume) {
+        if (byteResume == null || byteResume.length == 0) {
+            return null;
+        }
+        return  Base64.getEncoder().encodeToString(byteResume);
+    }
+
+
 
     public ResponseEntity<List<EmployerDTO>> getAllEmployers() {
         List<Employer> employers = employerRepo.findAll();
@@ -58,8 +67,6 @@ public class EmployerService {
 
         return ResponseEntity.ok(dtoList);
     }
-
-
 
 
     public ResponseEntity<String> updateEmployer(EmployerDTO employerDTO) {

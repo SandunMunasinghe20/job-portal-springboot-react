@@ -41,6 +41,12 @@ public class MessageService {
 
     //send
     public ResponseEntity<String> sendMessage(MessageDTO messageDTO, Authentication authentication) {
+
+        //can't allow self msg
+        if(messageDTO.getSenderId().equals(messageDTO.getReceiverId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot send message to yourself");
+        }
+
         String email = authentication.getName();
 
         //sender
@@ -262,18 +268,26 @@ public class MessageService {
     }
 
     public ResponseEntity<?> getInbox(Long userId) {
+
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
         List<Message> messages = messageRepo.findLatestMessagesInUserConversations(userId);
-        if (messages.isEmpty()) {
+
+        //skip self msgs
+        List<Message> filteredMessages = messages.stream()
+                .filter(m -> !m.getSender().getId().equals(m.getReceiver().getId()))  // skip self-msg
+                .collect(Collectors.toList());
+
+
+        if (filteredMessages.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Your Inbox is empty");
         }
 
         List<MessageDTO> dtoList = new ArrayList<>();
-        for (Message message : messages) {
+        for (Message message : filteredMessages) {
             MessageDTO dto = new MessageDTO();
             dto.setMsgId(message.getMsgId());
             dto.setSenderId(message.getSender().getId());

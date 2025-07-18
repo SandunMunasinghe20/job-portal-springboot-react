@@ -35,7 +35,7 @@ public class SeekerController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('employer')")  // Only employers can access
+    //@PreAuthorize("hasRole('employer') ||hasRole('admin')")
     public ResponseEntity<SeekerDTO> getSeekerProfileById(@PathVariable Long id) {
         return seekerService.getSeekerprofileById(id);
     }

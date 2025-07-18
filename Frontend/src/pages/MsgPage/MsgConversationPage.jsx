@@ -10,12 +10,10 @@ export default function MsgInboxPage() {
   const currentId = Number(localStorage.getItem("id"));
   const navigate = useNavigate();
 
-
   const role = localStorage.getItem("role");
-  
 
-    //const searchParams = useSearchParams();
-    //const receiverId = searchParams.get("receiverId");
+  //const searchParams = useSearchParams();
+  //const receiverId = searchParams.get("receiverId");
 
   useEffect(() => {
     fetchInbox();
@@ -23,18 +21,23 @@ export default function MsgInboxPage() {
 
   async function fetchInbox() {
     try {
-      const res = await fetch(`http://localhost:8080/api/msg/inbox?userId=${currentId}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/msg/inbox?userId=${currentId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       if (!res.ok) {
-        toast.error("Failed to load inbox");
+        const data = await res.text();
+        toast.error(data);
         return;
       }
 
       const data = await res.json();
+      console.log("data: ", data);
       setConversations(data);
     } catch (err) {
       toast.error("Error loading inbox");
@@ -51,38 +54,52 @@ export default function MsgInboxPage() {
           <p className="text-center text-gray-500">No messages yet.</p>
         ) : (
           <ul>
-            {conversations.map((msg) => {
-              const chatUserId = msg.receiverId;
-              const chatUserName = msg.senderName;
-              const lastMessage = msg.content;
-              const lastMessageTime = msg.sendTime;
+            {conversations
+              .filter(
+                (msg) =>
+                  !(msg.senderId === currentId && msg.receiverId === currentId)
+              ) // can't msg to himself
+              .map((msg) => {
+                const chatUserId =
+                  msg.senderId === currentId ? msg.receiverId : msg.senderId;
+                const chatUserName =
+                  msg.senderId === currentId
+                    ? msg.receiverName
+                    : msg.senderName;
 
-              return (
-                <li
-                  key={msg.msgId}
-                  /* move to single chat page */
-                  onClick={() => navigate(`/msg?senderId=${currentId}&receiverId=${chatUserId}`)}
+                const lastMessage = msg.content;
+                const lastMessageTime = msg.sendTime;
 
-                  className="cursor-pointer p-3 border-b hover:bg-gray-100 flex justify-between items-center"
-                >
-                  <div>
-                    <p className="font-semibold">{chatUserName}</p>
-                    <p className="text-sm text-gray-600 truncate max-w-xs">{lastMessage}</p>
-                  </div>
-                  <div className="text-xs text-gray-500 text-right">
-                    <div>{new Date(lastMessageTime).toLocaleDateString()}</div>
-                    {msg.unreadCount > 0 && (
-                      
-                      
-                      <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
-                        {msg.unreadCount}
-                      </span>
-
-                    )}
-                  </div>
-                </li>
-              );
-            })}
+                return (
+                  <li
+                    key={msg.msgId}
+                    /* move to single chat page */
+                    onClick={() =>
+                      navigate(
+                        `/msg?senderId=${currentId}&receiverId=${chatUserId}`
+                      )
+                    }
+                    className="cursor-pointer p-3 border-b hover:bg-gray-100 flex justify-between items-center"
+                  >
+                    <div>
+                      <p className="font-semibold">{chatUserName}</p>
+                      <p className="text-sm text-gray-600 truncate max-w-xs">
+                        {lastMessage}
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-500 text-right">
+                      <div>
+                        {new Date(lastMessageTime).toLocaleDateString()}
+                      </div>
+                      {msg.unreadCount > 0 && (
+                        <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
+                          {msg.unreadCount}
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
           </ul>
         )}
       </div>

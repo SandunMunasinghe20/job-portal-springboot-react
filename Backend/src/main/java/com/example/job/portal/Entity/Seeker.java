@@ -26,7 +26,9 @@ public class Seeker extends User {
     @Min(value = 0, message = "Experience must be a positive number")
     private Integer totalExperience;
 
-    private String resumeUrl;
+    @Lob
+    @Column(name = "resume",columnDefinition = "LONGBLOB")
+    private byte[] resume;
 
     // Preferences
     private String jobTypePreference;
@@ -105,12 +107,12 @@ public class Seeker extends User {
         this.totalExperience = totalExperience;
     }
 
-    public String getResumeUrl() {
-        return resumeUrl;
+    public byte[] getResume() {
+        return resume;
     }
 
-    public void setResumeUrl(String resumeUrl) {
-        this.resumeUrl = resumeUrl;
+    public void setResume(byte[] resume) {
+        this.resume = resume;
     }
 
     public String getJobTypePreference() {
