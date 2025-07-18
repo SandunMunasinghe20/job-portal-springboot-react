@@ -1,6 +1,6 @@
 # 💼 Fullstack Job Portal
 
-A full-featured, responsive **Job Portal** built using **Java 23 (Spring Boot)** for the backend and **React + Vite** for the frontend. Developed as a personal project to showcase my skills as a fullstack engineer.
+A full-featured, responsive Job Portal built using **Java 21 (Spring Boot)** for the backend and **React + Vite** for the frontend. Developed as a university project to demonstrate fullstack engineering capabilities.
 
 ---
 
@@ -8,100 +8,144 @@ A full-featured, responsive **Job Portal** built using **Java 23 (Spring Boot)**
 
 This Job Portal enables:
 
-- 🧑‍💼 Employers to post, update, and delete job listings
-- 👨‍🎓 Job Seekers to browse, search, and apply for jobs
-- 🔐 Secure login and registration system with role-based access control
+* 🧑‍💼 Employers to post, update, and delete job listings
+* 👨‍🎓 Job Seekers to browse, search, and apply for jobs
+* 🔐 Secure login and registration system with role-based access control
 
-The app is backed by a **MySQL** database and built entirely by me as a demonstration of fullstack development with modern tools.
+Backed by a **MySQL database**, the app was entirely built by me to demonstrate robust, modern fullstack development.
 
 ---
 
 ## 🧑‍💻 My Role as Developer
 
-- Designed and implemented **RESTful APIs** using **Spring Boot**
-- Built responsive **frontend UI** using **React + Vite**
-- Configured **JWT-based authentication** with **Spring Security**
-- Managed **MySQL** database design and schema relationships
-- Solved CORS issues, security configuration, and role segregation
+* Designed and implemented RESTful APIs using Spring Boot
+* Built a responsive frontend UI using React + Vite + Tailwind CSS
+* Configured **JWT-based authentication and role-based access** using Spring Security
+* Designed database schema and relationships in MySQL
+* Integrated secure resume and profile image upload features
+* Managed CORS, error handling, and environment configurations
 
 ---
 
 ## 🏗️ Architecture
 
-
-* **Frontend**: React, React Router, Tailwind CSS
-* **Backend**: Spring Boot, Spring Data JPA, Spring Security
-* **Database**: MySQL with Hibernate (JPA) for ORM
+| Layer    | Stack                                                                |
+| -------- | -------------------------------------------------------------------- |
+| Frontend | React, Vite, Tailwind CSS, React Router, React Icons, React Toastify |
+| Backend  | Java 21, Spring Boot, Spring Data JPA, Spring Security               |
+| Database | MySQL with Hibernate (JPA)                                           |
+| Tools    | Git, GitHub, Postman, JUnit                                          |
 
 ---
 
 ## 📸 Screenshots
 
+<!-- Add screenshots here if needed -->
+
+---
 
 ## 🔗 Live Demo / Video
 
+<!-- Add link once deployed -->
+
+---
 
 ## 🧪 Key Features
 
-* 🔐 Authentication: Login / Register / Forgot Password
-* 🧭 Role-based Access: Job Seekers & Employers
-* 📝 Job CRUD: Post, Edit, Delete (Employers)
-* 📂 Apply to Jobs: (Job Seekers)
-* 🌍 MySQL Integration (local setup)
-* ✅ JWT Token Security 
+### 🔐 Authentication & Authorization
+
+* Login / Register / Forgot Password via email service
+* **JWT Token** based secure authentication
+* Role-based access control for Employers, Job Seekers, and Admins
+* Logout functionality for all roles
+
+### 💬 Messaging System
+
+* Employers can message job seekers only **after a job application** exists
+* Admins can message anyone
+* Self-messaging and same-role messaging is **prohibited**
+* **Read receipts** are enabled (users can see if their message was viewed)
+* **Messages cannot be deleted** to ensure platform integrity
+
+### 🧭 Role Capabilities
+
+#### 👨‍🎓 Job Seekers
+
+* Browse and search all job posts
+* Apply to jobs with attached resume
+* View and update profile
+* Upload resume to profile and during job applications
+* View submitted applications
+
+#### 🧑‍💼 Employers
+
+* Post, edit, delete **only their own jobs**
+* View received job applications
+* Approve, reject, or delete job applications
+* View and update profile
+* See all jobs on the portal
+
+#### 🛠️ Admins
+
+* View **all** jobs, applications, employers, and seekers
+* Delete inappropriate jobs
+* Monitor platform activities
+
+### 📂 File Uploads
+
+* Upload and view resumes (PDF)
+* Upload and view profile and company logos
 
 ---
 
 ## 🧩 Challenges Solved
 
-* ✔️ Integrated **JWT** securely with **Spring Security**
-* ✔️ Managed **CORS** across React (localhost) and Spring Boot (localhost)
-* ✔️ Structured frontend & backend as independent services
-* ✔️ Designed normalized schema for user-job-application relations
+* Integrated **JWT and Spring Security** securely for role-based access
+* Solved CORS issues between frontend and backend during development
+* Designed clean RESTful APIs with proper separation of concerns
+* Normalized schema for user-job-application relationships
+* Maintained secure upload storage for resumes and images
 
 ---
 
 ## 🧠 What I Learned
 
-* End-to-end fullstack development using **Spring Boot** and **React**
-* Managing state and handling API calls using **React Hooks**
-* Creating and consuming **RESTful APIs** with proper request/response structure
-* Implementing **secure authentication and authorization** using **Spring Security** and **JWT**
-* Applying **role-based access control** (Job Seeker / Employer) in both frontend and backend
-* Using modern **Java 23** features and configuration-based setups in Spring Boot
-* Connecting frontend, backend, and MySQL with full-stack integration logic
-* Handling **CORS**, environment configs, and error handling across the stack
+* Building and securing fullstack applications end-to-end
+* React state management with Hooks and API integration
+* Designing scalable and normalized relational databases
+* Implementing security best practices with Spring Security & JWT
+* Handling uploads and file storage across the stack
+* Structuring clean code and maintaining modularity in large projects
+
 ---
 
 ## 🛠️ Tech Stack
 
 | Area     | Tech                                       |
 | -------- | ------------------------------------------ |
-| Frontend | React, Vite, React Router                  |
-| Backend  | Java 23, Spring Boot, Spring Security, JPA |
+| Frontend | React, Vite, Tailwind CSS, React Router    |
+| Backend  | Java 21, Spring Boot, Spring Security, JPA |
 | Database | MySQL                                      |
-| Tools    | Git, GitHub, Postman,Junit                       |
+| Tools    | Git, GitHub, Postman, JUnit                |
 
 ---
 
 ## ⚙️ Setup Instructions
 
-### Prerequisites
+### ✅ Prerequisites
 
-* Java 23
+* Java 21
 * Node.js & npm
 * MySQL Server
 * Maven
 
-### Backend Setup
-
-1. Create MySQL database:
+### 🛠️ Backend Setup
 
 ```sql
 CREATE DATABASE job_portal;
 ```
 
-2. Edit `application.properties`:
+**Edit `application.properties`:**
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/job_portal
@@ -110,13 +154,13 @@ spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-3. Run backend:
+**Run Backend:**
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-### Frontend Setup
+### 💻 Frontend Setup
 
 ```bash
 cd frontend
@@ -128,12 +172,16 @@ npm run dev
 
 ## 📌 Roadmap
 
-* [x] Login, Register, Forgot/Reset Password
-* [x] Job Posting and Application Flows
-* [x] MySQL Integration
-* [x] Job Search / Filters
-* [x] Resume Upload & File Storage
-* [] Deployment (Render, Vercel, Railway)
+* ✅ Login, Register, Forgot/Reset Password
+* ✅ Job Posting and Application Flows
+* ✅ MySQL Integration
+* ✅ Resume Upload & File Storage
+* ✅ Role-Based Messaging System
+* ✅ Admin View and Control Features
+* 🔜 Deployment (Render / Vercel / Railway)
+* 🔜 UI/UX Polish
+* ⛔ Notifications (not included)
+* ⛔ Stats/Analytics (not included)
 
 ---
 
@@ -141,7 +189,8 @@ npm run dev
 
 **Sandun Munasinghe**
 📧 [e20259@eng.pdn.ac.lk](mailto:e20259@eng.pdn.ac.lk)
-🔗 [GitHub Profile](https://github.com/tharuwa1954)
+📧 [msandunlakshan2001@gmail.com](mailto:msandunlakshan2001@gmail.com)
+🔗 [GitHub Profile](https://github.com/SandunMunasinghe20)
 
 ---
 
@@ -149,3 +198,10 @@ npm run dev
 
 This is a personal project created solely by me for educational and portfolio purposes. No open-source license is applied.
 
+---
+
+## 🏫 About
+
+University Final Project (Year 2)
+Department of Computer Engineering
+University of Peradeniya
