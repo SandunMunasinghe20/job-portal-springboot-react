@@ -37,7 +37,7 @@ public class SeekerDTO {
 
     private String availability;
 
-    private String profilePictureUrl;
+    private String profilePicture;
 
     private String education;
 
@@ -155,12 +155,12 @@ public class SeekerDTO {
         this.availability = availability;
     }
 
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getEducation() {

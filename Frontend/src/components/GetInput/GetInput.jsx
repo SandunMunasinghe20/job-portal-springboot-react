@@ -4,6 +4,7 @@ export default function GetInput(props) {
     <input
       type={props.type}
       value={props.value}
+      min={props.min}
       placeholder={props.placeholder}
       onChange={(e) => props.onChange(e.target.value)}
       required={props.required}

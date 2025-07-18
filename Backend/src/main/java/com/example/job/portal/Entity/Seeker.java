@@ -1,6 +1,7 @@
 package com.example.job.portal.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Seeker extends User {
 
     private String currentJobTitle;
 
+    @Min(value = 0, message = "Experience must be a positive number")
     private Integer totalExperience;
 
     private String resumeUrl;
@@ -33,7 +35,10 @@ public class Seeker extends User {
     private String availability;
 
     // profile picture
-    private String profilePictureUrl;
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "LONGBLOB")
+    private byte[] profilePicture;
+
 
 
     @Lob
@@ -140,12 +145,12 @@ public class Seeker extends User {
         this.availability = availability;
     }
 
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
+    public byte[] getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getEducation() {

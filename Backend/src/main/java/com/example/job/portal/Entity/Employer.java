@@ -24,7 +24,9 @@ public class Employer extends User{
 
     private String website;
 
-    private String logoUrl;
+    @Lob
+    @Column(name = "company_logo", columnDefinition = "MEDIUMBLOB")
+    private byte[] companyLogo;
 
 
 
@@ -89,12 +91,12 @@ public class Employer extends User{
         this.website = website;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public byte[] getCompanyLogo() {
+        return companyLogo;
     }
 
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
+    public void setCompanyLogo(byte[] companyLogo) {
+        this.companyLogo = companyLogo;
     }
 
     public String getCompanyDescription() {

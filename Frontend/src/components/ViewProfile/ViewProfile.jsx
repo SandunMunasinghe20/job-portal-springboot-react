@@ -20,11 +20,22 @@ export default function ViewProfile({ profile }) {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 text-center sm:text-left">
+        
         <img
-          src={isSeeker ? profile.profilePictureUrl : profile.logoUrl}
-          alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-sm"
+              src={
+                isSeeker
+                  ? profile.profilePicture
+                    ? `data:image/jpeg;base64,${profile.profilePicture}`
+                    : "/default-user.png"
+                  : profile.companyLogo
+                    ? profile.companyLogo
+                    : "/default-company.png"
+              }
+              alt="Profile"
+              className="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-sm"
         />
+
+
         <div className="mt-4 sm:mt-0">
           <h2 className="text-2xl font-bold text-gray-800">
             {isSeeker
@@ -42,7 +53,7 @@ export default function ViewProfile({ profile }) {
         {isSeeker ? (
           <>
             <Detail label="Current Job Title" value={profile.currentJobTitle} />
-            <Detail label="Total Experience" value={profile.totalExperience} />
+            <Detail label="Total Experience" value={String(profile.totalExperience ?? 0)} />
             <Detail label="Expected Salary" value={profile.expectedSalary} />
             <Detail label="Availability" value={profile.availability} />
             <Detail label="Job Type Preference" value={profile.jobTypePreference} />
@@ -59,29 +70,29 @@ export default function ViewProfile({ profile }) {
             <Detail label="Certifications" value={profile.certifications} />
 
             <div className="sm:col-span-2">
-              <span className="font-semibold text-gray-900 mr-1">Resume:</span>
-              {profile.resumeBase64 ? (
-                <span className="space-x-4">
-                  <a
-                    href={`data:application/pdf;base64,${profile.resumeBase64}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline hover:text-blue-800"
-                  >
-                    View
-                  </a>
-                  <a
-                    href={`data:application/pdf;base64,${profile.resumeBase64}`}
-                    download="resume.pdf"
-                    className="text-blue-600 underline hover:text-blue-800"
-                  >
-                    Download
-                  </a>
-                </span>
-              ) : (
-                <span className="italic text-gray-400">Not Provided</span>
-              )}
-            </div>
+                  <span className="font-semibold text-gray-900 mr-1">Resume:</span>
+                  {profile.resumeBase64 ? (
+                    <span className="space-x-4">
+                      <a
+                        href={`data:application/pdf;base64,${profile.resumeBase64}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline hover:text-blue-800"
+                      >
+                        View
+                      </a>
+                      <a
+                        href={`data:application/pdf;base64,${profile.resumeBase64}`}
+                        download="resume.pdf"
+                        className="text-blue-600 underline hover:text-blue-800"
+                      >
+                        Download
+                      </a>
+                    </span>
+                  ) : (
+                    <span className="italic text-gray-400">Not Provided</span>
+                  )}
+              </div>
           </>
         ) : (
           <>

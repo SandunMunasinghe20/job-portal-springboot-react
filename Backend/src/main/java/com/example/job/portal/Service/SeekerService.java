@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,13 @@ public class SeekerService {
             seekerDTO.setAvailability(seeker.getAvailability());
 
             // Educational & additional data
-            seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
-            seekerDTO.setEducation(seeker.getEducation());
+            //convert byte arr to base 64 to send to front
+            byte[] byteImage = seeker.getProfilePicture();
+            if (byteImage != null && byteImage.length > 0) {
+                String base64Image = Base64.getEncoder().encodeToString(byteImage);
+                seekerDTO.setProfilePicture(base64Image);
+            }
+
             seekerDTO.setWorkExperience(seeker.getWorkExperience());
             seekerDTO.setCertifications(seeker.getCertifications());
 
@@ -101,7 +107,14 @@ public class SeekerService {
         seeker.setAvailability(seekerDTO.getAvailability());
 
 // Media / Description
-        seeker.setProfilePictureUrl(seekerDTO.getProfilePictureUrl());
+        //profile pic
+        String base64Image = seekerDTO.getProfilePicture();
+        if (base64Image != null && base64Image.length() > 0) {
+            byte[] byteImage = Base64.getDecoder().decode(base64Image);
+            seeker.setProfilePicture(byteImage);
+        }
+
+
         seeker.setEducation(seekerDTO.getEducation());
         seeker.setWorkExperience(seekerDTO.getWorkExperience());
         seeker.setCertifications(seekerDTO.getCertifications());
@@ -135,7 +148,13 @@ public class SeekerService {
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
         seekerDTO.setAvailability(seeker.getAvailability());
-        seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
+
+        byte[] byteImage = seeker.getProfilePicture();
+        if (byteImage != null && byteImage.length > 0) {
+            String base64Image = Base64.getEncoder().encodeToString(byteImage);
+            seekerDTO.setProfilePicture(base64Image);
+        }
+
         seekerDTO.setEducation(seeker.getEducation());
         seekerDTO.setWorkExperience(seeker.getWorkExperience());
         seekerDTO.setCertifications(seeker.getCertifications());
@@ -177,7 +196,14 @@ public class SeekerService {
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
         seekerDTO.setAvailability(seeker.getAvailability());
-        seekerDTO.setProfilePictureUrl(seeker.getProfilePictureUrl());
+
+
+        byte[] byteImage = seeker.getProfilePicture();
+        if (byteImage != null && byteImage.length > 0) {
+            String base64Image = Base64.getEncoder().encodeToString(byteImage);
+            seekerDTO.setProfilePicture(base64Image);
+        }
+
         seekerDTO.setEducation(seeker.getEducation());
         seekerDTO.setWorkExperience(seeker.getWorkExperience());
         seekerDTO.setCertifications(seeker.getCertifications());

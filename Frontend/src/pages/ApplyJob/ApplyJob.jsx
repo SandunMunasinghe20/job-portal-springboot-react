@@ -124,6 +124,7 @@ export default function ApplyJob() {
     const handleFileChange = (e) => {
         setResume(e.target.files[0]);
     }
+    
 
     return (
         <><NavBar role={role} />

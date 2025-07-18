@@ -1,6 +1,12 @@
 package com.example.job.portal.DTO;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 
 public class EmployerDTO {
 
@@ -22,99 +28,11 @@ public class EmployerDTO {
 
     private String website;
 
-    private String logoUrl;
+    private String companyLogo;
 
     private String companyDescription;
 
     private String role = "employer";
 
-    // Getters and setters
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getRegistrationNumber() {
-        return registrationNumber;
-    }
-
-    public void setRegistrationNumber(Integer registrationNumber) {
-        this.registrationNumber = registrationNumber;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public String getCompanySize() {
-        return companySize;
-    }
-
-    public void setCompanySize(String companySize) {
-        this.companySize = companySize;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getLogoUrl() {
-        return logoUrl;
-    }
-
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
-
-    public String getCompanyDescription() {
-        return companyDescription;
-    }
-
-    public void setCompanyDescription(String companyDescription) {
-        this.companyDescription = companyDescription;
-    }
-    
-    public void setRole(String role){
-        this.role=role;
-    }
-    public String getRole(){
-        return role;
-    }
-    
 }

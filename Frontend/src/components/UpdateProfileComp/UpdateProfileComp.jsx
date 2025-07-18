@@ -12,7 +12,7 @@ export default function UpdateProfileComp({ }) {
   const navigate = useNavigate();
 
   //set Error
-  //const [err, toast.error] = useState("");
+  const [error, setError] = useState("");
   //const [success, toast.success] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -23,13 +23,13 @@ export default function UpdateProfileComp({ }) {
   const [location, setLocation] = useState("");
   const [skills, setSkills] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState("");
-  const [totalExperience, setTotalExperience] = useState(0);
-  const [resumeUrl, setResumeUrl] = useState("");
+  const [totalExperience, setTotalExperience] = useState("0");
+  const [resume, setResume] = useState("");
   const [jobTypePreference, setJobTypePreference] = useState("");
   const [preferredIndustry, setPreferredIndustry] = useState("");
   const [expectedSalary, setExpectedSalary] = useState(0);
   const [availability, setAvailability] = useState("");
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
   const [education, setEducation] = useState("");
   const [workExperience, setWorkExperience] = useState("");
   const [certifications, setCertifications] = useState("");
@@ -41,7 +41,7 @@ export default function UpdateProfileComp({ }) {
   const [industry, setIndustry] = useState("");
   const [companySize, setCompanySize] = useState("");
   const [website, setWebsite] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
+  const [companyLogo, setCompanyLogo] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
 
   const role = localStorage.getItem("role");
@@ -74,12 +74,12 @@ export default function UpdateProfileComp({ }) {
           setSkills(data.skills || "");
           setCurrentJobTitle(data.currentJobTitle || "");
           setTotalExperience(data.totalExperience || 0);
-          setResumeUrl(data.resumeUrl || "");
+          setResume(data.resume || "");
           setJobTypePreference(data.jobTypePreference || "");
           setPreferredIndustry(data.preferredIndustry || "");
           setExpectedSalary(data.expectedSalary || 0);
           setAvailability(data.availability || "");
-          setProfilePictureUrl(data.profilePictureUrl || "");
+          setProfilePicture(data.profilePicture || "");
           setEducation(data.education || "");
           setWorkExperience(data.workExperience || "");
           setCertifications(data.certifications || "");
@@ -91,7 +91,7 @@ export default function UpdateProfileComp({ }) {
           setIndustry(data.industry || "");
           setCompanySize(data.companySize || "");
           setWebsite(data.website || "");
-          setLogoUrl(data.logoUrl || "");
+          setCompanyLogo(data.companyLogo || "");
           setCompanyDescription(data.companyDescription || "");
         }
 
@@ -109,6 +109,14 @@ export default function UpdateProfileComp({ }) {
   const handlesubmit = async () => {
     //const token = localStorage.getItem("auth-token");
 
+    if (Number(totalExperience) < 0) {
+  setError('Experience must be a positive number');
+  toast.error("Experience must be a positive number");
+  return;
+}else{
+  setError("");
+}
+
     let url;
     let body = {};
 
@@ -122,12 +130,12 @@ export default function UpdateProfileComp({ }) {
         skills,
         currentJobTitle,
         totalExperience,
-        resumeUrl,
+        resume,
         jobTypePreference,
         preferredIndustry,
         expectedSalary,
         availability,
-        profilePictureUrl,
+        profilePicture,
         education,
         workExperience,
         certifications
@@ -142,7 +150,7 @@ export default function UpdateProfileComp({ }) {
         industry,
         companySize,
         website,
-        logoUrl,
+        companyLogo,
         companyDescription
       };
     }
@@ -167,6 +175,24 @@ export default function UpdateProfileComp({ }) {
       toast.error("Failed to load your data to update");
     }
   };
+
+  const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    const base64String = reader.result.split(',')[1]; // Remove the base64 prefix
+     if (role === "seeker") {
+      setProfilePicture(base64String);
+    } else if (role === "employer") {
+      setCompanyLogo(base64String);
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+
   if (loading) return <p>Loading profile...</p>;
 
   return (
@@ -323,17 +349,21 @@ export default function UpdateProfileComp({ }) {
                 <GetInput
                   type="number"
                   placeholder="Total Experience"
+                  min ={0}
                   value={totalExperience}
                   onChange={setTotalExperience}
                 />
               </div>
+              
+              {error && <p className="text-red-600 text-sm">{error}</p>}
+              
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Resume URL</label>
                 <GetInput
                   placeholder="Resume URL"
-                  value={resumeUrl}
-                  onChange={setResumeUrl}
+                  value={resume}
+                  onChange={setResume}
                 />
               </div>
 
@@ -375,13 +405,16 @@ export default function UpdateProfileComp({ }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
-                <GetInput
-                  placeholder="Profile Picture URL"
-                  value={profilePictureUrl}
-                  onChange={setProfilePictureUrl}
-                />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Profile Picture</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                  />
               </div>
+
+
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Education</label>
@@ -411,9 +444,32 @@ export default function UpdateProfileComp({ }) {
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
                 />
               </div>
+
+              <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Resume</label>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                  />
+              </div>
+
+
             </>
           ) : (
             <>
+
+              <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Company Logo</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full mb-4 block border border-gray-300 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+                  />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
                 <GetInput
@@ -469,14 +525,7 @@ export default function UpdateProfileComp({ }) {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Logo URL</label>
-                <GetInput
-                  placeholder="Logo URL"
-                  value={logoUrl}
-                  onChange={setLogoUrl}
-                />
-              </div>
+              
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Company Description</label>

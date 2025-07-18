@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,20 @@ public class EmployerService {
         this.employerRepo = employerRepo;
     }
 
+    public byte[] base64ToByteImage(String base64Image) {
+        if (base64Image == null || base64Image.isEmpty()) {
+            return null;
+        }
+        return  Base64.getDecoder().decode(base64Image);
+    }
+
+    public String byteImageToBase64(byte[] byteImage) {
+        if (byteImage == null || byteImage.length == 0) {
+            return null;
+        }
+        return "data:image/png;base64," +Base64.getEncoder().encodeToString(byteImage);
+    }
+
     public ResponseEntity<List<EmployerDTO>> getAllEmployers() {
         List<Employer> employers = employerRepo.findAll();
 
@@ -30,7 +45,9 @@ public class EmployerService {
             dto.setIndustry(emp.getIndustry());
             dto.setCompanySize(emp.getCompanySize());
             dto.setWebsite(emp.getWebsite());
-            dto.setLogoUrl(emp.getLogoUrl());
+
+            //prof pic
+            dto.setCompanyLogo(byteImageToBase64(emp.getCompanyLogo()));
             dto.setCompanyDescription(emp.getCompanyDescription());
             dto.setAddress(emp.getAddress());
             dto.setPhone(emp.getPhone());
@@ -63,7 +80,9 @@ public class EmployerService {
         employer.setIndustry(employerDTO.getIndustry());
         employer.setCompanySize(employerDTO.getCompanySize());
         employer.setWebsite(employerDTO.getWebsite());
-        employer.setLogoUrl(employerDTO.getLogoUrl());
+
+        //prof pic
+        employer.setCompanyLogo(base64ToByteImage(employerDTO.getCompanyLogo()));
         employer.setCompanyDescription(employerDTO.getCompanyDescription());
         employer.setRole(employerDTO.getRole());
 
@@ -93,7 +112,10 @@ public class EmployerService {
         dto.setIndustry(employer.getIndustry());
         dto.setCompanySize(employer.getCompanySize());
         dto.setWebsite(employer.getWebsite());
-        dto.setLogoUrl(employer.getLogoUrl());
+
+        //prof pic
+        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo()));
+
         dto.setCompanyDescription(employer.getCompanyDescription());
         dto.setRole(employer.getRole());
         System.out.println("role: " + employer.getRole());
@@ -124,7 +146,8 @@ public class EmployerService {
         dto.setIndustry(employer.getIndustry());
         dto.setCompanySize(employer.getCompanySize());
         dto.setWebsite(employer.getWebsite());
-        dto.setLogoUrl(employer.getLogoUrl());
+        //prof pic
+        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo()));
         return ResponseEntity.ok(dto);
 
     }
