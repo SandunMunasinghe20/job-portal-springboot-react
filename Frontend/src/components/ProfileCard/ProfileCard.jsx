@@ -1,40 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-
-// Mock PdfViewer component since we don't have the actual implementation
-const PdfViewer = ({ base64Pdf }) => (
-  <div className="bg-gray-100 p-4 rounded-lg border-2 border-dashed border-gray-300 text-center">
-    <div className="text-gray-600 mb-2">
-      <svg
-        className="w-12 h-12 mx-auto mb-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
-      </svg>
-      <p className="text-sm">PDF Resume Available</p>
-      <p className="text-xs text-gray-500">Click to view full document</p>
-    </div>
-  </div>
-);
+import PdfViewer from "../PdfViewer";
+import { ToggleRight, ToggleLeft } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function ProfileCard({ profile, roletoget }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isActive, setIsActive] = useState(profile.accountStatus === "active");
+
+  const token = localStorage.getItem("auth-token");
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  useEffect(() => {
+    setIsActive(profile.accountStatus === "active");
+  }, [profile.accountStatus]);
+
+  const toggleAccountStatus = async () => {
+    let url;
+    if (isActive) {
+      url = "http://localhost:8080/api/admin/deactivate";
+    } else {
+      url = "http://localhost:8080/api/admin/activate";
+    }
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: profile.email,
+        }),
+      });
+
+      const data = await response.text();
+      console.log(data);
+      if (!response.ok) {
+        toast.error(data);
+        return;
+      }
+
+      toast.success(data);
+      setIsActive((prev) => !prev);
+    } catch (e) {
+      toast.error("Unable to connect with the server.");
+      return;
+    }
+  };
+
   function Detail({ label, value }) {
     return (
       <div className="flex flex-col space-y-1">
-        <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+        <span className="text-sm font-semibold tracking-wide text-gray-600 uppercase">
           {label}
         </span>
         <span className="text-gray-800">
@@ -48,47 +69,16 @@ export default function ProfileCard({ profile, roletoget }) {
     );
   }
 
-  // Sample profile data for demonstration
-  const sampleProfile = profile || {
-    fname: "John",
-    lname: "Doe",
-    currentJobTitle: "Software Engineer",
-    location: "San Francisco, CA",
-    totalExperience: 5,
-    expectedSalary: "120,000",
-    availability: "Available",
-    jobrolePreference: "Full Stack Developer",
-    preferredIndustry: "Technology",
-    education: "Bachelor's in Computer Science",
-    workExperience:
-      "5+ years of experience in web development with React, Node.js, and Python. Led multiple projects from conception to deployment.",
-    certifications:
-      "AWS Certified Solutions Architect, Google Cloud Professional",
-    skills: "JavaScript, React, Node.js, Python, AWS, Docker",
-    profilePicture: null,
-    resume: "sample_resume_data",
-    // Employer fields
-    companyName: "Tech Solutions Inc.",
-    industry: "Software Development",
-    companySize: "100-500",
-    registrationNumber: "REG123456",
-    phone: "+1-555-0123",
-    website: "https://techsolutions.com",
-    companyDescription:
-      "Leading software development company specializing in innovative web solutions.",
-    companyLogo: null,
-  };
-
-  const currentProfile = profile || sampleProfile;
+  const currentProfile = profile;
 
   console.log("roletoget:", roletoget);
 
   if (roletoget === "admin") {
     console.log("in an admin profile");
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto mb-6">
+      <div className="max-w-4xl p-8 mx-auto mb-6 bg-white shadow-lg rounded-2xl">
         <div className="text-center">
-          <div className="w-24 h-24 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+          <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 rounded-full bg-blue-50">
             <svg
               className="w-12 h-12 text-blue-600"
               fill="none"
@@ -103,7 +93,7 @@ export default function ProfileCard({ profile, roletoget }) {
               />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold text-blue-600 mb-2">
+          <h2 className="mb-2 text-3xl font-bold text-blue-600">
             Admin Profile
           </h2>
           <p className="text-gray-600">System Administrator</p>
@@ -114,18 +104,18 @@ export default function ProfileCard({ profile, roletoget }) {
     const isSeeker = roletoget === "seeker";
 
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto mb-6">
+      <div className="max-w-4xl p-6 mx-auto mb-6 bg-white shadow-lg rounded-2xl">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 mb-6">
+        <div className="flex flex-col items-center mb-6 space-y-4 md:flex-row md:items-start md:space-y-0 md:space-x-6">
           {/* Profile Image */}
           <div className="flex-shrink-0">
-            <div className="w-24 h-24 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden border-2 border-blue-100">
+            <div className="flex items-center justify-center w-24 h-24 overflow-hidden border-2 border-blue-100 rounded-2xl bg-blue-50">
               {roletoget === "seeker" ? (
                 currentProfile.profilePicture ? (
                   <img
                     src={`data:image/jpeg;base64,${currentProfile.profilePicture}`}
                     alt="Profile Picture"
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 ) : (
                   <svg
@@ -146,7 +136,7 @@ export default function ProfileCard({ profile, roletoget }) {
                 <img
                   src={currentProfile.companyLogo}
                   alt="Company Logo"
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               ) : (
                 <svg
@@ -168,16 +158,40 @@ export default function ProfileCard({ profile, roletoget }) {
 
           {/* Basic Info */}
           <div className="flex-1 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center md:items-start md:justify-between mb-4">
+            <div className="flex flex-col items-center mb-4 md:flex-row md:items-start md:justify-between">
               <div>
-                <h2 className="text-3xl font-semibold text-gray-900 mb-2">
-                  {roletoget === "seeker"
-                    ? `${currentProfile.fname || ""} ${
-                        currentProfile.lname || ""
-                      }`
-                    : currentProfile.companyName}
-                </h2>
-                <p className="text-lg font-medium text-blue-600 mb-2">
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-3">
+                    <h2 className="mb-2 text-3xl font-semibold text-gray-900">
+                      {roletoget === "seeker"
+                        ? `${currentProfile.fname || ""} ${
+                            currentProfile.lname || ""
+                          }`
+                        : currentProfile.companyName}
+                    </h2>
+
+                    {/* Toggle button */}
+                    <button
+                      onClick={toggleAccountStatus}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                        isActive
+                          ? "bg-green-100 text-green-700 hover:bg-green-200"
+                          : "bg-red-100 text-red-700 hover:bg-red-200"
+                      }`}
+                      title={
+                        isActive ? "Deactivate Account" : "Activate Account"
+                      }
+                    >
+                      {isActive ? (
+                        <ToggleRight className="w-6 h-6" />
+                      ) : (
+                        <ToggleLeft className="w-6 h-6" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <p className="mb-2 text-lg font-medium text-blue-600">
                   {roletoget === "seeker"
                     ? currentProfile.currentJobTitle
                     : currentProfile.industry}
@@ -186,7 +200,7 @@ export default function ProfileCard({ profile, roletoget }) {
 
               {/* Role Badge */}
               <div className="flex items-center space-x-2">
-                <span className="px-3 py-1 bg-blue-50 text-blue-800 rounded-full text-sm font-semibold">
+                <span className="px-3 py-1 text-sm font-semibold text-blue-800 rounded-full bg-blue-50">
                   {isSeeker ? "Job Seeker" : "Employer"}
                 </span>
               </div>
@@ -194,7 +208,7 @@ export default function ProfileCard({ profile, roletoget }) {
 
             {/* Quick Stats */}
             {roletoget === "seeker" && (
-              <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-700">
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-700 md:justify-start">
                 <div className="flex items-center space-x-1">
                   <svg
                     className="w-4 h-4 text-blue-600"
@@ -244,7 +258,7 @@ export default function ProfileCard({ profile, roletoget }) {
             )}
 
             {roletoget === "employer" && (
-              <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-700">
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-700 md:justify-start">
                 <div className="flex items-center space-x-1">
                   <svg
                     className="w-4 h-4 text-blue-600"
@@ -302,7 +316,7 @@ export default function ProfileCard({ profile, roletoget }) {
         <div className="flex justify-center mb-4">
           <button
             onClick={toggleExpand}
-            className="flex items-center space-x-2 px-6 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors duration-200 font-medium"
+            className="flex items-center px-6 py-2 space-x-2 font-medium text-blue-600 transition-colors duration-200 bg-blue-50 rounded-xl hover:bg-blue-100"
           >
             <span>{isExpanded ? "Hide Details" : "View Details"}</span>
             {isExpanded ? (
@@ -315,14 +329,14 @@ export default function ProfileCard({ profile, roletoget }) {
 
         {/* Expandable Details Section */}
         {isExpanded && (
-          <div className="border-t border-gray-200 pt-6">
+          <div className="pt-6 border-t border-gray-200">
             {roletoget === "seeker" ? (
               <div className="space-y-8">
                 {/* Professional Details */}
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                     <svg
-                      className="w-6 h-6 text-blue-600 mr-3"
+                      className="w-6 h-6 mr-3 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}
@@ -336,7 +350,7 @@ export default function ProfileCard({ profile, roletoget }) {
                     </svg>
                     Professional Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-xl">
+                  <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-xl">
                     <Detail
                       label="Availability"
                       value={currentProfile.availability}
@@ -358,9 +372,9 @@ export default function ProfileCard({ profile, roletoget }) {
 
                 {/* Experience & Certifications */}
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                     <svg
-                      className="w-6 h-6 text-blue-600 mr-3"
+                      className="w-6 h-6 mr-3 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}
@@ -376,7 +390,7 @@ export default function ProfileCard({ profile, roletoget }) {
                   </h3>
                   <div className="space-y-4">
                     <div className="p-4 bg-gray-50 rounded-xl">
-                      <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">
+                      <span className="block mb-2 text-sm font-semibold tracking-wide text-gray-600 uppercase">
                         Work Experience
                       </span>
                       <p className="text-gray-800 whitespace-pre-line">
@@ -384,7 +398,7 @@ export default function ProfileCard({ profile, roletoget }) {
                       </p>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-xl">
-                      <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide block mb-2">
+                      <span className="block mb-2 text-sm font-semibold tracking-wide text-gray-600 uppercase">
                         Certifications
                       </span>
                       <p className="text-gray-800 whitespace-pre-line">
@@ -396,9 +410,9 @@ export default function ProfileCard({ profile, roletoget }) {
 
                 {/* Skills */}
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                     <svg
-                      className="w-6 h-6 text-blue-600 mr-3"
+                      className="w-6 h-6 mr-3 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}
@@ -418,7 +432,7 @@ export default function ProfileCard({ profile, roletoget }) {
                         currentProfile.skills.split(",").map((skill, index) => (
                           <span
                             key={index}
-                            className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
+                            className="px-3 py-1 text-sm font-medium text-gray-800 bg-gray-200 rounded-full"
                           >
                             {skill.trim()}
                           </span>
@@ -427,7 +441,7 @@ export default function ProfileCard({ profile, roletoget }) {
                         currentProfile.skills.map((skill, index) => (
                           <span
                             key={index}
-                            className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
+                            className="px-3 py-1 text-sm font-medium text-gray-800 bg-gray-200 rounded-full"
                           >
                             {skill}
                           </span>
@@ -444,9 +458,9 @@ export default function ProfileCard({ profile, roletoget }) {
                 {/* Resume */}
                 {currentProfile.resume && (
                   <div>
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                       <svg
-                        className="w-6 h-6 text-blue-600 mr-3"
+                        className="w-6 h-6 mr-3 text-blue-600"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth={2}
@@ -470,9 +484,9 @@ export default function ProfileCard({ profile, roletoget }) {
               /* Employer Details */
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                     <svg
-                      className="w-6 h-6 text-blue-600 mr-3"
+                      className="w-6 h-6 mr-3 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}
@@ -486,7 +500,7 @@ export default function ProfileCard({ profile, roletoget }) {
                     </svg>
                     Company Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-xl">
+                  <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-xl">
                     <Detail
                       label="Company Size"
                       value={currentProfile.companySize}
@@ -497,7 +511,7 @@ export default function ProfileCard({ profile, roletoget }) {
                     />
                     <Detail label="Phone" value={currentProfile.phone} />
                     <div className="flex flex-col space-y-1">
-                      <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                      <span className="text-sm font-semibold tracking-wide text-gray-600 uppercase">
                         Website
                       </span>
                       <span className="text-gray-800">
@@ -506,7 +520,7 @@ export default function ProfileCard({ profile, roletoget }) {
                             href={currentProfile.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 underline hover:text-blue-800 transition-colors"
+                            className="text-blue-600 underline transition-colors hover:text-blue-800"
                           >
                             {currentProfile.website}
                           </a>
@@ -521,9 +535,9 @@ export default function ProfileCard({ profile, roletoget }) {
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <h3 className="flex items-center mb-4 text-2xl font-semibold text-gray-900">
                     <svg
-                      className="w-6 h-6 text-blue-600 mr-3"
+                      className="w-6 h-6 mr-3 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}

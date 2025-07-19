@@ -3,11 +3,15 @@ package com.example.job.portal.Controller;
 import com.example.job.portal.DTO.*;
 import com.example.job.portal.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -91,7 +95,6 @@ public class AdminController {
         return jobApplicationService.getallAppliedJobs();
     }
 
-
     /*
     @DeleteMapping("/applications/{id}")
     public ResponseEntity<String> deleteJobApplicationById(@PathVariable long id, Authentication auth) {
@@ -108,6 +111,34 @@ public class AdminController {
     public ResponseEntity<String> updateProfile(@RequestBody AdminDTO adminDTO, Authentication authentication) {
         return adminService.updateAdmin(adminDTO, authentication);
     }
+
+    //account management
+    @PatchMapping("/activate")
+    public ResponseEntity<String> activate(@RequestBody UserDto userDto, Authentication authentication) {
+        if (!authentication.isAuthenticated() || authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login first");
+        }
+        return adminService.activateUserAccount(authentication, userDto.getEmail());
+    }
+
+    @PatchMapping("/deactivate")
+    public ResponseEntity<String> deactivate(@RequestBody UserDto userDto, Authentication authentication) {
+        if (!authentication.isAuthenticated() || authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login first");
+        }
+        return adminService.deactivateUserAccount(authentication, userDto.getEmail());
+    }
+
+
+    //analytics
+    @GetMapping("/analytics")
+    public ResponseEntity<AnalyticsDTO> getAnalytics(Authentication authentication) {
+        if (!authentication.isAuthenticated() || authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AnalyticsDTO());
+        }
+        return adminService.getAnalytics();
+    }
+
 
 }
 

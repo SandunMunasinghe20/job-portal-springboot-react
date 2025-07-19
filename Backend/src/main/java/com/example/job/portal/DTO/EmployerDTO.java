@@ -34,5 +34,5 @@ public class EmployerDTO {
 
     private String role = "employer";
 
-
+    private String accountStatus;
 }

@@ -11,12 +11,10 @@ export default function Jobs() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
   const fetchJobs = async () => {
-
     setLoading(true);
 
     if (!token) {
@@ -35,7 +33,8 @@ export default function Jobs() {
       });
 
       if (!response.ok) {
-        toast.error("Failed to fetch jobs");
+        const errmsg = await response.text();
+        toast.error(errmsg);
         setLoading(false);
         return;
       }
@@ -45,6 +44,7 @@ export default function Jobs() {
       console.log("data ", data);
     } catch (err) {
       toast.error("Error occurred while fetching jobs");
+      return;
     } finally {
       setLoading(false);
     }
@@ -54,11 +54,9 @@ export default function Jobs() {
     fetchJobs();
   }, []);
 
-
   return (
     <>
       <NavBar role={role} />
-
 
       {loading ? (
         <div className="jl-loading-spinner">

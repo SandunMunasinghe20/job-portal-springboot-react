@@ -47,16 +47,15 @@ export default function UsersPage() {
   return (
     <>
       <NavBar role={role} />
-      <div className="users-page-container">
-        <h2 className="users-page-title">
+      <div className="pb-4">
+        <h2 className="text-blue-600 text-3xl text-center pb-4">
           {roletoget === "employer"
             ? "Available Employers"
             : "Available Job Seekers"}
         </h2>
 
-        <div className="profile-grid">
+        <div className="pb-4">
           {users.map((user, index) => {
-            //const rolenew = user.role;
             return (
               <ProfileCard key={index} profile={user} roletoget={roletoget} />
             );

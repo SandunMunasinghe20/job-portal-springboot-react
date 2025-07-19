@@ -63,6 +63,7 @@ public class SeekerService {
 
             seekerDTO.setWorkExperience(seeker.getWorkExperience());
             seekerDTO.setCertifications(seeker.getCertifications());
+            seekerDTO.setAccountStatus(seeker.getAccountStatus());
 
             return seekerDTO;
         }).toList();
@@ -149,6 +150,7 @@ public class SeekerService {
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
         seekerDTO.setAvailability(seeker.getAvailability());
+        seekerDTO.setAccountStatus(seeker.getAccountStatus());
 
         byte[] byteImage = seeker.getProfilePicture();
         if (byteImage != null && byteImage.length > 0) {
@@ -197,6 +199,7 @@ public class SeekerService {
         seekerDTO.setPreferredIndustry(seeker.getPreferredIndustry());
         seekerDTO.setExpectedSalary(seeker.getExpectedSalary());
         seekerDTO.setAvailability(seeker.getAvailability());
+        seekerDTO.setAccountStatus(seeker.getAccountStatus());
 
 
         byte[] byteImage = seeker.getProfilePicture();

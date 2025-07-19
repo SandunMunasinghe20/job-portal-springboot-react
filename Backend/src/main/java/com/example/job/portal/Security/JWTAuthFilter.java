@@ -73,6 +73,21 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
+            //check if user is active
+            if (userDetails instanceof CustomUserDetails) {
+                String accountStatus = ((CustomUserDetails) userDetails).getAccountStatus();
+                if (!"active".equalsIgnoreCase(accountStatus)) {
+                    // User is inactive so reject request
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().write("Account is inactive. Access denied.");
+                    return;
+                }
+            } else {
+                System.out.println("UserDetails is not instance of CustomUserDetails");
+
+            }
+
+
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -47,4 +47,5 @@ WHERE m.receiver.id = :userId
     Long countUnreadMessages(@Param("userId") Long userId, @Param("senderId") Long senderId);
 
 
+
 }

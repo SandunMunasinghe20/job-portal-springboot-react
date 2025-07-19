@@ -51,7 +51,8 @@ export default function ViewProfilePage() {
       });
 
       if (!response.ok) {
-        toast.error("Failed to fetch profile");
+        const errmsg = await response.text();
+        toast.error(errmsg);
         return;
       }
 
@@ -74,7 +75,7 @@ export default function ViewProfilePage() {
   return (
     <>
       <NavBar role={role} />
-      <div className="bg-gray-50 min-h-screen px-4 py-8">
+      <div className="min-h-screen px-4 py-8 bg-gray-50">
         <ViewProfile profile={profile} />
       </div>
     </>

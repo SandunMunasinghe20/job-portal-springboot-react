@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import GetInput from '../../components/GetInput/GetInput';
-import SubmitButton from '../../components/submitButton/submitbutton';
+import GetInput from "../../components/GetInput/GetInput";
+import SubmitButton from "../../components/submitButton/submitbutton";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 //import './PostJobs.css';
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
@@ -8,18 +8,15 @@ import { toast } from "react-toastify";
 import GetSelect from "../../components/GetInput/GetSelect";
 import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
 
-
 export default function PostJobs() {
-
   const navigate = useNavigate();
 
-  const [jobTitle, setJobTitle] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [salary, setSalary] = useState('');
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [salary, setSalary] = useState("");
   const [jobType, setJobType] = useState("");
   const [skillsRequired, setSkillsRequired] = useState("");
-
 
   //const [err, toast.error] = useState("");
   //const [success, toast.success] = useState("");
@@ -29,49 +26,48 @@ export default function PostJobs() {
   const jobId = searchParams.get("id");
   console.log("search param job id is : ", jobId);
 
-
   //token
   const token = localStorage.getItem("auth-token");
   const role = localStorage.getItem("role");
 
   let url = "";
-  {/*edit or add based on search parameters */ }
+  {
+    /*edit or add based on search parameters */
+  }
   if (!jobId) {
     url = "http://localhost:8080/api/jobs/add";
   } else {
-    url = "http://localhost:8080/api/jobs/update"
-
+    url = "http://localhost:8080/api/jobs/update";
   }
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-
     setPosting("");
-
 
     let method;
     if (jobId) {
-      method = 'PUT'  //for update
+      method = "PUT"; //for update
     } else {
-      method = 'POST'
+      method = "POST";
     }
 
     try {
-
       const response = await fetch(url, {
         method: method,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          jobTitle, jobDescription, location, salary: Number(salary),
-          jobType, id: jobId, skillsRequired: skillsRequired
+          jobTitle,
+          jobDescription,
+          location,
+          salary: Number(salary),
+          jobType,
+          id: jobId,
+          skillsRequired: skillsRequired,
         }),
-
       });
 
       //no existing job id ,so this is an adding job
@@ -94,26 +90,28 @@ export default function PostJobs() {
         const data = await response.text();
         console.log("data ", data);
         toast.success(data);
-
       }
-      navigate('/myJobs');
-
+      navigate("/myJobs");
     } catch (e) {
       toast.error("Failed to connect with backend.Try again");
     }
-  }
+  };
 
   const fetchData = async () => {
     if (jobId) {
-      const res = await fetch(`http://localhost:8080/api/jobs/findById/${jobId}`, {
-        method: "GET",
-        headers: {
-          'Authorization': 'Bearer ' + token,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/jobs/findById/${jobId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       if (!res.ok) {
-        toast.error("Error occured while fetching Job Data");
+        const errmsg = await res.text();
+        toast.error(errmsg);
         return;
       }
       const jobData = await res.json();
@@ -124,17 +122,16 @@ export default function PostJobs() {
       setSalary(jobData.salary);
       setJobType(jobData.jobType);
       setSkillsRequired(jobData.skillsRequired);
-
     }
-  }
+  };
   useEffect(() => {
     fetchData();
-  }, [jobId, token])
+  }, [jobId, token]);
 
   return (
     <>
       <NavBar role={role} />
-      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg space-y-4">
+      <div className="max-w-md p-6 mx-auto space-y-4 bg-white rounded-lg shadow-lg">
         <GetInput
           type="text"
           placeholder="Job Title"
@@ -179,10 +176,9 @@ export default function PostJobs() {
             "Temporary",
             "Freelance",
             "Remote",
-            "Hybrid"
+            "Hybrid",
           ]}
         />
-
 
         <GetMultiSelect
           value={skillsRequired}
@@ -283,21 +279,20 @@ export default function PostJobs() {
             "Communication",
             "Teamwork",
             "Time Management",
-            "Project Management"
+            "Project Management",
           ]}
-
         />
 
-
-        {posting && <p className="text-center text-sm text-red-600 font-medium">{posting}</p>}
+        {posting && (
+          <p className="text-sm font-medium text-center text-red-600">
+            {posting}
+          </p>
+        )}
 
         {/*post or update button */}
         {!jobId && <SubmitButton msg="Post Job" onClick={handleSubmit} />}
         {jobId && <SubmitButton msg="Update Job" onClick={handleSubmit} />}
-
       </div>
     </>
-
   );
-
 }

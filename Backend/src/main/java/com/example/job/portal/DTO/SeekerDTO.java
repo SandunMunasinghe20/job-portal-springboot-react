@@ -45,7 +45,17 @@ public class SeekerDTO {
 
     private String certifications;
 
+    private String accountStatus;
+
     // Getters and setters
+
+    public String getAccountStatus(){
+        return accountStatus;
+    }
+    public void setAccountStatus(String accountStatus){
+        this.accountStatus = accountStatus;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

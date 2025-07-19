@@ -49,7 +49,14 @@ export default function ViewProfile({ profile }) {
     );
   }
 
-  const isSeeker = profile.role === "seeker";
+  const role = localStorage.getItem("role");
+
+  const isSeeker = role === "seeker";
+  const isEmployer = role === "employer";
+  const isAdmin = role === "admin";
+
+  console.log("Profile role:", role);
+  console.log("isAdmin:", isAdmin);
 
   const openPdf = (base64String) => {
     try {
@@ -70,14 +77,15 @@ export default function ViewProfile({ profile }) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
       {/* Header Section */}
+
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-blue-600 mb-2">
-          {isSeeker ? "Profile Overview" : "Company Profile"}
+          {isEmployer ? "Company Profile" : "Profile Overview"}
         </h1>
         <p className="text-gray-500">
-          {isSeeker
-            ? "Your professional profile summary"
-            : "Company information and details"}
+          {isEmployer
+            ? "Company information and details"
+            : "Your professional profile summary"}
         </p>
       </div>
 
@@ -132,7 +140,7 @@ export default function ViewProfile({ profile }) {
 
       {/* Stats Section */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-        {isSeeker ? (
+        {isSeeker && (
           <>
             <div className="p-4 bg-blue-50 rounded-xl shadow-sm text-center">
               <div className="flex items-center justify-center mb-2">
@@ -162,7 +170,8 @@ export default function ViewProfile({ profile }) {
               <span className="text-sm text-gray-600">Availability</span>
             </div>
           </>
-        ) : (
+        )}
+        {isEmployer && (
           <>
             <div className="p-4 bg-blue-50 rounded-xl shadow-sm text-center">
               <div className="flex items-center justify-center mb-2">
@@ -188,13 +197,15 @@ export default function ViewProfile({ profile }) {
 
       {/* Detailed Information */}
       <div className="bg-gray-50 rounded-xl p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <User size={18} />
-          {isSeeker ? "Professional Details" : "Company Details"}
-        </h3>
+        {!isAdmin && (
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <User size={18} />
+            {isSeeker ? "Professional Details" : "Company Details"}
+          </h3>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          {isSeeker ? (
+          {isSeeker && (
             <>
               <Detail
                 icon={<Briefcase size={16} />}
@@ -278,7 +289,8 @@ export default function ViewProfile({ profile }) {
                 )}
               </div>
             </>
-          ) : (
+          )}
+          {isEmployer && (
             <>
               <Detail
                 icon={<Building2 size={16} />}
@@ -316,16 +328,27 @@ export default function ViewProfile({ profile }) {
               </div>
             </>
           )}
+          {isAdmin && (
+            <>
+              {/* Show admin-specific info only */}
+              <p>Email: {profile.email || "N/A"}</p>
+              <p>Role: {role ? role.toLocaleUpperCase() : "N/A"}</p>
+
+              <p>Account Status: {profile.status || "Active"}</p>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Action Button */}
-      <div className="text-center">
-        <SubmitButton
-          onClick={() => navigate("/updateProfile")}
-          msg="Edit Profile"
-        />
-      </div>
+      {/* Action Button not for admin*/}
+      {!isAdmin && (
+        <div className="text-center">
+          <SubmitButton
+            onClick={() => navigate("/updateProfile")}
+            msg="Edit Profile"
+          />
+        </div>
+      )}
     </div>
   );
 }

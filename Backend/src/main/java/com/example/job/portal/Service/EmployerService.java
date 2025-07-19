@@ -62,6 +62,8 @@ public class EmployerService {
             dto.setPhone(emp.getPhone());
             dto.setRegistrationNumber(emp.getRegistrationNumber());
             dto.setRole("employer");
+            dto.setAccountStatus(emp.getAccountStatus());
+
             return dto;
         }).toList();
 
@@ -125,6 +127,7 @@ public class EmployerService {
 
         dto.setCompanyDescription(employer.getCompanyDescription());
         dto.setRole(employer.getRole());
+        dto.setAccountStatus(employer.getAccountStatus());
         System.out.println("role: " + employer.getRole());
 
         return ResponseEntity.ok(dto);
@@ -153,6 +156,7 @@ public class EmployerService {
         dto.setIndustry(employer.getIndustry());
         dto.setCompanySize(employer.getCompanySize());
         dto.setWebsite(employer.getWebsite());
+        dto.setAccountStatus(employer.getAccountStatus());
         //prof pic
         dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo()));
         return ResponseEntity.ok(dto);

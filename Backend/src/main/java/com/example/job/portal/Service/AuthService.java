@@ -170,18 +170,30 @@ public class AuthService {
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
 
+        //check for a existing user
+        Optional<User> user = userRepo.findByEmail(loginRequestDTO.getEmail());
+        if (user.isEmpty()) {
+            return new LoginResponseDTO(null, null,null, "User not found", false);
+        }
+        //check for deactivated accounts
+        String accountStatus = user.get().getAccountStatus();
+        if (!accountStatus.equalsIgnoreCase("active")) {
+
+            return new LoginResponseDTO(null, null,null, "Your account is currently inactive. Please check your email for instructions to reactivate your account", false);
+        }
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
             );
 
+
+
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
             String token = jwtService.generateToken(userDetails);
 
-            Optional<User> user = userRepo.findByEmail(loginRequestDTO.getEmail());
-            if (user.isEmpty()) {
-                return new LoginResponseDTO(null, null,null, "User not found", false);
-            }
+
+
             //get id and role
             String role = user.get().getRole();
             Long id = user.get().getId();

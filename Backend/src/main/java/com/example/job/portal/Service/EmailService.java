@@ -4,11 +4,14 @@ import com.example.job.portal.Entity.LinkToken;
 import com.example.job.portal.Entity.User;
 import com.example.job.portal.Repository.LinkTokenRepo;
 import com.example.job.portal.Repository.UserRepo;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -73,6 +76,24 @@ public class EmailService {
                 "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
 
         return (resetLink);
+    }
+
+    public String sendAccountStatusEmail(String email, String msg) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(email);
+            helper.setSubject("Account Status Update");
+            helper.setText(msg, true); // true => HTML content
+
+            mailSender.send(message);
+            return "Email Sent to " + email;
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return "Failed to send email to " + email;
+        }
     }
 
 }

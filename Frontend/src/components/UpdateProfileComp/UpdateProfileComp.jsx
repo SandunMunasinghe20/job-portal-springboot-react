@@ -200,7 +200,7 @@ export default function UpdateProfileComp({}) {
         </h2>
 
         <form className="space-y-5">
-          {role === "seeker" ? (
+          {role === "seeker" && (
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -468,7 +468,8 @@ export default function UpdateProfileComp({}) {
                 />
               </div>
             </>
-          ) : (
+          )}
+          {role === "employer" && (
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
