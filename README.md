@@ -42,19 +42,19 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ### 🛠️ Admin Dashboard
 
-![Admin Home](./screenshots/AdminHome.png)
+![Admin Home](./Screenshots/AdminHome.png)
 
 ### 📄 View Job Applications
 
-![View Job Applications](./screenshots/viewJobApplications.png)
+![View Job Applications](./Screenshots/viewJobApplications.png)
 
 ### 📝 Job Details Page
 
-![Job Details](./screenshots/job-details.png)
+![Job Details](./Screenshots/job-details.png)
 
 ### 👤 Profile View
 
-![Profile View](./screenshots/viewProfile.png)
+![Profile View](./Screenshots/viewProfile.png)
 
 ## 🔗 Live Demo / Video
 
