@@ -8,9 +8,9 @@ A full-featured, responsive Job Portal built using **Java 21 (Spring Boot)** for
 
 This Job Portal enables:
 
-* 🧑‍💼 Employers to post, update, and delete job listings
-* 👨‍🎓 Job Seekers to browse, search, and apply for jobs
-* 🔐 Secure login and registration system with role-based access control
+- 🧑‍💼 Employers to post, update, and delete job listings
+- 👨‍🎓 Job Seekers to browse, search, and apply for jobs
+- 🔐 Secure login and registration system with role-based access control
 
 Backed by a **MySQL database**, the app was entirely built by me to demonstrate robust, modern fullstack development.
 
@@ -18,12 +18,12 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ## 🧑‍💻 My Role as Developer
 
-* Designed and implemented RESTful APIs using Spring Boot
-* Built a responsive frontend UI using React + Vite + Tailwind CSS
-* Configured **JWT-based authentication and role-based access** using Spring Security
-* Designed database schema and relationships in MySQL
-* Integrated secure resume and profile image upload features
-* Managed CORS, error handling, and environment configurations
+- Designed and implemented RESTful APIs using Spring Boot
+- Built a responsive frontend UI using React + Vite + Tailwind CSS
+- Configured **JWT-based authentication and role-based access** using Spring Security
+- Designed database schema and relationships in MySQL
+- Integrated secure resume and profile image upload features
+- Managed CORS, error handling, and environment configurations
 
 ---
 
@@ -40,13 +40,23 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ## 📸 Screenshots
 
-<!-- Add screenshots here if needed -->
+### 🛠️ Admin Dashboard
 
----
+![Admin Home](./screenshots/AdminHome.png)
+
+### 📄 View Job Applications
+
+![View Job Applications](./screenshots/viewJobApplications.png)
+
+### 📝 Job Details Page
+
+![Job Details](./screenshots/job-details.png)
+
+### 👤 Profile View
+
+![Profile View](./screenshots/viewProfile.png)
 
 ## 🔗 Live Demo / Video
-
-<!-- Add link once deployed -->
 
 ---
 
@@ -54,68 +64,68 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ### 🔐 Authentication & Authorization
 
-* Login / Register / Forgot Password via email service
-* **JWT Token** based secure authentication
-* Role-based access control for Employers, Job Seekers, and Admins
-* Logout functionality for all roles
+- Login / Register / Forgot Password via email service
+- **JWT Token** based secure authentication
+- Role-based access control for Employers, Job Seekers, and Admins
+- Logout functionality for all roles
 
 ### 💬 Messaging System
 
-* Employers can message job seekers only **after a job application** exists
-* Admins can message anyone
-* Self-messaging and same-role messaging is **prohibited**
-* **Read receipts** are enabled (users can see if their message was viewed)
-* **Messages cannot be deleted** to ensure platform integrity
+- Employers can message job seekers only **after a job application** exists
+- Admins can message anyone
+- Self-messaging and same-role messaging is **prohibited**
+- **Read receipts** are enabled (users can see if their message was viewed)
+- **Messages cannot be deleted** to ensure platform integrity
 
 ### 🧭 Role Capabilities
 
 #### 👨‍🎓 Job Seekers
 
-* Browse and search all job posts
-* Apply to jobs with attached resume
-* View and update profile
-* Upload resume to profile and during job applications
-* View submitted applications
+- Browse and search all job posts
+- Apply to jobs with attached resume
+- View and update profile
+- Upload resume to profile and during job applications
+- View submitted applications
 
 #### 🧑‍💼 Employers
 
-* Post, edit, delete **only their own jobs**
-* View received job applications
-* Approve, reject, or delete job applications
-* View and update profile
-* See all jobs on the portal
+- Post, edit, delete **only their own jobs**
+- View received job applications
+- Approve, reject, or delete job applications
+- View and update profile
+- See all jobs on the portal
 
 #### 🛠️ Admins
 
-* View **all** jobs, applications, employers, and seekers
-* Delete inappropriate jobs
-* Monitor platform activities
+- View **all** jobs, applications, employers, and seekers
+- Delete inappropriate jobs
+- Monitor platform activities
 
 ### 📂 File Uploads
 
-* Upload and view resumes (PDF)
-* Upload and view profile and company logos
+- Upload and view resumes (PDF)
+- Upload and view profile and company logos
 
 ---
 
 ## 🧩 Challenges Solved
 
-* Integrated **JWT and Spring Security** securely for role-based access
-* Solved CORS issues between frontend and backend during development
-* Designed clean RESTful APIs with proper separation of concerns
-* Normalized schema for user-job-application relationships
-* Maintained secure upload storage for resumes and images
+- Integrated **JWT and Spring Security** securely for role-based access
+- Solved CORS issues between frontend and backend during development
+- Designed clean RESTful APIs with proper separation of concerns
+- Normalized schema for user-job-application relationships
+- Maintained secure upload storage for resumes and images
 
 ---
 
 ## 🧠 What I Learned
 
-* Building and securing fullstack applications end-to-end
-* React state management with Hooks and API integration
-* Designing scalable and normalized relational databases
-* Implementing security best practices with Spring Security & JWT
-* Handling uploads and file storage across the stack
-* Structuring clean code and maintaining modularity in large projects
+- Building and securing fullstack applications end-to-end
+- React state management with Hooks and API integration
+- Designing scalable and normalized relational databases
+- Implementing security best practices with Spring Security & JWT
+- Handling uploads and file storage across the stack
+- Structuring clean code and maintaining modularity in large projects
 
 ---
 
@@ -134,10 +144,10 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ### ✅ Prerequisites
 
-* Java 21
-* Node.js & npm
-* MySQL Server
-* Maven
+- Java 21
+- Node.js & npm
+- MySQL Server
+- Maven
 
 ### 🛠️ Backend Setup
 
@@ -172,16 +182,16 @@ npm run dev
 
 ## 📌 Roadmap
 
-* ✅ Login, Register, Forgot/Reset Password
-* ✅ Job Posting and Application Flows
-* ✅ MySQL Integration
-* ✅ Resume Upload & File Storage
-* ✅ Role-Based Messaging System
-* ✅ Admin View and Control Features
-* 🔜 Deployment (Render / Vercel / Railway)
-* 🔜 UI/UX Polish
-* ⛔ Notifications (not included)
-* ⛔ Stats/Analytics (not included)
+- ✅ Login, Register, Forgot/Reset Password
+- ✅ Job Posting and Application Flows
+- ✅ MySQL Integration
+- ✅ Resume Upload & File Storage
+- ✅ Role-Based Messaging System
+- ✅ Admin View and Control Features
+- 🔜 Deployment (Render / Vercel / Railway)
+- 🔜 UI/UX Polish
+- ⛔ Notifications (not included)
+- ⛔ Stats/Analytics (not included)
 
 ---
 

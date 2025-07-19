@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
@@ -202,10 +203,40 @@ public class AdminService {
 
         long totalUsers = jobSeekers + employers + admins;
 
-        AnalyticsDTO dto = new AnalyticsDTO(totalUsers, jobSeekers, employers, admins,
-                totalJobs, totalApplications, totalMessages);
+        //counts
+        AnalyticsDTO analyticsDTO = new AnalyticsDTO();
+        analyticsDTO.setJobSeekers(jobSeekers);
+        analyticsDTO.setEmployers(employers);
+        analyticsDTO.setAdmins(admins);
+        analyticsDTO.setTotalJobs(totalJobs);
+        analyticsDTO.setTotalApplications(totalApplications);
+        analyticsDTO.setTotalMessages(totalMessages);
+        analyticsDTO.setTotalUsers(totalUsers);
 
-        return ResponseEntity.ok(dto);
+        //monthly users(role based)
+        List<Object[]> userGrowthRaw = userRepo.getUserGrowthByMonth();
+
+        // Convert List<Object[]> to Map<String, Long>
+        Map<String, Long> userGrowthData = userGrowthRaw.stream()
+                .collect(Collectors.toMap(
+                        obj -> (String) obj[0],               // month string, e.g. "2023-07"
+                        obj -> ((Number) obj[1]).longValue() // count of users
+                ));
+
+        analyticsDTO.setUserGrowthData(userGrowthData);
+
+
+        Map<String, Long> skillJobCounts = jobRepo.getJobCountBySkill();
+        Map<String, Long> skillApplicationCounts = jobApplicationRepo.getApplicationCountBySkill(jobRepo); // pass jobRepo
+
+        Map<String, Object> skillBasedData = new HashMap<>();
+        skillBasedData.put("skillJobCounts", skillJobCounts);
+        skillBasedData.put("skillApplicationCounts", skillApplicationCounts);
+
+        analyticsDTO.setSkillBasedData(skillBasedData);
+
+
+        return ResponseEntity.ok(analyticsDTO);
     }
 
 }

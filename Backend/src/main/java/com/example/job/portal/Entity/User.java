@@ -27,7 +27,6 @@ public class User {
     @Column(name = "role")
     private String role;
 
-
     @Column(name = "account_status",nullable = false)
     private String accountStatus;
 
