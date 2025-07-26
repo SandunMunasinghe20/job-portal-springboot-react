@@ -98,6 +98,7 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 #### 🛠️ Admins
 
 - View **all** jobs, applications, employers, and seekers
+- Activate or Deactivate User Accounts
 - Delete inappropriate jobs
 - Monitor platform activities
 
@@ -188,10 +189,11 @@ npm run dev
 - ✅ Resume Upload & File Storage
 - ✅ Role-Based Messaging System
 - ✅ Admin View and Control Features
+- ✅ Notifications for Account activations and deactivations by Admin
+- ✅ Stats/Analytics
 - 🔜 Deployment (Render / Vercel / Railway)
 - 🔜 UI/UX Polish
-- ⛔ Notifications (not included)
-- ⛔ Stats/Analytics (not included)
+
 
 ---
 
