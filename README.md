@@ -212,8 +212,3 @@ This is a personal project created solely by me for educational and portfolio pu
 
 ---
 
-## 🏫 About
-
-University Final Project (Year 2)
-Department of Computer Engineering
-University of Peradeniya
