@@ -77,13 +77,13 @@ public class SeekerService {
     public ResponseEntity<String> updateSeekerProfile(SeekerDTO seekerDTO) {
 
         String email = seekerDTO.getEmail();
-        if (email.isEmpty()){
+        if (email.isEmpty()) {
             return ResponseEntity.badRequest().body("Email is empty");
         }
 
         // Find existing seeker by email
         Optional<Seeker> user = seekerRepo.findByEmail(email);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
         Seeker seeker = user.get();
@@ -129,7 +129,7 @@ public class SeekerService {
         String email = authentication.getName();
 
         Optional<Seeker> user = seekerRepo.findByEmail(email);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Seeker seeker = user.get();
@@ -142,7 +142,7 @@ public class SeekerService {
     public ResponseEntity<String> deleteSeeker(String email) {
 
         Optional<Seeker> user = seekerRepo.findByEmail(email);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
         Seeker seeker = user.get();

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useEffect, useState } from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { fetchFromBackend } from "../../services/Service";

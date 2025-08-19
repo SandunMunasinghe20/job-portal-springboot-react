@@ -50,13 +50,7 @@ public class AuthService {
     private AdminRepo adminRepo;
 
     // Constructor for dependency injection
-    public AuthService(SeekerRepo seekerRepo,
-                       EmployerRepo employerRepo,
-                       PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager,
-                       UserDetailsService userDetailsService,
-                       JWTService jwtService,
-                       JWTTokenRepo jwtTokenRepo) {
+    public AuthService(SeekerRepo seekerRepo, EmployerRepo employerRepo, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JWTService jwtService, JWTTokenRepo jwtTokenRepo) {
         this.seekerRepo = seekerRepo;
         this.employerRepo = employerRepo;
         this.passwordEncoder = passwordEncoder;
@@ -79,10 +73,10 @@ public class AuthService {
         Optional<Employer> employer = employerRepo.findByEmail(email);
         Optional<Admin> admin = adminRepo.findByEmail(email);
 
-        if(seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
+        if (seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
             return ResponseEntity.badRequest().body("Account already exists with this email");
         } else {
-            try{
+            try {
                 Seeker newSeeker = new Seeker();
                 newSeeker.setEmail(email);
                 newSeeker.setPassword(passwordEncoder.encode(password));
@@ -92,7 +86,7 @@ public class AuthService {
                 newSeeker.setAccountStatus("active");
                 seekerRepo.save(newSeeker);
                 return ResponseEntity.ok().body("Successfully registered");
-            } catch (Exception e){
+            } catch (Exception e) {
                 return ResponseEntity.badRequest().body("Something went wrong while registering seeker");
             }
         }
@@ -111,10 +105,10 @@ public class AuthService {
         Optional<Seeker> seeker = seekerRepo.findByEmail(email);
         Optional<Admin> admin = adminRepo.findByEmail(email);
 
-        if(seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
+        if (seeker.isPresent() || employer.isPresent() || admin.isPresent()) {
             return ResponseEntity.badRequest().body("Account already exists with this email");
         } else {
-            try{
+            try {
                 Employer newEmployer = new Employer();
                 newEmployer.setEmail(email);
                 newEmployer.setPassword(passwordEncoder.encode(password));
@@ -124,7 +118,7 @@ public class AuthService {
                 newEmployer.setAccountStatus("active");
                 employerRepo.save(newEmployer);
                 return ResponseEntity.ok().body("Account successfully registered");
-            } catch (Exception e){
+            } catch (Exception e) {
                 return ResponseEntity.badRequest().body("Something went wrong while registering employer");
             }
         }
@@ -165,8 +159,7 @@ public class AuthService {
 
     // User login with JWT token generation
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-        User user = userRepo.findByEmail(loginRequestDTO.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("User not found"));
+        User user = userRepo.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> new BadCredentialsException("User not found"));
 
         // Check account status
         if (!"active".equalsIgnoreCase(user.getAccountStatus())) {
@@ -174,9 +167,7 @@ public class AuthService {
         }
 
         // Authenticate user
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
-        );
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
 
         // Generate JWT
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());

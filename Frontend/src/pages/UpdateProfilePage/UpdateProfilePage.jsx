@@ -1,3 +1,4 @@
+
 import UpdateProfileComp from "../../components/UpdateProfileComp/UpdateProfileComp";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 

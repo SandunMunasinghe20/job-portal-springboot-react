@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import GetInput from "../../components/GetInput/GetInput";
 import SubmitButton from "../../components/submitButton/submitbutton";

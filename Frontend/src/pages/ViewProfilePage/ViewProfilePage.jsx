@@ -4,6 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
+import React from "react";
+
+
 export default function ViewProfilePage() {
 
   const [profile, setProfile] = useState([]);

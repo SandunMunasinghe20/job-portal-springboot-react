@@ -9,10 +9,10 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class JobPortalApplicationTests {
 
-	@Test
+    @Test
 
-		//@Disabled("Disabled to unblock CI, fix ApplicationContext issue later")
-	void contextLoads() {
-	}
+        //@Disabled("Disabled to unblock CI, fix ApplicationContext issue later")
+    void contextLoads() {
+    }
 
 }

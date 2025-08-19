@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import {  useNavigate } from "react-router-dom";
 import {
@@ -105,7 +105,7 @@ export default function AdminHome() {
     fetchAnalytics();
   }, [token]);
 
-  const StatCard = ({ title, count, icon: Icon, color, trend }) => (
+  const StatCard = ({ title, count, Icon, color, trend }) => (
     <div className="p-6 transition-shadow duration-300 bg-white shadow-lg rounded-2xl hover:shadow-xl">
       <div className="flex items-center justify-between">
         <div>
@@ -133,7 +133,10 @@ export default function AdminHome() {
                   : "bg-gray-50"
           }`}
         >
-          <Icon className={`w-8 h-8 ${color}`} />
+          <div>
+            {Icon}
+          </div>
+          
         </div>
       </div>
     </div>
@@ -168,29 +171,33 @@ export default function AdminHome() {
               <StatCard
                 title="Total Users"
                 count={stats.totalUsers}
-                icon={FiUsers}
                 color="text-blue-600"
+                Icon={<FiUsers className={`w-8 h-8 ${color}`}/>}
+                
                 trend={12.5}
               />
               <StatCard
                 title="Job Seekers"
                 count={stats.jobSeekers}
-                icon={FiUserCheck}
                 color="text-green-600"
+                Icon={<FiUserCheck className={`w-8 h-8 ${color}`}/>}
+                
                 trend={8.3}
               />
               <StatCard
                 title="Employers"
                 count={stats.employers}
-                icon={FaBuilding}
                 color="text-yellow-600"
+                Icon={<FaBuilding className={`w-8 h-8 ${color}`}/>}
+                
                 trend={15.7}
               />
               <StatCard
                 title="Admins"
                 count={stats.admins}
-                icon={FiShield}
                 color="text-gray-600"
+                Icon={<FiShield className={`w-8 h-8 ${color}`}/>}
+                
               />
             </div>
 
@@ -199,22 +206,25 @@ export default function AdminHome() {
               <StatCard
                 title="Total Jobs"
                 count={stats.totalJobs}
-                icon={FiBriefcase}
                 color="text-blue-600"
+                Icon={<FiBriefcase className={`w-8 h-8 ${color}`}/>}
+                
                 trend={22.1}
               />
               <StatCard
                 title="Applications"
                 count={stats.totalApplications}
-                icon={FiFileText}
                 color="text-green-600"
+                Icon={<FiFileText className={`w-8 h-8 ${color}`}/>}
+                
                 trend={18.9}
               />
               <StatCard
                 title="Messages"
                 count={stats.totalMessages}
-                icon={FiMessageSquare}
                 color="text-yellow-600"
+                Icon={<FiMessageSquare className={`w-8 h-8 ${color}`}/>}
+                
                 trend={7.4}
               />
             </div>
@@ -225,6 +235,7 @@ export default function AdminHome() {
               <ChartCard title="User Growth Trend">
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={userGrowthData}>
+                
                     <defs>
                       <linearGradient
                         id="colorUsers"

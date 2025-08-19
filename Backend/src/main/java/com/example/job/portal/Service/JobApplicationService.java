@@ -1,4 +1,5 @@
 package com.example.job.portal.Service;
+
 import java.util.Base64;
 
 import com.example.job.portal.DTO.JobApplicationDTO;
@@ -61,10 +62,10 @@ public class JobApplicationService {
         // Check if user already applied
         Optional<JobApplication> optApp = jobApplicationRepo.findByJobIdAndSeekerId(jobId, user.getId());
 
-        if (optApp.isPresent()){
+        if (optApp.isPresent()) {
             String status = optApp.get().getStatus();
 
-            if(status.equals("APPROVED") || status.equals("PENDING")){
+            if (status.equals("APPROVED") || status.equals("PENDING")) {
                 return ResponseEntity.badRequest().body("You have already Applied to this Job");
             }
         }
@@ -154,7 +155,7 @@ public class JobApplicationService {
         }
         List<JobApplicationDTO> dtos = new ArrayList<>();
 
-        int count =0;
+        int count = 0;
 
         for (JobApplication jobApplication : jobApplications.get()) {
             JobApplicationDTO dto = new JobApplicationDTO();
@@ -198,7 +199,7 @@ public class JobApplicationService {
     // Employer: view applications for their jobs
     public ResponseEntity<?> empViewApplications(Authentication authentication) {
         String email = authentication.getName();
-        System.out.println("Email for emp view applications"+email);
+        System.out.println("Email for emp view applications" + email);
         Optional<Employer> optionalEmployer = employerRepo.findByEmail(email);
         if (optionalEmployer.isEmpty()) {
             return ResponseEntity.badRequest().body("Your employer account not found. Try logging in again.");
@@ -231,17 +232,14 @@ public class JobApplicationService {
             }
 
             // Add job title and company name
-            jobs.stream()
-                    .filter(job -> job.getId().equals(jobApplication.getJobId()))
-                    .findFirst()
-                    .ifPresent(job -> {
-                        Optional<Employer> optEmployer = employerRepo.findById(job.getEmployerId());
-                        if (optEmployer.isPresent()) {
-                            Employer emp = optEmployer.get();
-                            dto.setCompanyName(emp.getCompanyName());
-                        }
-                        dto.setJobTitle(job.getJobTitle());
-                    });
+            jobs.stream().filter(job -> job.getId().equals(jobApplication.getJobId())).findFirst().ifPresent(job -> {
+                Optional<Employer> optEmployer = employerRepo.findById(job.getEmployerId());
+                if (optEmployer.isPresent()) {
+                    Employer emp = optEmployer.get();
+                    dto.setCompanyName(emp.getCompanyName());
+                }
+                dto.setJobTitle(job.getJobTitle());
+            });
 
             dtos.add(dto);
         }
@@ -282,7 +280,7 @@ public class JobApplicationService {
 
     // Update a job application
     public ResponseEntity<String> updateJobApplication(Long jobApplicationId, MultipartFile resume, Authentication authentication) {
-        System.out.println("job id received at update:  "+jobApplicationId);
+        System.out.println("job id received at update:  " + jobApplicationId);
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
         if (optApp.isEmpty()) {
             return ResponseEntity.badRequest().body("Job Application not found");
@@ -332,7 +330,7 @@ public class JobApplicationService {
         // Update status
         jobApplication.setStatus(jobApplicationDTO.getStatus());
         jobApplicationRepo.save(jobApplication);
-        return ResponseEntity.ok("Successfully "+jobApplicationDTO.getStatus()+" job application");
+        return ResponseEntity.ok("Successfully " + jobApplicationDTO.getStatus() + " job application");
     }
 
 }

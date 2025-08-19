@@ -82,7 +82,7 @@ public class JobService {
             if (optEmployer.isPresent()) {
                 Employer employer = optEmployer.get();
                 dto.setCompanyName(employer.getCompanyName());
-                System.out.println("company is : "+employer.getCompanyName());
+                System.out.println("company is : " + employer.getCompanyName());
 
 
                 // Calculate days since posted
@@ -174,7 +174,7 @@ public class JobService {
         Long id = jobDTO.getId();
         Optional<Job> jobOpt = jobRepo.findById(id);
 
-        if (jobOpt.isEmpty()){
+        if (jobOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Job not found");
         }
         Job job = jobOpt.get();
@@ -190,7 +190,7 @@ public class JobService {
 
             jobRepo.save(job);
             return ResponseEntity.ok("Job updated successfully");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong while updating your job");
         }
     }
@@ -199,7 +199,7 @@ public class JobService {
     public ResponseEntity<String> deleteJob(Long id) {
         try {
             Optional<Job> jobOpt = jobRepo.findById(id);
-            if (jobOpt.isEmpty()){
+            if (jobOpt.isEmpty()) {
                 return ResponseEntity.badRequest().body("Job not found");
             }
             Job job = jobOpt.get();

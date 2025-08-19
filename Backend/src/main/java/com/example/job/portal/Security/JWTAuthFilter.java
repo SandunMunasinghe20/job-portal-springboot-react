@@ -25,17 +25,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getRequestURI();
         System.out.println("Filtering path: " + path);
 
 
         // Skip JWT validation for public endpoints
-        if (path.startsWith("/api/auth/forgot-password") || path.startsWith("/api/auth/reset-password")
-                || path.startsWith("/api/auth/login") || path.startsWith("/api/auth/register-seeker")
-                || path.startsWith("/api/auth/register-employer")) {
+        if (path.startsWith("/api/auth/forgot-password") || path.startsWith("/api/auth/reset-password") || path.startsWith("/api/auth/login") || path.startsWith("/api/auth/register-seeker") || path.startsWith("/api/auth/register-employer")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -89,15 +86,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 System.out.println("Authentication set in SecurityContext");
-            }else {
+            } else {
                 System.out.println("JWT token is invalid");
             }
-        }else {
+        } else {
             System.out.println("Username is null or context already has authentication");
         }
 

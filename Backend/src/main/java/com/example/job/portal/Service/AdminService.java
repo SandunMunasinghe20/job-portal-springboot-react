@@ -108,15 +108,15 @@ public class AdminService {
 
             // send automated email about activation
             String msg = """
-    <div style="font-family: Arial, sans-serif; font-size: 15px; color: #333;">
-        <p>Dear User,</p>
-        <p style="color: #15803d; font-weight: bold;">
-            Your account associated with <strong>%s</strong> has been <span style="color: green;">successfully activated</span>.
-        </p>
-        <p>You can now log in and start using all features. Contact support if needed.</p>
-        <p>Best regards,<br/>Support Team</p>
-    </div>
-""".formatted(user.getEmail());
+                        <div style="font-family: Arial, sans-serif; font-size: 15px; color: #333;">
+                            <p>Dear User,</p>
+                            <p style="color: #15803d; font-weight: bold;">
+                                Your account associated with <strong>%s</strong> has been <span style="color: green;">successfully activated</span>.
+                            </p>
+                            <p>You can now log in and start using all features. Contact support if needed.</p>
+                            <p>Best regards,<br/>Support Team</p>
+                        </div>
+                    """.formatted(user.getEmail());
 
             emailService.sendAccountStatusEmail(email, msg);
             return ResponseEntity.ok("User account activated");
@@ -153,15 +153,15 @@ public class AdminService {
 
             // send automated email about deactivation
             String msg = """
-    <div style="font-family: Arial, sans-serif; font-size: 15px; color: #333;">
-        <p>Dear User,</p>
-        <p style="color: #b91c1c; font-weight: bold;">
-            Your account associated with <strong>%s</strong> has been <span style="color: red;">deactivated</span>.
-        </p>
-        <p>If you believe this was a mistake, contact support.</p>
-        <p>Thank you,<br/>Support Team</p>
-    </div>
-""".formatted(user.getEmail());
+                        <div style="font-family: Arial, sans-serif; font-size: 15px; color: #333;">
+                            <p>Dear User,</p>
+                            <p style="color: #b91c1c; font-weight: bold;">
+                                Your account associated with <strong>%s</strong> has been <span style="color: red;">deactivated</span>.
+                            </p>
+                            <p>If you believe this was a mistake, contact support.</p>
+                            <p>Thank you,<br/>Support Team</p>
+                        </div>
+                    """.formatted(user.getEmail());
 
             emailService.sendAccountStatusEmail(email, msg);
             return ResponseEntity.ok("User account deactivated");
@@ -189,11 +189,9 @@ public class AdminService {
 
         // monthly user growth
         List<Object[]> userGrowthRaw = userRepo.getUserGrowthByMonth();
-        Map<String, Long> userGrowthData = userGrowthRaw.stream()
-                .collect(Collectors.toMap(
-                        obj -> (String) obj[0],               // month string, e.g. "2023-07"
-                        obj -> ((Number) obj[1]).longValue() // count of users
-                ));
+        Map<String, Long> userGrowthData = userGrowthRaw.stream().collect(Collectors.toMap(obj -> (String) obj[0],               // month string, e.g. "2023-07"
+                obj -> ((Number) obj[1]).longValue() // count of users
+        ));
         analyticsDTO.setUserGrowthData(userGrowthData);
 
         // skill-based job and application counts

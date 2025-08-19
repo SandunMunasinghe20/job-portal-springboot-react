@@ -30,8 +30,7 @@ public class MessageService {
     private final EmployerRepo employerRepo;
 
     @Autowired
-    public MessageService(UserRepo userRepo, MessageRepo messageRepo,
-                          SeekerRepo seekerRepo, EmployerRepo employerRepo) {
+    public MessageService(UserRepo userRepo, MessageRepo messageRepo, SeekerRepo seekerRepo, EmployerRepo employerRepo) {
         this.userRepo = userRepo;
         this.messageRepo = messageRepo;
         this.seekerRepo = seekerRepo;
@@ -42,7 +41,7 @@ public class MessageService {
     public ResponseEntity<String> sendMessage(MessageDTO messageDTO, Authentication authentication) {
 
         // Prevent sending message to self
-        if(messageDTO.getSenderId().equals(messageDTO.getReceiverId())) {
+        if (messageDTO.getSenderId().equals(messageDTO.getReceiverId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot send message to yourself");
         }
 
@@ -268,8 +267,7 @@ public class MessageService {
         List<Message> messages = messageRepo.findLatestMessagesInUserConversations(userId);
 
         // Filter out self messages
-        List<Message> filteredMessages = messages.stream()
-                .filter(m -> !m.getSender().getId().equals(m.getReceiver().getId()))  // skip self-msg
+        List<Message> filteredMessages = messages.stream().filter(m -> !m.getSender().getId().equals(m.getReceiver().getId()))  // skip self-msg
                 .collect(Collectors.toList());
 
         if (filteredMessages.isEmpty()) {
@@ -298,13 +296,9 @@ public class MessageService {
             // Get chat user's display name based on role
             String chatUserName;
             if (chatUser.getRole().equalsIgnoreCase("seeker")) {
-                chatUserName = seekerRepo.findById(chatUser.getId())
-                        .map(s -> s.getFname() + " " + s.getLname())
-                        .orElse("Seeker");
+                chatUserName = seekerRepo.findById(chatUser.getId()).map(s -> s.getFname() + " " + s.getLname()).orElse("Seeker");
             } else if (chatUser.getRole().equalsIgnoreCase("employer")) {
-                chatUserName = employerRepo.findById(chatUser.getId())
-                        .map(Employer::getCompanyName)
-                        .orElse("Employer");
+                chatUserName = employerRepo.findById(chatUser.getId()).map(Employer::getCompanyName).orElse("Employer");
             } else {
                 chatUserName = "Admin";
             }

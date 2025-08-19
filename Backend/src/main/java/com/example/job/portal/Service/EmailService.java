@@ -71,9 +71,7 @@ public class EmailService {
         linkTokenRepo.save(linkToken);
 
         // Build reset link with encoded token and email
-        String resetLink = "http://localhost:5173/reset-password?token=" +
-                URLEncoder.encode(token, StandardCharsets.UTF_8) +
-                "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
+        String resetLink = "http://localhost:5173/reset-password?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8) + "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
 
         return resetLink;
     }

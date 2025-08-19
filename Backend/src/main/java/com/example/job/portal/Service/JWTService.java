@@ -28,17 +28,14 @@ public class JWTService {
 
     // Extract all claims (payload data) from the JWT token
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())) // use secret key for validation
-                .build()
-                .parseClaimsJws(token) // parse and validate JWT
+        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())) // use secret key for validation
+                .build().parseClaimsJws(token) // parse and validate JWT
                 .getBody(); // return claims (payload)
     }
 
     // Generate JWT token for a given user
     public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername()) // set username as subject
+        return Jwts.builder().setSubject(userDetails.getUsername()) // set username as subject
                 .setIssuedAt(new Date(System.currentTimeMillis())) // token issue time
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiration
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())) // sign using secret key

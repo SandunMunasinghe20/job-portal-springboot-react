@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import PdfViewer from "../PdfViewer";
 import { ToggleRight, ToggleLeft } from "lucide-react";
 import { toast } from "react-toastify";
-import { C } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
+
 
 export default function ProfileCard({ profile, roletoget }) {
   const [isExpanded, setIsExpanded] = useState(false);
