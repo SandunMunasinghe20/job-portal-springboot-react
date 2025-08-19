@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
-import { MdDone, MdDoneAll } from "react-icons/md";
+import { MdDone, MdDoneAll, MdSend } from "react-icons/md";
+import { FiUser, FiMessageCircle } from "react-icons/fi";
 
 export default function MsgPage() {
   const [msg, setMsg] = useState("");
-  const [status, setStatus] = useState("");
   const [chat, setChat] = useState([]);
 
   const [searchParams] = useSearchParams();
@@ -124,7 +124,7 @@ export default function MsgPage() {
         setChat((prevChat) =>
           prevChat.map((m) =>
             unreadMsgs.find((u) => u.msgId === m.msgId)
-              ? { ...m, status: "READ" }
+              ? { ...m, status: "read" }
               : m
           )
         );
@@ -144,78 +144,156 @@ export default function MsgPage() {
     return () => clearInterval(interval); // cleanup on unmount
   }, [receiverId]);
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const chatPartnerName =
+    chat.length > 0
+      ? chat[0].senderId === currentId
+        ? chat[0].receiverName
+        : chat[0].senderName
+      : "Loading...";
+
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <NavBar role={role} />
-      <div className="text-center text-4xl text-blue-600 p-4">
-        <h3>
-          {chat.length > 0
-            ? chat[0].senderId === currentId
-              ? chat[0].receiverName
-              : chat[0].senderName
-            : "Loading..."}
-        </h3>
-      </div>
 
-      <div className="max-w-xl mx-auto mt-6 p-4 border rounded-lg shadow">
-        <div className="h-64 overflow-y-auto border-b mb-4 p-2">
-          {chat.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex flex-col ${
-                msg.senderId == currentId ? "items-end" : "items-start"
-              }`}
-            >
-              <div
-                className={`max-w-[70%] px-4 py-2 rounded-xl shadow 
-            ${
-              msg.senderId == senderId
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-              >
-                <p className="text-sm">{msg.content}</p>
-              </div>
-
-              {/*msg send time with status in ticks*/}
-              <div className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                <span>
-                  {new Date(msg.sendTime).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-
-                {/* Show status only if current user sent the message */}
-                {msg.senderId === currentId && (
-                  <>
-                    {msg.status === "SENT" && <MdDone size={16} />}
-                    {msg.status === "DELIVERED" && <MdDoneAll size={16} />}
-                    {msg.status === "READ" && (
-                      <MdDoneAll size={16} className="text-blue-500" />
-                    )}
-                  </>
-                )}
+      {/* Chat Header */}
+      <div className="bg-white border-b shadow-md">
+        <div className="max-w-4xl px-6 py-6 mx-auto">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 rounded-full bg-blue-50">
+              <FiUser className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-gray-800">
+                {chatPartnerName}
+              </h3>
+              <div className="flex items-center space-x-2 text-sm text-gray-500">
+                <FiMessageCircle className="w-4 h-4" />
+                <span>{chat.length} messages</span>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-            className="flex-1 border p-2 rounded"
-            placeholder="Type your message..."
-          />
-          <button
-            onClick={handleSend}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Send
-          </button>
+          </div>
         </div>
       </div>
-    </>
+
+      {/* Chat Container */}
+      <div className="max-w-4xl px-6 py-8 mx-auto">
+        <div className="overflow-hidden bg-white shadow-lg rounded-2xl">
+          {/* Messages Area */}
+          <div className="p-6 overflow-y-auto border-b h-96 bg-gradient-to-b from-gray-50 to-white">
+            <div className="space-y-4">
+              {chat.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                  <FiMessageCircle className="w-12 h-12 mb-4 text-gray-300" />
+                  <p className="text-lg font-medium">No messages yet</p>
+                  <p className="text-sm">Start the conversation!</p>
+                </div>
+              ) : (
+                chat.map((message, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex flex-col ${
+                      message.senderId == currentId
+                        ? "items-end"
+                        : "items-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[75%] px-4 py-3 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md
+                    ${
+                      message.senderId == currentId
+                        ? "bg-blue-600 text-white rounded-br-md"
+                        : "bg-white text-gray-800 border border-gray-200 rounded-bl-md"
+                    }`}
+                    >
+                      <p className="text-sm leading-relaxed break-words">
+                        {message.content}
+                      </p>
+                    </div>
+
+                    {/* Message metadata */}
+                    <div className="flex items-center gap-2 px-2 mt-1">
+                      <span className="text-xs text-gray-500">
+                        {new Date(message.sendTime).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+
+                      {/* Show status only if current user sent the message */}
+                      {message.senderId === currentId && (
+                        <div className="flex items-center">
+                          {message.status === "SENT" && (
+                            <MdDone size={14} className="text-gray-400" />
+                          )}
+                          {message.status === "DELIVERED" && (
+                            <MdDoneAll size={14} className="text-gray-400" />
+                          )}
+                          {message.status === "READ" && (
+                            <MdDoneAll size={14} className="text-blue-500" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Message Input Area */}
+          <div className="p-6 bg-white">
+            <div className="flex items-end space-x-4">
+              <div className="flex-1">
+                <textarea
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="w-full px-4 py-3 text-gray-800 placeholder-gray-500 border border-gray-300 resize-none rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                  placeholder="Type your message..."
+                  rows="2"
+                />
+              </div>
+              <button
+                onClick={handleSend}
+                className="p-3 text-white transition-colors duration-200 bg-blue-600 shadow-md rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-lg"
+                disabled={!msg.trim()}
+              >
+                <MdSend size={20} />
+              </button>
+            </div>
+
+            {/* Input Helper Text */}
+            <div className="flex items-center justify-between px-1 mt-2">
+              <span className="text-xs text-gray-400">
+                Press Enter to send, Shift + Enter for new line
+              </span>
+              <span className="text-xs text-gray-400">{msg.length}/500</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Chat Actions */}
+        <div className="flex justify-center mt-6">
+          <div className="flex space-x-4">
+            <button className="px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:text-blue-600">
+              Clear Chat
+            </button>
+            <button className="px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:text-blue-600">
+              Block User
+            </button>
+            <button className="px-4 py-2 text-sm text-gray-600 transition-colors duration-200 hover:text-blue-600">
+              Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

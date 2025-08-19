@@ -21,6 +21,14 @@ import AdminHome from "./pages/Admin/AdminHome";
 import Test from "./pages/Test";
 import MsgPage from "./pages/MsgPage/MsgPage";
 import MsgConversationPage from "./pages/MsgPage/MsgConversationPage";
+import AboutUs from "./FooterComponents/AboutUs";
+import PrivacyPolicy from "./FooterComponents/PrivacyPolicy";
+import TermsOfService from "./FooterComponents/TermsOfService";
+import Support from "./FooterComponents/Support";
+import HelpCenter from "./FooterComponents/HelpCenter";
+import Security from "./FooterComponents/Security";
+import JobPulse from "./FooterComponents/JobPulse";
+
 //import './App.css'
 import { useNavigate } from "react-router-dom";
 import { MdMessage } from "react-icons/md";
@@ -32,7 +40,7 @@ function App() {
     return (
       <div
         onClick={() => navigate(`/conversation`)}
-        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg cursor-pointer z-50"
+        className="fixed z-50 p-4 text-white bg-blue-600 rounded-full shadow-lg cursor-pointer bottom-6 right-6 hover:bg-blue-700"
         title="Messages"
       >
         <MdMessage size={24} />
@@ -63,6 +71,14 @@ function App() {
         <Route path="/test" element={<Test />} />
         <Route path="/msg" element={<MsgPage />} />
         <Route path="/conversation" element={<MsgConversationPage />} />
+
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/help" element={<HelpCenter />} />
+        <Route path="/security" element={<Security />} />
+        <Route path="/job-pulse" element={<JobPulse />} />
       </Routes>
 
       {/*toast msges*/}
@@ -81,18 +97,6 @@ function App() {
 
       {/*msg icon*/}
       <FloatingMessageIcon />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
     </BrowserRouter>
   );
 }

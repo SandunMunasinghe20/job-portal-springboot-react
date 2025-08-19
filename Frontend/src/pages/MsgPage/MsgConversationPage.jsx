@@ -47,61 +47,106 @@ export default function MsgInboxPage() {
   return (
     <>
       <NavBar role={role} />
-      <div className="max-w-xl mx-auto mt-6 p-4 border rounded-lg shadow">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Messages</h2>
+      <div className="min-h-screen py-8 bg-gray-50">
+        <div className="max-w-4xl px-4 mx-auto">
+          <div className="overflow-hidden bg-white rounded-lg shadow-md">
+            <div className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
+              <h1 className="text-2xl font-bold text-white">Messages</h1>
+            </div>
 
-        {conversations.length === 0 ? (
-          <p className="text-center text-gray-500">No messages yet.</p>
-        ) : (
-          <ul>
-            {conversations
-              .filter(
-                (msg) =>
-                  !(msg.senderId === currentId && msg.receiverId === currentId)
-              ) // can't msg to himself
-              .map((msg) => {
-                const chatUserId =
-                  msg.senderId === currentId ? msg.receiverId : msg.senderId;
-                const chatUserName =
-                  msg.senderId === currentId
-                    ? msg.receiverName
-                    : msg.senderName;
-
-                const lastMessage = msg.content;
-                const lastMessageTime = msg.sendTime;
-
-                return (
-                  <li
-                    key={msg.msgId}
-                    /* move to single chat page */
-                    onClick={() =>
-                      navigate(
-                        `/msg?senderId=${currentId}&receiverId=${chatUserId}`
-                      )
-                    }
-                    className="cursor-pointer p-3 border-b hover:bg-gray-100 flex justify-between items-center"
+            {conversations.length === 0 ? (
+              <div className="flex flex-col items-center justify-center px-6 py-16">
+                <div className="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div>
-                      <p className="font-semibold">{chatUserName}</p>
-                      <p className="text-sm text-gray-600 truncate max-w-xs">
-                        {lastMessage}
-                      </p>
-                    </div>
-                    <div className="text-xs text-gray-500 text-right">
-                      <div>
-                        {new Date(lastMessageTime).toLocaleDateString()}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    ></path>
+                  </svg>
+                </div>
+                <p className="text-lg font-medium text-gray-500">
+                  No messages yet.
+                </p>
+                <p className="mt-2 text-sm text-gray-400">
+                  Start a conversation to see your messages here
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {conversations
+                  .filter(
+                    (msg) =>
+                      !(
+                        msg.senderId === currentId &&
+                        msg.receiverId === currentId
+                      )
+                  )
+                  .map((msg) => {
+                    const chatUserId =
+                      msg.senderId === currentId
+                        ? msg.receiverId
+                        : msg.senderId;
+                    const chatUserName =
+                      msg.senderId === currentId
+                        ? msg.senderName
+                        : msg.receiverName;
+
+                    const lastMessage = msg.content;
+                    const lastMessageTime = msg.sendTime;
+
+                    return (
+                      <div
+                        key={msg.id}
+                        onClick={() =>
+                          navigate(
+                            `/msg?senderId=${currentId}&receiverId=${chatUserId}`
+                          )
+                        }
+                        className="flex items-center justify-between p-4 transition-colors duration-200 cursor-pointer hover:bg-blue-50 group"
+                      >
+                        <div className="flex items-center flex-1 min-w-0 space-x-4">
+                          <div className="flex-shrink-0">
+                            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
+                              <span className="text-lg font-semibold text-white">
+                                {chatUserName?.charAt(0).toUpperCase() || "?"}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-200 group-hover:text-blue-600">
+                              {chatUserName}
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-600 truncate">
+                              {lastMessage}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-end flex-shrink-0 space-y-2">
+                          <span className="text-xs font-medium text-gray-500">
+                            {new Date(lastMessageTime).toLocaleDateString()}
+                          </span>
+                          {msg.unreadCount > 0 && (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full min-w-[20px] h-5 animate-pulse">
+                              {msg.unreadCount}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      {msg.unreadCount > 0 && (
-                        <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
-                          {msg.unreadCount}
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-          </ul>
-        )}
+                    );
+                  })}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
