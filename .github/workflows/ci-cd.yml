@@ -60,19 +60,19 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm install
-        working-directory: ./frontend
+        working-directory: ./Frontend
 
       - name: 🧹 Lint
         run: npm run lint
-        working-directory: ./frontend
+        working-directory: ./Frontend
 
       - name: 🧪 Run tests
         run: npm test
-        working-directory: ./frontend
+        working-directory: ./Frontend
 
       - name: 🏗️ Build
         run: npm run build
-        working-directory: ./frontend
+        working-directory: ./Frontend
 
       # - name: 🚀 Deploy Frontend
       #   run: echo "Add frontend deployment steps here"
