@@ -42,19 +42,19 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ### 🛠️ Admin Dashboard
 
-![Admin Home](./screenshots/AdminHome.png)
+![Admin Home](./Screenshots/AdminHome.png)
 
 ### 📄 View Job Applications
 
-![View Job Applications](./screenshots/viewJobApplications.png)
+![View Job Applications](./Screenshots/viewJobApplications.png)
 
 ### 📝 Job Details Page
 
-![Job Details](./screenshots/job-details.png)
+![Job Details](./Screenshots/job-details.png)
 
 ### 👤 Profile View
 
-![Profile View](./screenshots/viewProfile.png)
+![Profile View](./Screenshots/viewProfile.png)
 
 ## 🔗 Live Demo / Video
 
@@ -98,6 +98,7 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 #### 🛠️ Admins
 
 - View **all** jobs, applications, employers, and seekers
+- Activate or Deactivate User Accounts
 - Delete inappropriate jobs
 - Monitor platform activities
 
@@ -188,10 +189,11 @@ npm run dev
 - ✅ Resume Upload & File Storage
 - ✅ Role-Based Messaging System
 - ✅ Admin View and Control Features
+- ✅ Notifications for Account activations and deactivations by Admin
+- ✅ Stats/Analytics
 - 🔜 Deployment (Render / Vercel / Railway)
 - 🔜 UI/UX Polish
-- ⛔ Notifications (not included)
-- ⛔ Stats/Analytics (not included)
+
 
 ---
 
@@ -210,8 +212,3 @@ This is a personal project created solely by me for educational and portfolio pu
 
 ---
 
-## 🏫 About
-
-University Final Project (Year 2)
-Department of Computer Engineering
-University of Peradeniya
