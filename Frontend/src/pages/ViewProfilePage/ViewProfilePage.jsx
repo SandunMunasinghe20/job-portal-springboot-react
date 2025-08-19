@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import ViewProfile from "../../components/ViewProfile/ViewProfile";
 import { useSearchParams } from "react-router-dom";
-//import './ViewProfilePage.css';
-import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function ViewProfilePage() {
-  const navigate = useNavigate();
 
   const [profile, setProfile] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("auth-token");
   const role = localStorage.getItem("role");
@@ -20,7 +16,7 @@ export default function ViewProfilePage() {
   const paramEmployerId = searchParams.get("employerId");
 
   const fetchProfile = async () => {
-    setLoading(true);
+
     let url;
     //view own profile
     if (!paramSeekerId && !paramEmployerId) {
@@ -62,9 +58,7 @@ export default function ViewProfilePage() {
       console.log("data :", data);
       console.log("data.role : ", data.role);
     } catch (err) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+      toast.error(`Something went wrong || ${err}`);
     }
   };
 

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-//import './Jobs.css';
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -11,7 +9,7 @@ export default function JobsByCompany() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const token = localStorage.getItem("auth-token");
   const role = localStorage.getItem("role");
@@ -39,7 +37,8 @@ export default function JobsByCompany() {
 
       setLoading(false);
     } catch (e) {
-      toast.error("Error occured while fetching your Jobs");
+      toast.error(`Error occured while fetching your Jobs`);
+      console.log(e);
       setLoading(false);
     }
   };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
-import { useSearchParams } from "react-router-dom";
+
 
 export default function MsgInboxPage() {
   const [conversations, setConversations] = useState([]);
@@ -27,7 +27,7 @@ export default function MsgInboxPage() {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
 
       if (!res.ok) {
@@ -40,7 +40,7 @@ export default function MsgInboxPage() {
       console.log("data: ", data);
       setConversations(data);
     } catch (err) {
-      toast.error("Error loading inbox");
+      toast.error(`Error loading inbox || ${err}`);
     }
   }
 
@@ -86,7 +86,7 @@ export default function MsgInboxPage() {
                       !(
                         msg.senderId === currentId &&
                         msg.receiverId === currentId
-                      )
+                      ),
                   )
                   .map((msg) => {
                     const chatUserId =
@@ -106,7 +106,7 @@ export default function MsgInboxPage() {
                         key={msg.id}
                         onClick={() =>
                           navigate(
-                            `/msg?senderId=${currentId}&receiverId=${chatUserId}`
+                            `/msg?senderId=${currentId}&receiverId=${chatUserId}`,
                           )
                         }
                         className="flex items-center justify-between p-4 transition-colors duration-200 cursor-pointer hover:bg-blue-50 group"

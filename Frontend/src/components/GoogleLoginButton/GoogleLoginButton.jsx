@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 
 export default function GoogleLoginButton({ onLoginSuccess, onLoginError }) {
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function GoogleLoginButton({ onLoginSuccess, onLoginError }) {
           theme: "outline",
           size: "large",
           width: "100%",
-        }
+        },
       );
 
       window.google.accounts.id.prompt();

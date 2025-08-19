@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import SubmitButton from "../submitButton/submitbutton";
 import Spinner from "../Spinner/Spinner";
-//import "./JobListing.css";
+
+
 
 export default function JobListing() {
   const [jobs, setJobs] = useState([]);
@@ -71,6 +72,7 @@ export default function JobListing() {
       toast.success("Jobs loaded successfully");
     } catch (error) {
       toast.error("An error occurred while fetching jobs");
+      console.error("Error fetching jobs:", error);
     } finally {
       setLoading(false);
     }
@@ -87,7 +89,7 @@ export default function JobListing() {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -100,6 +102,7 @@ export default function JobListing() {
       toast.success("Job deleted successfully");
     } catch (error) {
       toast.error("An error occurred while deleting the job");
+      console.error("Error deleting job:", error);
     }
   };
 
@@ -122,13 +125,13 @@ export default function JobListing() {
   }, [jobs, searchTerm]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
+    <div className="max-w-2xl p-6 mx-auto mb-6 bg-white shadow-md rounded-2xl">
       <div>
-        <h1 className="text-center text-3xl items-center font-bold text-blue-600 mb-2">
+        <h1 className="items-center mb-2 text-3xl font-bold text-center text-blue-600">
           {role === "seeker" || role === "admin" ? "Job Board" : "Your Jobs"}
         </h1>
         {role === "seeker" && (
-          <p className="text-center text-gray-500 mb-6">
+          <p className="mb-6 text-center text-gray-500">
             Discover exceptional career opportunities tailored for you
           </p>
         )}
@@ -136,21 +139,21 @@ export default function JobListing() {
         {/*only for seekers and admins*/}
         {(role === "seeker" || role === "admin") && (
           <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+            <div className="p-4 shadow-sm bg-blue-50 rounded-xl">
               <span className="block text-2xl font-semibold text-blue-600">
                 {jobs.length}
               </span>
               <span className="text-sm text-gray-600">Total Jobs</span>
             </div>
 
-            <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+            <div className="p-4 shadow-sm bg-blue-50 rounded-xl">
               <span className="block text-2xl font-semibold text-blue-600">
                 {new Set(jobs.map((job) => job.companyName)).size}
               </span>
               <span className="text-sm text-gray-600">Companies</span>
             </div>
 
-            <div className="p-4 bg-blue-50 rounded-xl shadow-sm">
+            <div className="p-4 shadow-sm bg-blue-50 rounded-xl">
               <span className="block text-2xl font-semibold text-blue-600">
                 {new Set(jobs.map((job) => job.location)).size}
               </span>
@@ -163,7 +166,7 @@ export default function JobListing() {
       {/*for emp*/}
       {role === "employer" && (
         <div className="flex justify-center my-8">
-          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl p-6 bg-green-50 rounded-2xl shadow-md text-center">
+          <div className="w-full max-w-xs p-6 text-center shadow-md sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-green-50 rounded-2xl">
             <span className="block text-3xl font-bold text-green-600">
               {jobs.length}
             </span>
@@ -172,12 +175,12 @@ export default function JobListing() {
             </span>
           </div>
 
-          {/* <div className="p-4 bg-green-50 rounded-xl shadow-sm">
+          {/* <div className="p-4 shadow-sm bg-green-50 rounded-xl">
                         <span className="block text-2xl font-semibold text-green-600">{totalApplicants}</span>
                         <span className="text-sm text-gray-600">Total Applicants</span>
                     </div>
 
-                    <div className="p-4 bg-green-50 rounded-xl shadow-sm">
+                    <div className="p-4 shadow-sm bg-green-50 rounded-xl">
                         <span className="block text-2xl font-semibold text-green-600">{positionsFilled}</span>
                         <span className="text-sm text-gray-600">Positions Filled</span>
                     </div>
@@ -193,7 +196,7 @@ export default function JobListing() {
             placeholder="Search jobs by title, company, location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-gray-800"
+            className="w-full px-4 py-2 text-gray-800 border border-gray-300 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
           />
         </div>
       )}
@@ -203,22 +206,22 @@ export default function JobListing() {
       ) : (
         <div className="text-black">
           {filteredJobs.length > 0 ? (
-            filteredJobs.map((job, index) => (
+            filteredJobs.map((job,index) => (
               <div
                 key={job.id}
-                className="bg-white rounded-2xl shadow-lg p-6 mb-6"
+                className="p-6 mb-6 bg-white shadow-lg rounded-2xl"
               >
-                <div className=" flex justify-between items-center w-full">
-                  <h3 className="text-3xl font-semibold break-words my-4">
+                <div className="flex items-center justify-between w-full ">
+                  <h3 className="my-4 text-3xl font-semibold break-words">
                     {job.jobTitle}
                   </h3>
 
                   {/*Job posted days + icon*/}
-                  <div className="text-green-600 m-1">
+                  <div className="m-1 text-green-600">
                     <div className="flex items-center space-x-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-500"
+                        className="w-5 h-5 text-gray-500"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -236,7 +239,7 @@ export default function JobListing() {
                 </div>
 
                 <div className="flex justify-between">
-                  <ul className="flex space-x-6 text-gray-700 mt-2">
+                  <ul className="flex mt-2 space-x-6 text-gray-700">
                     <li className="flex items-center space-x-1 ">
                       <svg
                         className="w-4 h-4 text-blue-600"
@@ -265,38 +268,38 @@ export default function JobListing() {
                   </ul>
                 </div>
 
-                <div className="text-right text-gray-700 font-semibold mt-4 text-lg">
+                <div className="mt-4 text-lg font-semibold text-right text-gray-700">
                   Rs. {job.salary?.toLocaleString()}
                 </div>
 
                 {/*job description*/}
                 {expandedJobId === job.id && (
                   <div className="gap-6 px-4 py-4">
-                    <p className="my-4 text-left font-semibold text-gray-800">
+                    <p className="my-4 font-semibold text-left text-gray-800">
                       {job.companyName || "Confidential"}
                     </p>
-                    <p className=" max-w-xl text-gray-700 leading-relaxed my-4 text-left break-words">
+                    <p className="max-w-xl my-4 leading-relaxed text-left text-gray-700 break-words ">
                       {job.jobDescription}
                     </p>
                   </div>
                 )}
 
                 {/*skills + hide/view button*/}
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex flex-wrap gap-2 ">
                     {(job.skillsRequired || "")
                       .split(",")
                       .map((skill, index) => (
                         <span
                           key={index}
-                          className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm hover:scale-105 transition-transform"
+                          className="px-3 py-1 text-sm text-gray-800 transition-transform bg-gray-200 rounded-full hover:scale-105"
                         >
                           {skill.trim()}
                         </span>
                       ))}
                   </div>
                   <button
-                    className="text-blue-600 text-sm underline"
+                    className="text-sm text-blue-600 underline"
                     onClick={() => toggleExpand(job.id)}
                   >
                     {expandedJobId === job.id ? (
@@ -311,7 +314,7 @@ export default function JobListing() {
 
                 {expandedJobId === job.id && (
                   <div className="flex justify-center ">
-                    <div className="flex justify-between items-center w-60 pt-4">
+                    <div className="flex items-center justify-between pt-4 w-60">
                       {role === "seeker" && (
                         <SubmitButton
                           msg="Apply Now"

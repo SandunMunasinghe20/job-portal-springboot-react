@@ -13,9 +13,9 @@ It provides a fast, modular, and responsive user interface for the job portal sy
 
 ## ⚡ Tech Stack
 
-- **React (with Vite)** – fast dev server & optimized builds  
-- **Tailwind CSS** – utility-first styling  
-- **ESLint** – linting & code consistency  
+- **React (with Vite)** – fast dev server & optimized builds
+- **Tailwind CSS** – utility-first styling
+- **ESLint** – linting & code consistency
 - **npm** – dependency management
 
 ---
@@ -23,6 +23,7 @@ It provides a fast, modular, and responsive user interface for the job portal sy
 ## 🚀 Getting Started
 
 ### 1️⃣ Clone the repository
+
 ```bash
 git clone https://github.com/SandunMunasinghe20/job-pulse.git
 cd job-pulse/Frontend
@@ -52,10 +53,10 @@ npm run build
 
 ## 🛠️ Development Notes
 
-* Modular **React** components
-* Tailwind config in `tailwind.config.js`
-* Build/plugins in `vite.config.js`
-* ESLint configured for clean code
+- Modular **React** components
+- Tailwind config in `tailwind.config.js`
+- Build/plugins in `vite.config.js`
+- ESLint configured for clean code
 
 ---
 
@@ -68,5 +69,7 @@ Full stack features and backend details are documented in the **[root README](..
 ## 👨‍💻 Author
 
 Developed by **[Sandun Lakshan Munasinghe](https://github.com/SandunMunasinghe20)**
+
+```
 
 ```

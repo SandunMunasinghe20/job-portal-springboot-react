@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-//import './Login.css'
+import { useState } from "react";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import GetInput from "../../components/GetInput/GetInput";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,21 +10,24 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPass, setViewPass] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+ // const [isDarkMode, setIsDarkMode] = useState(false);
 
   const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
-
+  
+/*
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
+      //setIsDarkMode(savedTheme === "dark");
     } else {
       // Check system preference
-      setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      //setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
     }
   }, []);
+  */
+ 
 
   // Handle Google login success
   const handleGoogleSuccess = async (credential) => {
@@ -36,7 +38,7 @@ function Login() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: credential }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -129,7 +131,7 @@ function Login() {
     } catch (e) {
       //console.log("Error occured while logging");
       //setError("Login failed. Try again");
-      toast.error("Login failed. Try again");
+      toast.error(`Login failed. Try again || ${e}`);
     }
   };
 

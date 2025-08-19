@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import PdfViewer from "../PdfViewer";
 import { ToggleRight, ToggleLeft } from "lucide-react";
 import { toast } from "react-toastify";
+import { C } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
 
 export default function ProfileCard({ profile, roletoget }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -48,6 +49,7 @@ export default function ProfileCard({ profile, roletoget }) {
       setIsActive((prev) => !prev);
     } catch (e) {
       toast.error("Unable to connect with the server.");
+      console.error(e);
       return;
     }
   };

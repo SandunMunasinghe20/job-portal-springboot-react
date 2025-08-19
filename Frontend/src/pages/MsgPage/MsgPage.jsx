@@ -50,7 +50,7 @@ export default function MsgPage() {
       setMsg("");
       await getChat();
     } catch (e) {
-      toast.error("Unable to connect with the Server.Try again.");
+      toast.error(`Unable to connect with the Server.Try again. || ${e}`);
     }
   };
 
@@ -69,7 +69,7 @@ export default function MsgPage() {
             senderId: msg.senderId,
             receiverId: currentId,
           }),
-        }
+        },
       );
 
       const data = await response.text();
@@ -81,7 +81,7 @@ export default function MsgPage() {
 
       console.log("msgs marked as read");
     } catch (e) {
-      console.log("");
+      console.log(e);
       return;
     }
   };
@@ -95,7 +95,7 @@ export default function MsgPage() {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -110,14 +110,14 @@ export default function MsgPage() {
       toast.success("Chat loaded successfully");
 
       const unreadMsgs = data.filter(
-        (msg) => msg.receiverId === currentId && msg.status !== "READ"
+        (msg) => msg.receiverId === currentId && msg.status !== "READ",
       );
 
       if (unreadMsgs.length > 0) {
         await Promise.all(
           unreadMsgs.map((msg) =>
-            handleMarkAsRead(msg).catch((err) => console.error(err))
-          )
+            handleMarkAsRead(msg).catch((err) => console.error(err)),
+          ),
         );
 
         // Update local chat state to mark messages as read
@@ -125,12 +125,12 @@ export default function MsgPage() {
           prevChat.map((m) =>
             unreadMsgs.find((u) => u.msgId === m.msgId)
               ? { ...m, status: "read" }
-              : m
-          )
+              : m,
+          ),
         );
       }
     } catch (error) {
-      toast.error("Unable to load Chat");
+      toast.error(`Unable to load Chat || ${error}`);
       return;
     }
   };

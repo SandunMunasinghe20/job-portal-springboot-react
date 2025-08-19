@@ -1,84 +1,78 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import ApplicationCard from "../../components/ApplicationCard/ApplicationCard";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 
 //import './Applications.css';
 import { toast } from "react-toastify";
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function Applications() {
-    const [applications, setApplications] = useState([]);
-    //const [err, setErr] = useState("");
-    const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState([]);
+  //const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
 
-    const token = localStorage.getItem("auth-token");
-    const role = localStorage.getItem("role");
-    
+  const token = localStorage.getItem("auth-token");
+  const role = localStorage.getItem("role");
 
-    let url;
-    if (role === 'seeker')
-        url = "http://localhost:8080/api/applyJobs/myApplications";
-    else if (role == 'admin')
-        url = "http://localhost:8080/api/admin/applications";
-    else
-        url = "http://localhost:8080/api/applyJobs/view"
+  let url;
+  if (role === "seeker")
+    url = "http://localhost:8080/api/applyJobs/myApplications";
+  else if (role == "admin")
+    url = "http://localhost:8080/api/admin/applications";
+  else url = "http://localhost:8080/api/applyJobs/view";
 
-    useEffect(() => {
-        const fetchApplications = async () => {
-            //setErr("");
-            setLoading(true);
+  useEffect(() => {
+    const fetchApplications = async () => {
+      //setErr("");
+      setLoading(true);
 
-            try {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-                const response = await fetch(url, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                    },
-                });
+        if (!response.ok) {
+          const errorMsg = await response.text();
+          toast.error(errorMsg);
+          setLoading(false);
+          return;
+        }
 
-                if (!response.ok) {
-                    const errorMsg = await response.text();
-                    toast.error(errorMsg);
-                    setLoading(false);
-                    return;
-                }
+        const data = await response.json();
+        console.log("data ", data);
+        setApplications(data);
+        setLoading(false);
+      } catch (error) {
+        toast.error("Error connecting to server");
+        console.error("Error fetching applications:", error);
+        setLoading(false);
+      }
+    };
 
-                const data = await response.json();
-                console.log("data ", data);
-                setApplications(data);
-                setLoading(false);
-            } catch (error) {
-                toast.error("Error connecting to server");
-                setLoading(false);
-            }
-        };
+    fetchApplications();
+  }, []);
 
-        fetchApplications();
-    }, []);
+  return (
+    <>
+      {" "}
+      <NavBar role={role} />
+      <div className="min-h-screen px-4 py-10 bg-gray-50 sm:px-6 lg:px-8">
+        <h1 className="mb-8 text-3xl font-extrabold text-center text-blue-600">
+          {role === "seeker"
+            ? "My Applications"
+            : role === "employer"
+              ? "Received Applications"
+              : role === "admin"
+                ? "All Applications"
+                : "Applications"}
+        </h1>
 
-    return (
-        <> <NavBar role={role} />
-            <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        {loading && <Spinner />}
 
-                <h1 className="text-3xl font-extrabold text-center text-blue-600 mb-8">
-                    {role === 'seeker' ? (
-                        "My Applications"
-                    ) : role === 'employer' ? (
-                        "Received Applications"
-                    ) : role === 'admin' ? (
-                        "All Applications"
-                    ) : (
-                        "Applications"
-                    )}
-
-                </h1>
-
-                {loading && (
-                    <Spinner />
-                )}
-
-                <ApplicationCard applications={applications} />
-            </div>
-        </>
-    );
+        <ApplicationCard applications={applications} />
+      </div>
+    </>
+  );
 }

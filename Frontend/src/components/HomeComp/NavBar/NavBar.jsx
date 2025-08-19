@@ -31,6 +31,7 @@ function NavBar({ role }) {
       navigate("/login");
     } catch (e) {
       toast.error("Failed to Logout");
+      console.error("Logout error:", e);
     }
   };
 

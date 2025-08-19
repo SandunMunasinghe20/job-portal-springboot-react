@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import GetInput from "../../components/GetInput/GetInput";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-//import './PostJobs.css';
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import GetSelect from "../../components/GetInput/GetSelect";
 import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
@@ -93,7 +92,7 @@ export default function PostJobs() {
       }
       navigate("/myJobs");
     } catch (e) {
-      toast.error("Failed to connect with backend.Try again");
+      toast.error(`Failed to connect with backend.Try again || ${e}`);
     }
   };
 
@@ -106,7 +105,7 @@ export default function PostJobs() {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
 
       if (!res.ok) {

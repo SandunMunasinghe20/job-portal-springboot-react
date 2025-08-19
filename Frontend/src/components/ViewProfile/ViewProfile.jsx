@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Edit3,
@@ -21,7 +20,7 @@ import {
 const SubmitButton = ({ onClick, msg }) => (
   <button
     onClick={onClick}
-    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
+    className="flex items-center gap-2 px-6 py-2 font-medium text-white transition-all duration-200 bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl hover:shadow-md"
   >
     <Edit3 size={16} />
     {msg}
@@ -33,12 +32,12 @@ export default function ViewProfile({ profile }) {
 
   if (!profile) {
     return (
-      <div className="bg-white rounded-2xl shadow-md p-8 max-w-2xl mx-auto mt-6">
+      <div className="max-w-2xl p-8 mx-auto mt-6 bg-white shadow-md rounded-2xl">
         <div className="text-center">
-          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-red-600 text-xl">⚠</span>
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-red-50">
+            <span className="text-xl text-red-600">⚠</span>
           </div>
-          <h3 className="text-red-600 font-semibold text-lg mb-2">
+          <h3 className="mb-2 text-lg font-semibold text-red-600">
             Profile Not Available
           </h3>
           <p className="text-gray-500">
@@ -75,11 +74,11 @@ export default function ViewProfile({ profile }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 mb-6 max-w-2xl mx-auto">
+    <div className="max-w-2xl p-6 mx-auto mb-6 bg-white shadow-md rounded-2xl">
       {/* Header Section */}
 
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-blue-600 mb-2">
+      <div className="mb-6 text-center">
+        <h1 className="mb-2 text-3xl font-bold text-blue-600">
           {isEmployer ? "Company Profile" : "Profile Overview"}
         </h1>
         <p className="text-gray-500">
@@ -90,8 +89,8 @@ export default function ViewProfile({ profile }) {
       </div>
 
       {/* Profile Picture/Logo and Basic Info */}
-      <div className="bg-blue-50 rounded-xl p-6 mb-6">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 text-center sm:text-left">
+      <div className="p-6 mb-6 bg-blue-50 rounded-xl">
+        <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:space-x-6 sm:text-left">
           <div className="relative">
             <img
               src={
@@ -100,36 +99,36 @@ export default function ViewProfile({ profile }) {
                     ? `data:image/jpeg;base64,${profile.profilePicture}`
                     : "/default-user.png"
                   : profile.companyLogo
-                  ? `data:image/jpeg;base64,${profile.companyLogo}`
-                  : "/default-company.png"
+                    ? `data:image/jpeg;base64,${profile.companyLogo}`
+                    : "/default-company.png"
               }
               alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+              className="object-cover w-24 h-24 border-4 border-white rounded-full shadow-sm"
             />
-            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+            <div className="absolute flex items-center justify-center w-8 h-8 bg-green-500 border-2 border-white rounded-full -bottom-2 -right-2">
               <div className="w-3 h-3 bg-white rounded-full"></div>
             </div>
           </div>
 
-          <div className="mt-4 sm:mt-0 flex-1">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          <div className="flex-1 mt-4 sm:mt-0">
+            <h2 className="mb-2 text-2xl font-bold text-gray-800">
               {isSeeker
                 ? `${profile.fname || ""} ${profile.lname || ""}`.trim()
                 : profile.companyName}
             </h2>
             {isSeeker && profile.currentJobTitle && (
-              <p className="text-blue-600 font-medium mb-1">
+              <p className="mb-1 font-medium text-blue-600">
                 {profile.currentJobTitle}
               </p>
             )}
             {!isSeeker && profile.email && (
-              <p className="text-gray-600 mb-1 flex items-center justify-center sm:justify-start gap-1">
+              <p className="flex items-center justify-center gap-1 mb-1 text-gray-600 sm:justify-start">
                 <Mail size={16} />
                 {profile.email}
               </p>
             )}
             {profile.location && (
-              <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1">
+              <p className="flex items-center justify-center gap-1 text-gray-600 sm:justify-start">
                 <MapPin size={16} />
                 {profile.location}
               </p>
@@ -139,10 +138,10 @@ export default function ViewProfile({ profile }) {
       </div>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-2 gap-4 mb-6 sm:grid-cols-3">
         {isSeeker && (
           <>
-            <div className="p-4 bg-blue-50 rounded-xl shadow-sm text-center">
+            <div className="p-4 text-center shadow-sm bg-blue-50 rounded-xl">
               <div className="flex items-center justify-center mb-2">
                 <Clock className="text-blue-600" size={20} />
               </div>
@@ -151,7 +150,7 @@ export default function ViewProfile({ profile }) {
               </span>
               <span className="text-sm text-gray-600">Years Experience</span>
             </div>
-            <div className="p-4 bg-green-50 rounded-xl shadow-sm text-center">
+            <div className="p-4 text-center shadow-sm bg-green-50 rounded-xl">
               <div className="flex items-center justify-center mb-2">
                 <Award className="text-green-600" size={20} />
               </div>
@@ -160,7 +159,7 @@ export default function ViewProfile({ profile }) {
               </span>
               <span className="text-sm text-gray-600">Skills</span>
             </div>
-            <div className="p-4 bg-gray-50 rounded-xl shadow-sm text-center">
+            <div className="p-4 text-center shadow-sm bg-gray-50 rounded-xl">
               <div className="flex items-center justify-center mb-2">
                 <Briefcase className="text-gray-600" size={20} />
               </div>
@@ -173,7 +172,7 @@ export default function ViewProfile({ profile }) {
         )}
         {isEmployer && (
           <>
-            <div className="p-4 bg-blue-50 rounded-xl shadow-sm text-center">
+            <div className="p-4 text-center shadow-sm bg-blue-50 rounded-xl">
               <div className="flex items-center justify-center mb-2">
                 <Building2 className="text-blue-600" size={20} />
               </div>
@@ -182,7 +181,7 @@ export default function ViewProfile({ profile }) {
               </span>
               <span className="text-sm text-gray-600">Industry</span>
             </div>
-            <div className="p-4 bg-green-50 rounded-xl shadow-sm text-center">
+            <div className="p-4 text-center shadow-sm bg-green-50 rounded-xl">
               <div className="flex items-center justify-center mb-2">
                 <Users className="text-green-600" size={20} />
               </div>
@@ -196,15 +195,15 @@ export default function ViewProfile({ profile }) {
       </div>
 
       {/* Detailed Information */}
-      <div className="bg-gray-50 rounded-xl p-6 mb-6">
+      <div className="p-6 mb-6 bg-gray-50 rounded-xl">
         {!isAdmin && (
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-800">
             <User size={18} />
             {isSeeker ? "Professional Details" : "Company Details"}
           </h3>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
           {isSeeker && (
             <>
               <Detail
@@ -239,8 +238,8 @@ export default function ViewProfile({ profile }) {
                           .map((s) => s.trim())
                           .join(", ")
                       : Array.isArray(profile.skills)
-                      ? profile.skills.join(", ")
-                      : ""
+                        ? profile.skills.join(", ")
+                        : ""
                   }
                 />
               </div>
@@ -270,7 +269,7 @@ export default function ViewProfile({ profile }) {
                   <div className="flex flex-wrap gap-3">
                     <button
                       onClick={() => openPdf(profile.resume)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center gap-2"
+                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700"
                     >
                       <Eye size={16} />
                       View Resume
@@ -278,14 +277,14 @@ export default function ViewProfile({ profile }) {
                     <a
                       href={`data:application/pdf;base64,${profile.resume}`}
                       download="resume.pdf"
-                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center gap-2"
+                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700"
                     >
                       <Download size={16} />
                       Download Resume
                     </a>
                   </div>
                 ) : (
-                  <span className="text-gray-500 italic">Not Provided</span>
+                  <span className="italic text-gray-500">Not Provided</span>
                 )}
               </div>
             </>
@@ -318,12 +317,12 @@ export default function ViewProfile({ profile }) {
                     href={profile.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700 underline font-medium transition-colors duration-200"
+                    className="font-medium text-blue-600 underline transition-colors duration-200 hover:text-blue-700"
                   >
                     {profile.website}
                   </a>
                 ) : (
-                  <span className="text-gray-500 italic">Not Provided</span>
+                  <span className="italic text-gray-500">Not Provided</span>
                 )}
               </div>
             </>
@@ -358,7 +357,7 @@ function Detail({ icon, label, value }) {
     <div className="flex items-start gap-2">
       <div className="text-gray-600 mt-0.5">{icon}</div>
       <div>
-        <span className="font-medium text-gray-800 block">{label}:</span>
+        <span className="block font-medium text-gray-800">{label}:</span>
         {value ? (
           <span className="text-gray-700">{value}</span>
         ) : (

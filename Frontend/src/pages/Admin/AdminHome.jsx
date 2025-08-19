@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-import { useBeforeUnload, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -92,7 +92,7 @@ export default function AdminHome() {
           // userGrowthData map into array for chart
           if (data.userGrowthData) {
             const growthArray = Object.entries(data.userGrowthData).map(
-              ([month, users]) => ({ month, users })
+              ([month, users]) => ({ month, users }),
             );
             setUserGrowthData(growthArray);
           }
@@ -127,10 +127,10 @@ export default function AdminHome() {
             color === "text-blue-600"
               ? "bg-blue-50"
               : color === "text-green-600"
-              ? "bg-green-50"
-              : color === "text-yellow-600"
-              ? "bg-yellow-50"
-              : "bg-gray-50"
+                ? "bg-green-50"
+                : color === "text-yellow-600"
+                  ? "bg-yellow-50"
+                  : "bg-gray-50"
           }`}
         >
           <Icon className={`w-8 h-8 ${color}`} />

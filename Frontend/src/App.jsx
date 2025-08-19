@@ -15,7 +15,7 @@ import JobsByCompany from "./pages/JobsPage/JobsByCompany";
 import ChangePass from "./pages/ForgotPassword/ChangePass";
 import Applications from "./pages/Applications/Applications";
 import Home from "./pages/Home/Home";
-import MyProfile from "./components/MyProfile";
+
 import AdminHome from "./pages/Admin/AdminHome";
 //import AdminViewSeekers from "./pages/Admin/AdminViewSeekers";
 import Test from "./pages/Test";
@@ -29,14 +29,14 @@ import HelpCenter from "./FooterComponents/HelpCenter";
 import Security from "./FooterComponents/Security";
 import JobPulse from "./FooterComponents/JobPulse";
 
-//import './App.css'
+
 import { useNavigate } from "react-router-dom";
 import { MdMessage } from "react-icons/md";
 
 function App() {
   function FloatingMessageIcon() {
     const navigate = useNavigate();
-    const id = localStorage.getItem("id");
+    //const id = localStorage.getItem("id");
     return (
       <div
         onClick={() => navigate(`/conversation`)}

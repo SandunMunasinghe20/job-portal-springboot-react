@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { fetchFromBackend } from "../../services/Service";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-//import './UsersPage.css';
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
@@ -48,7 +47,7 @@ export default function UsersPage() {
     <>
       <NavBar role={role} />
       <div className="pb-4">
-        <h2 className="text-blue-600 text-3xl text-center pb-4">
+        <h2 className="pb-4 text-3xl text-center text-blue-600">
           {roletoget === "employer"
             ? "Available Employers"
             : "Available Job Seekers"}

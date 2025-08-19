@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SubmitButton from "../submitButton/submitbutton";
-import { fetchFromBackend } from "../../services/Service";
 import { toast } from "react-toastify";
 import ConfirmModal from "../ConfirmModel/ConfirmModel";
 import { FaRegEnvelope } from "react-icons/fa";
@@ -34,7 +33,7 @@ export default function ApplicationCard({ applications }) {
           headers: {
             Authorization: "Bearer " + token,
           },
-        }
+        },
       );
       if (!response.ok) {
         toast.error("Error occurred while deleting Job Application");
@@ -43,8 +42,8 @@ export default function ApplicationCard({ applications }) {
       const data = await response.text();
       toast.success(data);
       navigate(0);
-    } catch (error) {
-      toast.error("Error occurred while connecting to server.");
+    } catch(error) {
+      toast.error(`Error occurred while connecting to server.|| ${error}`);
     }
   };
 
@@ -86,7 +85,7 @@ export default function ApplicationCard({ applications }) {
             Authorization: "Bearer " + token,
           },
           body: formData,
-        }
+        },
       );
 
       if (!response.ok) {
@@ -103,6 +102,7 @@ export default function ApplicationCard({ applications }) {
       }, 1000);
     } catch (e) {
       toast.error("Error occurred while updating your Job Application");
+      console.error("Error:", e);
     }
   };
 
@@ -135,7 +135,7 @@ export default function ApplicationCard({ applications }) {
             id: app.id,
             status: newStatus,
           }),
-        }
+        },
       );
       const data = await response.text();
       if (!response.ok) {
@@ -160,20 +160,20 @@ export default function ApplicationCard({ applications }) {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8 space-y-6">
+    <div className="p-8 space-y-6 bg-white shadow-lg rounded-3xl">
       {applications.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">
+        <p className="text-lg text-center text-gray-500">
           No job applications available.
         </p>
       ) : (
         applications.map((app, index) => (
           <div
             key={index}
-            className="bg-gray-50 rounded-2xl shadow border border-gray-200 p-6 transition hover:shadow-md"
+            className="p-6 transition border border-gray-200 shadow bg-gray-50 rounded-2xl hover:shadow-md"
           >
-            <div className="flex justify-between items-start mb-4">
+            <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                <h3 className="mb-1 text-xl font-semibold text-gray-800">
                   {app.jobTitle}
                 </h3>
                 <p className="text-sm text-gray-500">{app.companyName}</p>
@@ -182,7 +182,7 @@ export default function ApplicationCard({ applications }) {
               {role === "employer" && (
                 <button
                   onClick={() => handleMessage({ app })}
-                  className="p-2 rounded-full hover:bg-blue-100 transition"
+                  className="p-2 transition rounded-full hover:bg-blue-100"
                   title="Send Message"
                 >
                   <FaRegEnvelope size={20} className="text-blue-600" />
@@ -190,13 +190,13 @@ export default function ApplicationCard({ applications }) {
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700 mb-4">
+            <div className="grid grid-cols-1 gap-3 mb-4 text-sm text-gray-700 sm:grid-cols-2">
               <div>
                 <span className="font-medium text-gray-900">Resume:</span>{" "}
                 {app.resumeBase64 ? (
                   <button
                     onClick={() => openPdf(app.resumeBase64)}
-                    className="text-blue-600 hover:underline font-medium"
+                    className="font-medium text-blue-600 hover:underline"
                   >
                     View Resume
                   </button>
@@ -212,8 +212,8 @@ export default function ApplicationCard({ applications }) {
                     app.status === "APPROVED"
                       ? "bg-green-100 text-green-700"
                       : app.status === "REJECTED"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-yellow-100 text-yellow-700"
                   }`}
                 >
                   {app.status}
@@ -224,7 +224,7 @@ export default function ApplicationCard({ applications }) {
                 <span className="font-medium text-gray-900">Applicant:</span>{" "}
                 <button
                   onClick={() => viewApplicant(app)}
-                  className="text-blue-600 hover:underline font-medium"
+                  className="font-medium text-blue-600 hover:underline"
                 >
                   View Profile
                 </button>
@@ -263,7 +263,7 @@ export default function ApplicationCard({ applications }) {
                     }}
                   />
                   <button
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm"
+                    className="px-4 py-2 text-sm text-white bg-green-500 rounded-lg hover:bg-green-600"
                     onClick={() => {
                       setPendingApp(app);
                       setPendingActionType("APPROVED");
@@ -273,7 +273,7 @@ export default function ApplicationCard({ applications }) {
                     Approve
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
+                    className="px-4 py-2 text-sm text-white bg-red-500 rounded-lg hover:bg-red-600"
                     onClick={() => {
                       setPendingApp(app);
                       setPendingActionType("REJECTED");
@@ -287,7 +287,7 @@ export default function ApplicationCard({ applications }) {
             </div>
 
             {role === "seeker" && editAppId === app.id && (
-              <div className="mt-6 border-t pt-4">
+              <div className="pt-4 mt-6 border-t">
                 <input
                   type="file"
                   onChange={handleFileChange}
@@ -306,7 +306,7 @@ export default function ApplicationCard({ applications }) {
                       setEditAppId(null);
                       setResume(null);
                     }}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                    className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
                   >
                     Cancel
                   </button>
