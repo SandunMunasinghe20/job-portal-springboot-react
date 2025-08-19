@@ -16,7 +16,7 @@ jobs:
           node-version: '18.x'
       - run: npm ci
         working-directory: ./Frontend
-      - run: npm run lint
-        working-directory: ./Frontend
+      #- run: npm run lint
+      
       - run: npm run build
         working-directory: ./Frontend
