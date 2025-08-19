@@ -1,19 +1,30 @@
 # 💼 Fullstack Job Portal
 
-A full-featured, responsive Job Portal built using **Java 21 (Spring Boot)** for the backend and **React + Vite** for the frontend. Developed as a university project to demonstrate fullstack engineering capabilities.
+A full-featured, responsive Job Portal built using **Java 21 (Spring Boot)** for the backend and **React + Vite** for the frontend. Developed individually to demonstrate fullstack engineering capabilities.
 
 ---
 
 ## 🚀 Project Overview
 
-This Job Portal enables:
+This fullstack Job Portal allows seamless interaction between Employers and Job Seekers. Key features include:
 
-- 🧑‍💼 Employers to post, update, and delete job listings
-- 👨‍🎓 Job Seekers to browse, search, and apply for jobs
-- 🔐 Secure login and registration system with role-based access control
+🧑‍💼 Employers can post, update, and delete job listings, and manage applications.
 
-Backed by a **MySQL database**, the app was entirely built by me to demonstrate robust, modern fullstack development.
+👨‍🎓 Job Seekers can browse, search, filter, and apply to jobs with uploaded resumes.
 
+🔐 Secure login, registration, and password management using Spring Security
+
+      Passwords are hashed with BCryptPasswordEncoder
+      
+      JWT-based authentication for stateless sessions
+      
+      Role-based access control enforced via @PreAuthorize annotations
+
+💬 Messaging system enabling Employers and Job Seekers to communicate securely based on application status.
+
+📂 Upload and view resumes, profile pictures, and company logos securely.
+
+The project is fully developed individually, with a MySQL database backend, Spring Boot APIs, and a React + Vite frontend, demonstrating end-to-end fullstack development, database design, and security best practices.
 ---
 
 ## 🧑‍💻 My Role as Developer
@@ -33,7 +44,7 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 | -------- | -------------------------------------------------------------------- |
 | Frontend | React, Vite, Tailwind CSS, React Router, React Icons, React Toastify |
 | Backend  | Java 21, Spring Boot, Spring Data JPA, Spring Security               |
-| Database | MySQL with Hibernate (JPA)                                           |
+| Database | MySQL (local development), MariaDB (SkySQL for CI)                   |
 | Tools    | Git, GitHub, Postman, JUnit                                          |
 
 ---
@@ -116,6 +127,7 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 - Designed clean RESTful APIs with proper separation of concerns
 - Normalized schema for user-job-application relationships
 - Maintained secure upload storage for resumes and images
+- Implemented Continuous Integration (CI) using GitHub Actions to automate backend builds,  tests, and frontend linting
 
 ---
 
@@ -132,12 +144,13 @@ Backed by a **MySQL database**, the app was entirely built by me to demonstrate 
 
 ## 🛠️ Tech Stack
 
-| Area     | Tech                                       |
-| -------- | ------------------------------------------ |
-| Frontend | React, Vite, Tailwind CSS, React Router    |
-| Backend  | Java 21, Spring Boot, Spring Security, JPA |
-| Database | MySQL                                      |
-| Tools    | Git, GitHub, Postman, JUnit                |
+| Area     | Tech                                                    |
+| -------- | --------------------------------------------------------|
+| Frontend | React, Vite, Tailwind CSS, React Router                 |
+| Backend  | Java 21, Spring Boot, Spring Security, JPA              |
+| Database | MySQL (local development), MariaDB via SkySQL (CI/CD)   |
+| Tools    | Git, GitHub, Postman, JUnit                             |
+
 
 ---
 
@@ -181,6 +194,31 @@ npm run dev
 
 ---
 
+### 🛠️ Continuous Integration & Code Quality
+
+Configured **GitHub Actions** to automatically run workflows on every push and pull request. The **backend workflow** performs:
+
+- ⚙️ Build the Spring Boot project  
+- 🧪 Run tests  
+- 📦 Ensure proper Maven setup  
+- ☁️ Connect to **SkySQL (MariaDB) cloud database** for CI testing
+
+#### 💻 Frontend CI
+- 📝 ESLint enforces linting for JavaScript/React code  
+- 🔍 Automatically detects unused variables, formatting issues, and potential bugs  
+- ✅ Ensures code quality before merging into the `main` branch  
+
+#### 🖥️ Backend Code Quality
+- 🛡️ Static analysis and formatting checks performed using **SunCheck**  
+- 🐛 Detects code smells, bugs, and coverage gaps  
+- 🧹 Ensures maintainable, clean, and consistent backend code  
+
+#### 🎯 Benefits
+- 🐞 Catch bugs and code smells **before deployment**  
+- 🎨 Maintain consistent code style across frontend and backend  
+- ⚡ Ensure reliable builds and faster feedback loops
+
+
 ## 📌 Roadmap
 
 - ✅ Login, Register, Forgot/Reset Password
@@ -191,8 +229,9 @@ npm run dev
 - ✅ Admin View and Control Features
 - ✅ Notifications for Account activations and deactivations by Admin
 - ✅ Stats/Analytics
+- ✅ UI/UX Polish
 - 🔜 Deployment (Render / Vercel / Railway)
-- 🔜 UI/UX Polish
+
 
 
 ---
