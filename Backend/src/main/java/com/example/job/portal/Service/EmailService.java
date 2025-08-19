@@ -28,21 +28,20 @@ public class EmailService {
     private final UserRepo userRepo;
     private final LinkTokenRepo linkTokenRepo;
 
-
     @Autowired
-    public EmailService(JavaMailSenderImpl mailSender, UserRepo userRepo,  LinkTokenRepo linkTokenRepo) {
+    public EmailService(JavaMailSenderImpl mailSender, UserRepo userRepo, LinkTokenRepo linkTokenRepo) {
         this.mailSender = mailSender;
         this.userRepo = userRepo;
         this.linkTokenRepo = linkTokenRepo;
     }
 
+    // Send simple reset password email
     public ResponseEntity<String> sendEmail(User user, String resetLink) {
         String email = user.getEmail();
 
         SimpleMailMessage message = new SimpleMailMessage();
 
         System.out.println("Sending to email: [" + email + "]");
-
 
         message.setTo(email);
         message.setSubject("Reset Password");
@@ -52,12 +51,12 @@ public class EmailService {
         mailSender.send(message);
 
         return ResponseEntity.ok("Check your email to reset your password");
-
     }
 
+    // Generate a unique reset link for the user
     @Transactional
     public String getResetLink(User user) {
-        //delete any pre tokens
+        // Remove any existing tokens for this user to avoid conflicts
         linkTokenRepo.deleteByUser(user);
 
         String token = UUID.randomUUID().toString();
@@ -65,19 +64,21 @@ public class EmailService {
         LinkToken linkToken = new LinkToken();
         linkToken.setToken(token);
         linkToken.setUser(user);
-        linkToken.setExpires(LocalDateTime.now().plusMinutes(15));
+        linkToken.setExpires(LocalDateTime.now().plusMinutes(15)); // token valid for 15 minutes
         linkToken.setTokenUsed(false);
 
-
-        //save token
+        // Save new token in the database
         linkTokenRepo.save(linkToken);
 
-        String resetLink = "http://localhost:5173/reset-password?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8) +
+        // Build reset link with encoded token and email
+        String resetLink = "http://localhost:5173/reset-password?token=" +
+                URLEncoder.encode(token, StandardCharsets.UTF_8) +
                 "&email=" + URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8);
 
-        return (resetLink);
+        return resetLink;
     }
 
+    // Send HTML email for account status updates (activation/deactivation)
     public String sendAccountStatusEmail(String email, String msg) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -91,6 +92,7 @@ public class EmailService {
             return "Email Sent to " + email;
 
         } catch (MessagingException e) {
+            // Handle failure to send email
             e.printStackTrace();
             return "Failed to send email to " + email;
         }

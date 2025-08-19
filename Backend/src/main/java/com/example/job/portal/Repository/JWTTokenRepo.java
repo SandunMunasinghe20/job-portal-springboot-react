@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface JWTTokenRepo extends JpaRepository<JWTToken, Long> {
     Optional<JWTToken> findByToken(String token);
 
-    Optional<JWTToken> findByUser(Optional<User> user);
+    Optional<JWTToken> findByUser(User user);
 
 
 }

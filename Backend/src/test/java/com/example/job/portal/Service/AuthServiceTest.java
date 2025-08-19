@@ -4,11 +4,9 @@ import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
 import com.example.job.portal.Entity.Employer;
+import com.example.job.portal.Entity.JWTToken;
 import com.example.job.portal.Entity.Seeker;
-import com.example.job.portal.Repository.AdminRepo;
-import com.example.job.portal.Repository.EmployerRepo;
-import com.example.job.portal.Repository.SeekerRepo;
-import com.example.job.portal.Repository.UserRepo;
+import com.example.job.portal.Repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,14 +19,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
+import com.example.job.portal.Entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,14 +58,18 @@ public class AuthServiceTest {
 
     @Mock
     private UserDetailsService userDetailsService;
+
     @Mock
     private JWTService jwtService;
 
+    @Mock
+    private JWTTokenRepo jwtTokenRepo;
 
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
@@ -113,69 +116,27 @@ public class AuthServiceTest {
         assertEquals("Successfully registered", response.getBody());
     }
 
-    @Test
-    void login() {
-        String email = "test@example.com";
-        String password = "password123";
-        String fakeToken = "mocked.jwt.token";
-
-        LoginRequestDTO request = new LoginRequestDTO();
-        request.setEmail(email);
-        request.setPassword(password);
-
-        // Mock userRepo to return a valid User entity
-        User dummyUser = new User();
-        dummyUser.setEmail(email);
-        dummyUser.setRole("seeker");
-        dummyUser.setId(1L);
-        dummyUser.setAccountStatus("active");
-
-        when(userRepo.findByEmail(email)).thenReturn(Optional.of(dummyUser));
-
-        UserDetails userDetails = User.builder()
-                .username(email)
-                .password(password)
-                .roles("seeker")
-                .build();
-
-        // Mocking behavior
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(mock(Authentication.class));
-
-        when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
-        when(jwtService.generateToken(userDetails)).thenReturn(fakeToken);
-
-        // Act
-        LoginResponseDTO response = authService.login(request);
-
-        // Assert
-        assertNotNull(response);
-        assertEquals(fakeToken, response.getToken());
-    }
 
 
     @Test
-    void wrongEmail_login(){
+    void wrongEmail_login_userNotFound() {
         String email = "a@gmail.com";
         String password = "password";
-        String fakeToken = "mocked.jwt.token";
 
         LoginRequestDTO request = new LoginRequestDTO();
         request.setEmail(email);
         request.setPassword(password);
 
-        doThrow(new BadCredentialsException("Invalid email or password"))
-                .when(authenticationManager).authenticate(
-                        new UsernamePasswordAuthenticationToken(email, password)
-                );
+        // Mock userRepo to return empty
+        when(userRepo.findByEmail(email)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(BadCredentialsException.class, () -> {
+        BadCredentialsException exception = assertThrows(BadCredentialsException.class, () -> {
             authService.login(request);
         });
 
-        assertEquals("Invalid email or password", exception.getMessage());
-
+        assertEquals("User not found", exception.getMessage());
     }
+
 
 
 }

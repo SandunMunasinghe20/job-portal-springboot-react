@@ -36,16 +36,17 @@ public class JobApplicationService {
     public JobApplicationService() {
     }
 
+    // Apply for a job
     public ResponseEntity<String> applyJob(Long jobId, MultipartFile resume, Authentication authentication) {
         System.out.println("job applying started");
-        //check job exist
+        // Check if job exists
         Optional<Job> job = jobRepo.findById(jobId);
 
         if (job.isEmpty()) {
             return ResponseEntity.badRequest().body("Job not found");
         }
 
-        //get seekerID
+        // Get current user by email
         String email = authentication.getName();
         Optional<User> optUser = userRepo.findByEmail(email);
 
@@ -57,7 +58,7 @@ public class JobApplicationService {
 
         System.out.println("user found");
 
-        //check duplicate applications
+        // Check if user already applied
         Optional<JobApplication> optApp = jobApplicationRepo.findByJobIdAndSeekerId(jobId, user.getId());
 
         if (optApp.isPresent()){
@@ -67,11 +68,11 @@ public class JobApplicationService {
                 return ResponseEntity.badRequest().body("You have already Applied to this Job");
             }
         }
-        //max file size
+        // Check file size (max 10MB)
         if (resume.getSize() > 10 * 1024 * 1024) {    //10Mb
             return ResponseEntity.badRequest().body("Max allowed file size is 10MB");
         }
-        //resume to byte arr
+        // Convert resume to byte array
         byte[] resumeBytes = null;
         try {
             resumeBytes = resume.getBytes();
@@ -80,6 +81,7 @@ public class JobApplicationService {
         }
         System.out.println("job found and byte arr created");
 
+        // Create job application entity
         JobApplication jobApplication = new JobApplication();
         jobApplication.setResume(resumeBytes);
         jobApplication.setJobId(jobId);
@@ -91,8 +93,7 @@ public class JobApplicationService {
         return ResponseEntity.ok("Successfully applied to job");
     }
 
-
-    //all for admin
+    // Admin: get all job applications
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> getallAppliedJobs() {
         List<JobApplicationDTO> appliedJobs = new ArrayList<>();
@@ -105,7 +106,7 @@ public class JobApplicationService {
             jobApplicationDTO.setSeekerId(jobApplication.getSeekerId());
             jobApplicationDTO.setAppliedAt(jobApplication.getAppliedAt());
             jobApplicationDTO.setStatus(jobApplication.getStatus());
-            //resume handle
+            // Convert resume to Base64 for transfer
             byte[] resumeBytes = jobApplication.getResume();
             if (resumeBytes != null) {
                 String base64Resume = Base64.getEncoder().encodeToString(resumeBytes);
@@ -114,13 +115,12 @@ public class JobApplicationService {
                 jobApplicationDTO.setResumeBase64(null);
             }
 
-            //job title and company
+            // Add job title and employer name
             Optional<Job> optApp = jobRepo.findJobById(jobApplication.getJobId());
             if (optApp.isPresent()) {
                 Job job = optApp.get();
                 jobApplicationDTO.setJobTitle(job.getJobTitle());
 
-                //comp name
                 Optional<Employer> optionalEmployer = employerRepo.findById(job.getEmployerId());
                 if (optionalEmployer.isPresent()) {
                     Employer employer = optionalEmployer.get();
@@ -134,11 +134,10 @@ public class JobApplicationService {
         return ResponseEntity.ok(appliedJobs);
     }
 
-    //seeker own appli
+    // Seeker: get own applications
     @PreAuthorize("hasRole('seeker')")
     public ResponseEntity<?> getAllJobApplications(Authentication authentication) {
         String email = authentication.getName();
-        //get user
         Optional<Seeker> optionalSeeker = seekerRepo.findByEmail(email);
 
         if (optionalSeeker.isEmpty()) {
@@ -149,10 +148,9 @@ public class JobApplicationService {
 
         Long seekerId = seeker.getId();
 
-        //get only seeker's applications
         Optional<List<JobApplication>> jobApplications = jobApplicationRepo.findAllBySeekerId(seekerId);
         if (jobApplications.isEmpty() || jobApplications.get().isEmpty()) {
-           return ResponseEntity.badRequest().body("No Job Applications found");
+            return ResponseEntity.badRequest().body("No Job Applications found");
         }
         List<JobApplicationDTO> dtos = new ArrayList<>();
 
@@ -174,13 +172,12 @@ public class JobApplicationService {
                 dto.setResumeBase64(null);
             }
 
-            //company name + title
+            // Add job title and employer name
             Optional<Job> job = jobRepo.findById(jobApplication.getJobId());
             if (job.isPresent()) {
                 System.out.println("job found");
                 Job j = job.get();
 
-                //comp name
                 Optional<Employer> optionalEmployer = employerRepo.findById(j.getEmployerId());
                 if (optionalEmployer.isPresent()) {
                     Employer employer = optionalEmployer.get();
@@ -198,9 +195,8 @@ public class JobApplicationService {
         return ResponseEntity.ok(dtos);
     }
 
-    //employers view applications for them
+    // Employer: view applications for their jobs
     public ResponseEntity<?> empViewApplications(Authentication authentication) {
-        // 1. Get Employer
         String email = authentication.getName();
         System.out.println("Email for emp view applications"+email);
         Optional<Employer> optionalEmployer = employerRepo.findByEmail(email);
@@ -209,7 +205,7 @@ public class JobApplicationService {
         }
         Employer employer = optionalEmployer.get();
 
-        // 2. Get Job IDs by Employer
+        // Get all job IDs of this employer
         List<Job> jobs = jobRepo.findAllByEmployerId(employer.getId());
         List<Long> jobIds = jobs.stream().map(Job::getId).toList();
 
@@ -225,7 +221,7 @@ public class JobApplicationService {
             dto.setSeekerId(jobApplication.getSeekerId());
             dto.setStatus(jobApplication.getStatus());
 
-            // Convert resume bytes to Base64 string, if present
+            // Convert resume to Base64
             byte[] resumeBytes = jobApplication.getResume();
             if (resumeBytes != null) {
                 String base64Resume = Base64.getEncoder().encodeToString(resumeBytes);
@@ -234,12 +230,11 @@ public class JobApplicationService {
                 dto.setResumeBase64(null);
             }
 
-            // Get job details for the DTO
+            // Add job title and company name
             jobs.stream()
                     .filter(job -> job.getId().equals(jobApplication.getJobId()))
                     .findFirst()
                     .ifPresent(job -> {
-                        //comp name
                         Optional<Employer> optEmployer = employerRepo.findById(job.getEmployerId());
                         if (optEmployer.isPresent()) {
                             Employer emp = optEmployer.get();
@@ -251,11 +246,10 @@ public class JobApplicationService {
             dtos.add(dto);
         }
 
-        // 5. Return the list of DTOs
         return ResponseEntity.ok(dtos);
     }
 
-
+    // Delete a job application
     public ResponseEntity<String> deleteJobApplication(Long jobApplicationId, Authentication authentication) {
         System.out.println("job delete started");
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
@@ -273,6 +267,7 @@ public class JobApplicationService {
         User user = optUser.get();
         System.out.println("user found");
 
+        // Only admin or seeker who applied can delete
         if (!jobApplication.getSeekerId().equals(user.getId()) && !user.getRole().equals("admin")) {
             return ResponseEntity.badRequest().body("You are not allowed to delete this Job");
         }
@@ -285,6 +280,7 @@ public class JobApplicationService {
         }
     }
 
+    // Update a job application
     public ResponseEntity<String> updateJobApplication(Long jobApplicationId, MultipartFile resume, Authentication authentication) {
         System.out.println("job id received at update:  "+jobApplicationId);
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
@@ -301,11 +297,12 @@ public class JobApplicationService {
         User user = optUser.get();
         System.out.println("user found");
 
+        // Only seeker who applied can update
         if (!jobApplication.getSeekerId().equals(user.getId())) {
             return ResponseEntity.status(403).body("You are not allowed to update this Job");
         }
 
-        //size check
+        // Check file size
         if (resume.getSize() > 10 * 1024 * 1024) {
             return ResponseEntity.badRequest().body("Max allowed size is 10MB");
         }
@@ -323,16 +320,16 @@ public class JobApplicationService {
         return ResponseEntity.ok("Successfully updated job application");
     }
 
+    // Employer updates application status
     public ResponseEntity<String> handleApplicationByEmployer(JobApplicationDTO jobApplicationDTO) {
         Long jobApplicationId = jobApplicationDTO.getId();
         Optional<JobApplication> optApp = jobApplicationRepo.findById(jobApplicationId);
         if (optApp.isEmpty()) {
             return ResponseEntity.badRequest().body("Job Application not found");
         }
-        //get job application
         JobApplication jobApplication = optApp.get();
 
-        //update job app
+        // Update status
         jobApplication.setStatus(jobApplicationDTO.getStatus());
         jobApplicationRepo.save(jobApplication);
         return ResponseEntity.ok("Successfully "+jobApplicationDTO.getStatus()+" job application");

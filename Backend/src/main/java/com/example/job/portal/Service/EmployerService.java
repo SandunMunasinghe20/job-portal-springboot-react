@@ -21,29 +21,31 @@ public class EmployerService {
         this.employerRepo = employerRepo;
     }
 
+    // Convert Base64 string to byte array
     public byte[] base64ToByteImage(String base64Image) {
         if (base64Image == null || base64Image.isEmpty()) {
-            return null;
+            return null; // return null if no image provided
         }
-        return  Base64.getDecoder().decode(base64Image);
+        return Base64.getDecoder().decode(base64Image);
     }
 
+    // Convert byte array to Base64 string
     public String byteImageToBase64(byte[] byteImage) {
         if (byteImage == null || byteImage.length == 0) {
-            return null;
+            return null; // return null if no data
         }
         return Base64.getEncoder().encodeToString(byteImage);
     }
 
+    // Convert byte array resume to Base64 string
     public String byteResumeToBase64(byte[] byteResume) {
         if (byteResume == null || byteResume.length == 0) {
             return null;
         }
-        return  Base64.getEncoder().encodeToString(byteResume);
+        return Base64.getEncoder().encodeToString(byteResume);
     }
 
-
-
+    // Get list of all employers as DTOs
     public ResponseEntity<List<EmployerDTO>> getAllEmployers() {
         List<Employer> employers = employerRepo.findAll();
 
@@ -55,7 +57,7 @@ public class EmployerService {
             dto.setCompanySize(emp.getCompanySize());
             dto.setWebsite(emp.getWebsite());
 
-            //prof pic
+            // Convert company logo to Base64 for frontend
             dto.setCompanyLogo(byteImageToBase64(emp.getCompanyLogo()));
             dto.setCompanyDescription(emp.getCompanyDescription());
             dto.setAddress(emp.getAddress());
@@ -70,17 +72,21 @@ public class EmployerService {
         return ResponseEntity.ok(dtoList);
     }
 
-
+    // Update employer profile
     public ResponseEntity<String> updateEmployer(EmployerDTO employerDTO) {
         String email = employerDTO.getEmail();
         System.out.println("updating profile for email: " + email);
+
         Optional<Employer> user = employerRepo.findByEmail(email);
+
         if (user.isEmpty()) {
             System.out.println("user not found");
             return ResponseEntity.badRequest().body("User not found with email " + email);
         }
+
         Employer employer = user.get();
 
+        // Update all relevant fields
         employer.setEmail(employerDTO.getEmail());
         employer.setCompanyName(employerDTO.getCompanyName());
         employer.setAddress(employerDTO.getAddress());
@@ -89,9 +95,7 @@ public class EmployerService {
         employer.setIndustry(employerDTO.getIndustry());
         employer.setCompanySize(employerDTO.getCompanySize());
         employer.setWebsite(employerDTO.getWebsite());
-
-        //prof pic
-        employer.setCompanyLogo(base64ToByteImage(employerDTO.getCompanyLogo()));
+        employer.setCompanyLogo(base64ToByteImage(employerDTO.getCompanyLogo())); // convert logo
         employer.setCompanyDescription(employerDTO.getCompanyDescription());
         employer.setRole(employerDTO.getRole());
 
@@ -99,9 +103,9 @@ public class EmployerService {
 
         System.out.println("profile updated successfully for email: " + email);
         return ResponseEntity.ok("Profile updated successfully");
-
     }
 
+    // Get employer profile for logged-in user
     public ResponseEntity<EmployerDTO> getEmployerProfile(Authentication authentication) {
         String email = authentication.getName();
         Optional<Employer> employerOptional = employerRepo.findByEmail(email);
@@ -111,7 +115,6 @@ public class EmployerService {
         }
 
         Employer employer = employerOptional.get();
-
         EmployerDTO dto = new EmployerDTO();
         dto.setEmail(employer.getEmail());
         dto.setCompanyName(employer.getCompanyName());
@@ -121,48 +124,42 @@ public class EmployerService {
         dto.setIndustry(employer.getIndustry());
         dto.setCompanySize(employer.getCompanySize());
         dto.setWebsite(employer.getWebsite());
-
-        //prof pic
-        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo()));
-
+        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo())); // convert logo
         dto.setCompanyDescription(employer.getCompanyDescription());
         dto.setRole(employer.getRole());
         dto.setAccountStatus(employer.getAccountStatus());
-        System.out.println("role: " + employer.getRole());
 
+        System.out.println("role: " + employer.getRole());
         return ResponseEntity.ok(dto);
     }
 
-
+    // Delete employer profile
     public ResponseEntity<String> deleteEmployer(String email) {
         Optional<Employer> user = employerRepo.findByEmail(email);
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found with email " + email);
         }
-        Employer employer = user.get();
-        employerRepo.delete(employer);
+
+        employerRepo.delete(user.get()); // remove employer from DB
         return ResponseEntity.ok("Profile deleted successfully");
     }
 
+    // Get employer by ID
     public ResponseEntity<EmployerDTO> getEmployerById(Long id) {
         Optional<Employer> user = employerRepo.findById(id);
         if (user.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build(); // no content if not found
         }
-        Employer employer = user.get();
 
+        Employer employer = user.get();
         EmployerDTO dto = new EmployerDTO();
         dto.setCompanyName(employer.getCompanyName());
         dto.setIndustry(employer.getIndustry());
         dto.setCompanySize(employer.getCompanySize());
         dto.setWebsite(employer.getWebsite());
         dto.setAccountStatus(employer.getAccountStatus());
-        //prof pic
-        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo()));
+        dto.setCompanyLogo(byteImageToBase64(employer.getCompanyLogo())); // convert logo
+
         return ResponseEntity.ok(dto);
-
     }
-
-
-
 }

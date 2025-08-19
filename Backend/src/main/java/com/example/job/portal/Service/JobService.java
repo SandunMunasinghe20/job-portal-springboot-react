@@ -25,9 +25,9 @@ public class JobService {
     private EmployerRepo employerRepo;
 
     public ResponseEntity<List<JobDTO>> getAllJobs() {
-        //original entity data
+        // Fetch all jobs from database
         List<Job> jobs = jobRepo.findAll();
-        //list of dtos
+        // Prepare list of DTOs to return
         List<JobDTO> jobDTOs = new ArrayList<>();
 
         for (Job job : jobs) {
@@ -39,7 +39,7 @@ public class JobService {
             dto.setSalary(job.getSalary());
             dto.setSkillsRequired(job.getSkillsRequired());
 
-            //comp Name
+            // Fetch employer info to get company name
             Long compId = job.getEmployerId();
             Optional<Employer> optEmployer = employerRepo.findById(compId);
             if (optEmployer.isPresent()) {
@@ -47,7 +47,7 @@ public class JobService {
                 dto.setCompanyName(employer.getCompanyName());
                 System.out.println("company is : " + employer.getCompanyName());
 
-                //calc date
+                // Calculate how many days ago job was posted
                 Date postedDate = job.getPostedDate();
                 dto.setDays(calculateDays(postedDate));
 
@@ -62,8 +62,9 @@ public class JobService {
     }
 
     public ResponseEntity<JobDTO> getJobById(Long id) {
+        // Fetch job by ID
         Optional<Job> optJob = jobRepo.findById(id);
-        //job found
+        // Check if job exists
         if (optJob.isPresent()) {
             Job job = optJob.get();
             JobDTO dto = new JobDTO();
@@ -75,7 +76,7 @@ public class JobService {
             dto.setSalary(job.getSalary());
             dto.setSkillsRequired(job.getSkillsRequired());
 
-            //comp Name
+            // Fetch employer info for company name
             Long compId = job.getEmployerId();
             Optional<Employer> optEmployer = employerRepo.findById(compId);
             if (optEmployer.isPresent()) {
@@ -84,27 +85,28 @@ public class JobService {
                 System.out.println("company is : "+employer.getCompanyName());
 
 
-                //calc date
+                // Calculate days since posted
                 Date postedDate = job.getPostedDate();
                 dto.setDays(calculateDays(postedDate));
 
                 return ResponseEntity.ok(dto);
             }
         }
-        //not found a job
+        // Job not found
         return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<List<JobDTO>> getAllJobsByCompany(Authentication authentication) {
         String email = authentication.getName();
 
-        //find employer
+        // Find employer by email
         Optional<Employer> optEmployer = employerRepo.findByEmail(email);
         if (optEmployer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Employer employer = optEmployer.get();
 
+        // Fetch all jobs posted by this employer
         List<Job> jobs = jobRepo.findAllByEmployerId(employer.getId());
         List<JobDTO> jobDTOs = new ArrayList<>();
 
@@ -117,19 +119,20 @@ public class JobService {
             dto.setSalary(job.getSalary());
             dto.setCompanyName(employer.getCompanyName());
             dto.setLocation(job.getLocation());
-            
-            //calc days
+
+            // Calculate days since job was posted
             Date postedDate = job.getPostedDate();
             dto.setDays(calculateDays(postedDate));
 
             jobDTOs.add(dto);
         }
-            return ResponseEntity.ok(jobDTOs);
-        }
+        return ResponseEntity.ok(jobDTOs);
+    }
 
 
     public ResponseEntity<String> addJob(JobDTO jobDTO, Authentication authentication) {
         try {
+            // Get employer info from authentication
             String email = authentication.getName();
             Optional<Employer> OptEmployer = employerRepo.findByEmail(email);
             if (OptEmployer.isEmpty()) {
@@ -137,6 +140,7 @@ public class JobService {
             }
             Employer employer = OptEmployer.get();
 
+            // Check if company profile is completed
             if (employer.getCompanyName() == null || employer.getCompanyName().trim().isEmpty()) {
                 return ResponseEntity.badRequest().body("You must complete your company profile before posting a job.");
             }
@@ -151,7 +155,7 @@ public class JobService {
             job.setEmployerId(employer.getId());
             job.setPostedDate(new Date());
 
-            //set employer
+            // Set employer ID
             job.setEmployerId(employer.getId());
             System.out.println("Empl id : " + employer.getId());
 
@@ -166,17 +170,17 @@ public class JobService {
 
     public ResponseEntity<String> updateJob(JobDTO jobDTO) {
 
-            //find existing job
-            Long id = jobDTO.getId();
-            Optional<Job> jobOpt = jobRepo.findById(id);
+        // Find existing job
+        Long id = jobDTO.getId();
+        Optional<Job> jobOpt = jobRepo.findById(id);
 
-            if (jobOpt.isEmpty()){
-                return ResponseEntity.badRequest().body("Job not found");
-            }
-            Job job = jobOpt.get();
+        if (jobOpt.isEmpty()){
+            return ResponseEntity.badRequest().body("Job not found");
+        }
+        Job job = jobOpt.get();
         try {
-            
-            
+
+
             job.setJobTitle(jobDTO.getJobTitle());
             job.setJobDescription(jobDTO.getJobDescription());
             job.setJobType(jobDTO.getJobType());
@@ -206,21 +210,21 @@ public class JobService {
         }
     }
 
-public String calculateDays(Date postedDate) {
-    if (postedDate != null) {
-        LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate today = LocalDate.now();
-        long daysBetween = ChronoUnit.DAYS.between(postDate, today);
+    // Calculate days since job was posted for display
+    public String calculateDays(Date postedDate) {
+        if (postedDate != null) {
+            LocalDate postDate = postedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate today = LocalDate.now();
+            long daysBetween = ChronoUnit.DAYS.between(postDate, today);
 
-        if (daysBetween == 0) {
-            return "Today";
-        } else if (daysBetween == 1) {
-            return "1 day ago";
-        } else {
-            return daysBetween + " days ago";
+            if (daysBetween == 0) {
+                return "Today";
+            } else if (daysBetween == 1) {
+                return "1 day ago";
+            } else {
+                return daysBetween + " days ago";
+            }
         }
+        return "Unknown date";
     }
-    return "Unknown date";
 }
-}
-
