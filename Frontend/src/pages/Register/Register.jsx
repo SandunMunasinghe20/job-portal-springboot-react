@@ -66,40 +66,40 @@ export default function Register() {
     return (
         <>
             <NavBar role={role} />
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-8">
+            <div className="flex items-center justify-center min-h-screen px-4 py-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
                 <div className="w-full max-w-md">
-                    <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 backdrop-blur-sm">
-                        <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <div className="p-8 bg-white border border-gray-100 shadow-2xl rounded-3xl backdrop-blur-sm">
+                        <div className="mb-8 text-center">
+                            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl">
                                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                 </svg>
                             </div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
+                            <h1 className="mb-2 text-3xl font-bold text-gray-900">Create Account</h1>
                             <p className="text-gray-600">Join our platform to start your career journey</p>
                         </div>
 
                         <form className="space-y-6" onSubmit={handlesubmit}>
                             <div className="space-y-5">
                                 <div className="input-group">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email address</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-700">Email address</label>
                                     <GetInput type="email" placeholder="Enter your email" value={email} onChange={setEmail} />
                                 </div>
                                 <div className="input-group">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-700">Password</label>
                                     <div className='relative'>
                                         <GetInput type={viewPass ? "text" : "password"} placeholder="Create a password" value={password} onChange={setPassword} />
                                         <button
                                             type="button"
                                             onClick={() => setViewPass(!viewPass)}
-                                            className="absolute right-2 top-2/4 -translate-y-2/4 text-gray-500 hover:text-gray-700"
+                                            className="absolute text-gray-500 right-2 top-2/4 -translate-y-2/4 hover:text-gray-700"
                                             tabIndex={-1} // so it doesn't focus on tab
                                         >
                                             {viewPass ? (
                                                 // Eye open icon
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5"
+                                                    className="w-5 h-5"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
                                                     stroke="currentColor"
@@ -121,7 +121,7 @@ export default function Register() {
                                                 // Eye closed icon
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5"
+                                                    className="w-5 h-5"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
                                                     stroke="currentColor"
@@ -142,7 +142,7 @@ export default function Register() {
                             </div>
 
                             <div className="space-y-3">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">I am a:</label>
+                                <label className="block mb-2 text-sm font-medium text-gray-700">I am a:</label>
                                 <div className="flex space-x-3">
                                     <button
                                         type='button'
@@ -173,10 +173,10 @@ export default function Register() {
                         </form>
                     </div>
 
-                    <div className="text-center mt-6">
-                        <p className="text-gray-500 text-sm">
+                    <div className="mt-6 text-center">
+                        <p className="text-sm text-gray-500">
                             Already have an account?
-                            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium ml-1">
+                            <a href="/login" className="ml-1 font-medium text-blue-600 hover:text-blue-700">
                                 Sign in
                             </a>
                         </p>
