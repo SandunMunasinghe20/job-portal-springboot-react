@@ -19,13 +19,21 @@ jobs:
           - 3306:3306
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      # Set JWT_SECRET as environment variable
+      - name: Set JWT Secret
+        run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+
       - run: mvn clean install
         working-directory: ./Backend
+
       - run: mvn test
         working-directory: ./Backend
+
       - run: mvn checkstyle:check
         working-directory: ./Backend
