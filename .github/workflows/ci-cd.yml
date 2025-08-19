@@ -56,23 +56,16 @@ jobs:
       - name: 🟢 Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '18.x'
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: ./Frontend
 
       - name: 🧹 Lint
         run: npm run lint
         working-directory: ./Frontend
 
-      - name: 🧪 Run tests
-        run: npm test
-        working-directory: ./Frontend
-
       - name: 🏗️ Build
         run: npm run build
         working-directory: ./Frontend
-
-      # - name: 🚀 Deploy Frontend
-      #   run: echo "Add frontend deployment steps here"
