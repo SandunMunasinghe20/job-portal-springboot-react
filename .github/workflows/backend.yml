@@ -25,15 +25,18 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # Set JWT_SECRET as environment variable
-      - name: Set JWT Secret
-        run: echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-
+      # Build with JWT secret
       - run: mvn clean install
         working-directory: ./Backend
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - run: mvn test
         working-directory: ./Backend
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - run: mvn checkstyle:check
         working-directory: ./Backend
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
