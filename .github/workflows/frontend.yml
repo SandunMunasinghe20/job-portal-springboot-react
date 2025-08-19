@@ -1,0 +1,22 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - run: npm ci
+        working-directory: ./Frontend
+      - run: npm run lint
+        working-directory: ./Frontend
+      - run: npm run build
+        working-directory: ./Frontend
