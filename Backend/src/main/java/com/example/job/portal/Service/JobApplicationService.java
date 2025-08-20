@@ -6,8 +6,6 @@ import com.example.job.portal.DTO.JobApplicationDTO;
 import com.example.job.portal.Entity.*;
 import com.example.job.portal.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,6 @@
 package com.example.job.portal.Entity;
 
-import com.example.job.portal.Entity.Job;
-import com.example.job.portal.Entity.Seeker;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

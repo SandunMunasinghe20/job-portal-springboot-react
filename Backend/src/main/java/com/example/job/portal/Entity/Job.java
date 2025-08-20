@@ -2,7 +2,6 @@ package com.example.job.portal.Entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
