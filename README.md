@@ -151,7 +151,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 | Database | MySQL (local development), MariaDB via SkySQL (CI/CD)   |
 | Tools    | Git, GitHub, Postman, JUnit                             |
 -->
-
+<!--
 ### 🛠️ Tech Stack
 
 **Frontend:** 
@@ -176,6 +176,33 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ![Git](https://img.shields.io/badge/Git-2.45-orange?style=flat-square) 
 ![GitHub](https://img.shields.io/badge/GitHub-2025-black?style=flat-square) 
 ![Postman](https://img.shields.io/badge/Postman-10-orange?style=flat-square) 
+![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
+-->
+
+### 🛠️ Tech Stack
+
+**Frontend:**  
+![React](https://img.shields.io/badge/React-18-blue?logo=react&logoColor=white&style=flat-square) 
+![Vite](https://img.shields.io/badge/Vite-4.4-yellow?logo=vite&logoColor=white&style=flat-square) 
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-blue?logo=tailwindcss&logoColor=white&style=flat-square) 
+![React Router](https://img.shields.io/badge/React_Router-6-purple?logo=reactrouter&logoColor=white&style=flat-square) 
+![ESLint](https://img.shields.io/badge/ESLint-8-darkblue?logo=eslint&logoColor=white&style=flat-square)
+
+**Backend:**  
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white&style=flat-square) 
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green?logo=springboot&logoColor=white&style=flat-square) 
+![Spring Security](https://img.shields.io/badge/Spring_Security-6-green?logo=springsecurity&logoColor=white&style=flat-square) 
+![JPA](https://img.shields.io/badge/JPA-2.2-blue?logo=hibernate&logoColor=white&style=flat-square) 
+![PMD](https://img.shields.io/badge/PMD-6-red?style=flat-square)
+
+**Database:**  
+![MySQL](https://img.shields.io/badge/MySQL-8-blue?logo=mysql&logoColor=white&style=flat-square) 
+![MariaDB](https://img.shields.io/badge/MariaDB-10.11-blue?logo=mariadb&logoColor=white&style=flat-square)
+
+**Tools:**  
+![Git](https://img.shields.io/badge/Git-2.45-orange?logo=git&logoColor=white&style=flat-square) 
+![GitHub](https://img.shields.io/badge/GitHub-2025-black?logo=github&logoColor=white&style=flat-square) 
+![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square) 
 ![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
 
 
