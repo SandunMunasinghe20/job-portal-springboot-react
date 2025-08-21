@@ -40,12 +40,12 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 ## 🏗️ Architecture
 
-| Layer    | Stack                                                                |
-| -------- | -------------------------------------------------------------------- |
-| Frontend | React, Vite, Tailwind CSS, React Router, React Icons, React Toastify |
-| Backend  | Java 21, Spring Boot, Spring Data JPA, Spring Security               |
-| Database | MySQL (local development), MariaDB (SkySQL for CI)                   |
-| Tools    | Git, GitHub, Postman, JUnit                                          |
+| Layer    | Stack                                                                            |
+| -------- | -------------------------------------------------------------------------------- |
+| Frontend | React, Vite, Tailwind CSS, React Icons, React Router, React Toastify, ESLint     |
+| Backend  | Java 21, Spring Boot, Spring Data JPA, Spring Security, PMD                      |
+| Database | MySQL (local development), MariaDB via SkySQL (CI)                               |
+| Tools    | Git, GitHub,Maven, Postman, JUnit                                                |
 
 ---
 
@@ -146,8 +146,8 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 | Area     | Tech                                                    |
 | -------- | --------------------------------------------------------|
-| Frontend | React, Vite, Tailwind CSS, React Router                 |
-| Backend  | Java 21, Spring Boot, Spring Security, JPA              |
+| Frontend | React, Vite, Tailwind CSS, React Router, ESLint         |
+| Backend  | Java 21, Spring Boot, Spring Security, JPA , PMD        |
 | Database | MySQL (local development), MariaDB via SkySQL (CI/CD)   |
 | Tools    | Git, GitHub, Postman, JUnit                             |
 
@@ -196,27 +196,28 @@ npm run dev
 
 ### 🛠️ Continuous Integration & Code Quality
 
-Configured **GitHub Actions** to automatically run workflows on every push and pull request. The **backend workflow** performs:
+Configured **GitHub Actions** to automatically run workflows on every push and pull request.
 
-- ⚙️ Build the Spring Boot project  
-- 🧪 Run tests  
-- 📦 Ensure proper Maven setup  
-- ☁️ Connect to **SkySQL (MariaDB) cloud database** for CI testing
+#### ⚙️ Backend CI
+- Builds the Spring Boot project with Maven
+- Runs JUnit tests for backend services
+- Connects to **SkySQL (MariaDB)** for integration tests
 
 #### 💻 Frontend CI
-- 📝 ESLint enforces linting for JavaScript/React code  
-- 🔍 Automatically detects unused variables, formatting issues, and potential bugs  
-- ✅ Ensures code quality before merging into the `main` branch  
+- Runs ESLint for linting and formatting checks
+- Detects unused variables, accessibility issues, and potential React bugs
+- Prevents merging code with style or quality violations
 
-#### 🖥️ Backend Code Quality
-- 🛡️ Static analysis and formatting checks performed using **SunCheck**  
-- 🐛 Detects code smells, bugs, and coverage gaps  
-- 🧹 Ensures maintainable, clean, and consistent backend code  
+#### 🖥️ Local Developer Quality Checks
+*(Run manually in IntelliJ IDEA — not enforced in CI)*
+- 🔍 PMD → Detects code smells, complexity issues, and unused imports
+- 🐞 SpotBugs → Finds potential runtime bugs, null-pointer risks, and concurrency problems
 
 #### 🎯 Benefits
-- 🐞 Catch bugs and code smells **before deployment**  
-- 🎨 Maintain consistent code style across frontend and backend  
-- ⚡ Ensure reliable builds and faster feedback loops
+- 🐞 Catch bugs and regressions before deployment
+- 🎨 Maintain consistent code style across frontend & backend
+- ⚡ Faster feedback loops with automated tests
+- 🛡️ Higher reliability and maintainability of the codebase
 
 
 ## 📌 Roadmap
