@@ -248,7 +248,8 @@ Configured **GitHub Actions** to automatically run workflows on every push and p
 
 ## 📄 License
 
-This is a personal project created solely by me for educational and portfolio purposes. No open-source license is applied.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
 
 ---
 
