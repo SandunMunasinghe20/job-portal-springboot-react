@@ -177,7 +177,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ![GitHub](https://img.shields.io/badge/GitHub-2025-black?style=flat-square) 
 ![Postman](https://img.shields.io/badge/Postman-10-orange?style=flat-square) 
 ![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
-
+-->
 
 ### 🛠️ Tech Stack
 
@@ -204,7 +204,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ![GitHub](https://img.shields.io/badge/GitHub-2025-black?logo=github&logoColor=white&style=flat-square) 
 ![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square) 
 ![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
--->
+<!--
 ### 🛠️ Tech Stack
 
 **Frontend:**  
@@ -231,7 +231,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ![Postman](https://upload.wikimedia.org/wikipedia/commons/4/4e/Postman_%28software%29_logo.svg) Postman 10  
 ![JUnit](https://upload.wikimedia.org/wikipedia/commons/7/7b/JUnit_Logo.svg) JUnit 5  
 
-
+-->
 ---
 
 ## ⚙️ Setup Instructions
