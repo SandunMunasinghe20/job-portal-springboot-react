@@ -154,17 +154,29 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 ### 🛠️ Tech Stack
 
-**Frontend**  
-![React](https://img.shields.io/badge/React-18-blue) ![Vite](https://img.shields.io/badge/Vite-4.4-yellow) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-lightblue) ![React Router](https://img.shields.io/badge/React_Router-6-blueviolet) ![ESLint](https://img.shields.io/badge/ESLint-8-lightgrey)
+**Frontend:** 
+![React](https://img.shields.io/badge/React-18-blue?style=flat-square) 
+![Vite](https://img.shields.io/badge/Vite-4.4-yellow?style=flat-square) 
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-blue?style=flat-square) 
+![React Router](https://img.shields.io/badge/React_Router-6-purple?style=flat-square) 
+![ESLint](https://img.shields.io/badge/ESLint-8-darkblue?style=flat-square)
 
-**Backend**  
-![Java](https://img.shields.io/badge/Java-21-orange) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green) ![Spring Security](https://img.shields.io/badge/Spring_Security-6-brightgreen) ![JPA](https://img.shields.io/badge/JPA-2.2-blue) ![PMD](https://img.shields.io/badge/PMD-6.0-red)
+**Backend:** 
+![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square) 
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green?style=flat-square) 
+![Spring Security](https://img.shields.io/badge/Spring_Security-6-green?style=flat-square) 
+![JPA](https://img.shields.io/badge/JPA-2.2-blue?style=flat-square) 
+![PMD](https://img.shields.io/badge/PMD-6-red?style=flat-square)
 
-**Database**  
-![MySQL](https://img.shields.io/badge/MySQL-8-blue) ![MariaDB](https://img.shields.io/badge/MariaDB-10.11-lightblue)
+**Database:** 
+![MySQL](https://img.shields.io/badge/MySQL-8-blue?style=flat-square) 
+![MariaDB](https://img.shields.io/badge/MariaDB-10.11-blue?style=flat-square)
 
-**Tools**  
-![Git](https://img.shields.io/badge/Git-2.45-orange) ![GitHub](https://img.shields.io/badge/GitHub-2025-black) ![Postman](https://img.shields.io/badge/Postman-10-orange) ![JUnit](https://img.shields.io/badge/JUnit-5-red)
+**Tools:** 
+![Git](https://img.shields.io/badge/Git-2.45-orange?style=flat-square) 
+![GitHub](https://img.shields.io/badge/GitHub-2025-black?style=flat-square) 
+![Postman](https://img.shields.io/badge/Postman-10-orange?style=flat-square) 
+![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
 
 
 ---
