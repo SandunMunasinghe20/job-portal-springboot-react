@@ -141,7 +141,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 - Structuring clean code and maintaining modularity in large projects
 
 ---
-
+<!--
 ## 🛠️ Tech Stack
 
 | Area     | Tech                                                    |
@@ -150,6 +150,21 @@ The project is fully developed individually, with a MySQL database backend, Spri
 | Backend  | Java 21, Spring Boot, Spring Security, JPA , PMD        |
 | Database | MySQL (local development), MariaDB via SkySQL (CI/CD)   |
 | Tools    | Git, GitHub, Postman, JUnit                             |
+-->
+
+### 🛠️ Tech Stack
+
+**Frontend**  
+![React](https://img.shields.io/badge/React-18-blue) ![Vite](https://img.shields.io/badge/Vite-4.4-yellow) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-lightblue) ![React Router](https://img.shields.io/badge/React_Router-6-blueviolet) ![ESLint](https://img.shields.io/badge/ESLint-8-lightgrey)
+
+**Backend**  
+![Java](https://img.shields.io/badge/Java-21-orange) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green) ![Spring Security](https://img.shields.io/badge/Spring_Security-6-brightgreen) ![JPA](https://img.shields.io/badge/JPA-2.2-blue) ![PMD](https://img.shields.io/badge/PMD-6.0-red)
+
+**Database**  
+![MySQL](https://img.shields.io/badge/MySQL-8-blue) ![MariaDB](https://img.shields.io/badge/MariaDB-10.11-lightblue)
+
+**Tools**  
+![Git](https://img.shields.io/badge/Git-2.45-orange) ![GitHub](https://img.shields.io/badge/GitHub-2025-black) ![Postman](https://img.shields.io/badge/Postman-10-orange) ![JUnit](https://img.shields.io/badge/JUnit-5-red)
 
 
 ---
