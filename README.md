@@ -1,8 +1,20 @@
-# 💼 Fullstack Job Portal
+# 💼 Fullstack Job Portal | Java Spring Boot + React (Vite) + MySQL
 
-A full-featured, responsive Job Portal built using **Java 21 (Spring Boot)** for the backend and **React + Vite** for the frontend. Developed individually to demonstrate fullstack engineering capabilities.
-
+This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite), and MySQL. It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging, and an Admin Dashboard. Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
 ---
+
+## 📑 Table of Contents
+- [Project Overview](#project-overview)
+- [Why This Project?](#-why-this-project)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Setup Instructions](#-setup-instructions)
+- [Screenshots](#-screenshots)
+- [Roadmap](#-roadmap)
+- [Author](#-author)
+- [License](#-license)
+
+
 
 ## 🚀 Project Overview
 
@@ -26,6 +38,11 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 The project is fully developed individually, with a MySQL database backend, Spring Boot APIs, and a React + Vite frontend, demonstrating end-to-end fullstack development, database design, and security best practices.
 ---
+
+## ❓ Why This Project?
+- This project is ideal for developers who want to learn how to build a **fullstack job portal application** using **Spring  Boot, React, and MySQL**.  
+- It covers authentication with JWT, secure file uploads, real-time messaging, and role-based access, making it a great reference for **portfolio projects** and **enterprise-style applications**.
+
 
 ## 🧑‍💻 My Role as Developer
 
@@ -53,19 +70,19 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 ### 🛠️ Admin Dashboard
 
-![Admin Home](./Screenshots/AdminHome.png)
+![Admin Dashboard of Job Portal built with Spring Boot, React, and MySQL](./Screenshots/AdminHome.png)
 
 ### 📄 View Job Applications
 
-![View Job Applications](./Screenshots/viewJobApplications.png)
+![Job Applications management page in Job Portal using React frontend and Spring Boot backend](./Screenshots/viewJobApplications.png)
 
 ### 📝 Job Details Page
 
-![Job Details](./Screenshots/job-details.png)
+![Detailed Job Posting page with description, requirements, and apply option in Fullstack Job Portal](./Screenshots/job-details.png)
 
 ### 👤 Profile View
 
-![Profile View](./Screenshots/viewProfile.png)
+![User Profile page showing resume upload, contact info, and job applications in Job Portal](./Screenshots/viewProfile.png)
 
 ## 🔗 Live Demo / Video
 
