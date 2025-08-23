@@ -174,7 +174,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 ---
 
-### 🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 **Frontend:**  
 ![React](https://img.shields.io/badge/React-18-blue?logo=react&logoColor=white&style=flat-square) 
@@ -242,7 +242,7 @@ npm run dev
 
 ---
 
-### 🛠️ Continuous Integration & Code Quality
+## 🛠️ Continuous Integration & Code Quality
 
 Configured **GitHub Actions** to automatically run workflows on every push and pull request.
 
