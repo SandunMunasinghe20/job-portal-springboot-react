@@ -15,7 +15,7 @@ This is a personal Fullstack Job Portal project built individually using Spring 
   - [Role Capabilities](#-role-capabilities)
     - [Job Seekers](#-job-seekers)
     - [Employers](#-employers)
-    - [Admins](#-admins)]
+    - [Admins](#-admins)
   - [File Uploads](#-file-uploads)
 - [Challenges Solved](#-challenges-solved)
 - [What I Learned](#-what-i-learned)
@@ -24,7 +24,7 @@ This is a personal Fullstack Job Portal project built individually using Spring 
   - [Prerequisites](#-prerequisites)
   - [Backend Setup](#-backend-setup)
   - [Frontend Setup](#-frontend-setup)
-- [Continuous Integration & Code Quality](#-continuous-integration--code-quality)
+- [Continuous Integration & Code Quality](#%EF%B8%8F-continuous-integration--code-quality)
 - [Roadmap](#-roadmap)
 - [Author](#-author)
 - [License](#-license)
