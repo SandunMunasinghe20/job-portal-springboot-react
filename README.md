@@ -7,7 +7,7 @@ This is a personal Fullstack Job Portal project built individually using Spring 
 - [Project Overview](#-project-overview)
 - [Why This Project?](#-why-this-project)
 - [My Role as Developer](#-my-role-as-developer)
-- [Architecture](#architecture)
+- [Architecture](#%EF%B8%8F-architecture)
 - [Screenshots](#-screenshots)
 - [Key Features](#-key-features)
   - [Authentication & Authorization](#-authentication--authorization)
@@ -15,20 +15,19 @@ This is a personal Fullstack Job Portal project built individually using Spring 
   - [Role Capabilities](#-role-capabilities)
     - [Job Seekers](#-job-seekers)
     - [Employers](#-employers)
-    - [Admins](#-admins)
+    - [Admins](#%EF%B8%8F-admins)
   - [File Uploads](#-file-uploads)
 - [Challenges Solved](#-challenges-solved)
 - [What I Learned](#-what-i-learned)
-- [Tech Stack](#-tech-stack)
-- [Setup Instructions](#-setup-instructions)
+- [Tech Stack](#%EF%B8%8F-tech-stack)
+- [Setup Instructions](#%EF%B8%8F-setup-instructions)
   - [Prerequisites](#-prerequisites)
-  - [Backend Setup](#-backend-setup)
+  - [Backend Setup](#%EF%B8%8F-backend-setup)
   - [Frontend Setup](#-frontend-setup)
 - [Continuous Integration & Code Quality](#%EF%B8%8F-continuous-integration--code-quality)
 - [Roadmap](#-roadmap)
 - [Author](#-author)
 - [License](#-license)
-
 
 
 ## 🚀 Project Overview
