@@ -4,12 +4,27 @@ This is a personal Fullstack Job Portal project built individually using Spring 
 ---
 
 ## 📑 Table of Contents
-- [Project Overview](#project-overview)
+- [Project Overview](#-project-overview)
 - [Why This Project?](#-why-this-project)
+- [My Role as Developer](#-my-role-as-developer)
+- [Architecture](#-architecture)
+- [Screenshots](#-screenshots)
 - [Key Features](#-key-features)
+  - [Authentication & Authorization](#-authentication--authorization)
+  - [Messaging System](#-messaging-system)
+  - [Role Capabilities](#-role-capabilities)
+    - [Job Seekers](#-job-seekers)
+    - [Employers](#-employers)
+    - [Admins](#-admins)
+  - [File Uploads](#-file-uploads)
+- [Challenges Solved](#-challenges-solved)
+- [What I Learned](#-what-i-learned)
 - [Tech Stack](#-tech-stack)
 - [Setup Instructions](#-setup-instructions)
-- [Screenshots](#-screenshots)
+  - [Prerequisites](#-prerequisites)
+  - [Backend Setup](#-backend-setup)
+  - [Frontend Setup](#-frontend-setup)
+- [Continuous Integration & Code Quality](#-continuous-integration--code-quality)
 - [Roadmap](#-roadmap)
 - [Author](#-author)
 - [License](#-license)
@@ -133,7 +148,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ### 📂 File Uploads
 
 - Upload and view resumes (PDF)
-- Upload and view profile and company logos
+- Upload and view profile pictures and company logos
 
 ---
 
@@ -158,43 +173,6 @@ The project is fully developed individually, with a MySQL database backend, Spri
 - Structuring clean code and maintaining modularity in large projects
 
 ---
-<!--
-## 🛠️ Tech Stack
-
-| Area     | Tech                                                    |
-| -------- | --------------------------------------------------------|
-| Frontend | React, Vite, Tailwind CSS, React Router, ESLint         |
-| Backend  | Java 21, Spring Boot, Spring Security, JPA , PMD        |
-| Database | MySQL (local development), MariaDB via SkySQL (CI/CD)   |
-| Tools    | Git, GitHub, Postman, JUnit                             |
--->
-<!--
-### 🛠️ Tech Stack
-
-**Frontend:** 
-![React](https://img.shields.io/badge/React-18-blue?style=flat-square) 
-![Vite](https://img.shields.io/badge/Vite-4.4-yellow?style=flat-square) 
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-blue?style=flat-square) 
-![React Router](https://img.shields.io/badge/React_Router-6-purple?style=flat-square) 
-![ESLint](https://img.shields.io/badge/ESLint-8-darkblue?style=flat-square)
-
-**Backend:** 
-![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square) 
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3-green?style=flat-square) 
-![Spring Security](https://img.shields.io/badge/Spring_Security-6-green?style=flat-square) 
-![JPA](https://img.shields.io/badge/JPA-2.2-blue?style=flat-square) 
-![PMD](https://img.shields.io/badge/PMD-6-red?style=flat-square)
-
-**Database:** 
-![MySQL](https://img.shields.io/badge/MySQL-8-blue?style=flat-square) 
-![MariaDB](https://img.shields.io/badge/MariaDB-10.11-blue?style=flat-square)
-
-**Tools:** 
-![Git](https://img.shields.io/badge/Git-2.45-orange?style=flat-square) 
-![GitHub](https://img.shields.io/badge/GitHub-2025-black?style=flat-square) 
-![Postman](https://img.shields.io/badge/Postman-10-orange?style=flat-square) 
-![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
--->
 
 ### 🛠️ Tech Stack
 
@@ -221,34 +199,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 ![GitHub](https://img.shields.io/badge/GitHub-2025-black?logo=github&logoColor=white&style=flat-square) 
 ![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square) 
 ![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
-<!--
-### 🛠️ Tech Stack
 
-**Frontend:**  
-![React](https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg) React 18  
-![Vite](https://vitejs.dev/logo.svg) Vite 4.4  
-![TailwindCSS](https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg) TailwindCSS 3.3  
-![React Router](https://reactrouter.com/favicon.ico) React Router 6  
-![ESLint](https://eslint.org/favicon.ico) ESLint 8  
-
-**Backend:**  
-![Java](https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg) Java 21  
-![Spring Boot](https://spring.io/images/spring-logo-2020.svg) Spring Boot 3.3  
-![Spring Security](https://spring.io/images/spring-security.svg) Spring Security 6  
-![JPA](https://upload.wikimedia.org/wikipedia/commons/7/75/Hibernate_Logo_Icon.svg) JPA 2.2  
-![PMD](https://pmd.github.io/pmd-6.0.0/pmd-logo.png) PMD 6  
-
-**Database:**  
-![MySQL](https://upload.wikimedia.org/wikipedia/en/d/dd/MySQL_logo.svg) MySQL 8  
-![MariaDB](https://mariadb.com/wp-content/uploads/2019/06/1024px-MariaDB_logo.svg_.png) MariaDB 10.11  
-
-**Tools:**  
-![Git](https://git-scm.com/images/logos/downloads/Git-Icon-1788C.svg) Git 2.45  
-![GitHub](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png) GitHub 2025  
-![Postman](https://upload.wikimedia.org/wikipedia/commons/4/4e/Postman_%28software%29_logo.svg) Postman 10  
-![JUnit](https://upload.wikimedia.org/wikipedia/commons/7/7b/JUnit_Logo.svg) JUnit 5  
-
--->
 ---
 
 ## ⚙️ Setup Instructions
