@@ -3,13 +3,18 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import PdfViewer from "../PdfViewer";
 import { ToggleRight, ToggleLeft } from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProfileCard({ profile, roletoget }) {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const [isActive, setIsActive] = useState(profile.accountStatus === "active");
 
   const token = localStorage.getItem("auth-token");
+
+  const navigate = useNavigate();
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -22,9 +27,9 @@ export default function ProfileCard({ profile, roletoget }) {
   const toggleAccountStatus = async () => {
     let url;
     if (isActive) {
-      url = "http://localhost:8080/api/admin/deactivate";
+      url = `${API_URL}/admin/deactivate`;
     } else {
-      url = "http://localhost:8080/api/admin/activate";
+      url = `${API_URL}/admin/activate`;
     }
     try {
       const response = await fetch(url, {
@@ -41,12 +46,13 @@ export default function ProfileCard({ profile, roletoget }) {
       const data = await response.text();
       console.log(data);
       if (!response.ok) {
-        toast.error(data);
+        toast.error(data || "Failed to change account status");
         return;
       }
 
       toast.success(data);
       setIsActive((prev) => !prev);
+      navigate(`/users?role=${roletoget}`);
     } catch (e) {
       toast.error("Unable to connect with the server.");
       console.error(e);

@@ -17,8 +17,6 @@ import Applications from "./pages/Applications/Applications";
 import Home from "./pages/Home/Home";
 
 import AdminHome from "./pages/Admin/AdminHome";
-//import AdminViewSeekers from "./pages/Admin/AdminViewSeekers";
-import Test from "./pages/Test";
 import MsgPage from "./pages/MsgPage/MsgPage";
 import MsgConversationPage from "./pages/MsgPage/MsgConversationPage";
 import AboutUs from "./FooterComponents/AboutUs";
@@ -68,7 +66,6 @@ function App() {
 
         <Route path="/adminHome" element={<AdminHome />} />
 
-        <Route path="/test" element={<Test />} />
         <Route path="/msg" element={<MsgPage />} />
         <Route path="/conversation" element={<MsgConversationPage />} />
 

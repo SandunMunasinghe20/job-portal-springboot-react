@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import GoogleLoginButton from "../../components/GoogleLoginButton/GoogleLoginButton";
 
 function Login() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPass, setViewPass] = useState(false);
@@ -16,24 +18,14 @@ function Login() {
 
   const navigate = useNavigate();
   
-/*
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      //setIsDarkMode(savedTheme === "dark");
-    } else {
-      // Check system preference
-      //setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
-    }
-  }, []);
-  */
+
  
 
   // Handle Google login success
   const handleGoogleSuccess = async (credential) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/auth/google-login",
+        `${API_URL}/auth/google-login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -93,7 +85,7 @@ function Login() {
     //setSuccess("")
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

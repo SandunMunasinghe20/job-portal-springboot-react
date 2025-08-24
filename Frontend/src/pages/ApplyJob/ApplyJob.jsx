@@ -5,6 +5,9 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function ApplyJob() {
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [searchParams] = useSearchParams();
   const jobId = searchParams.get("id");
   const token = localStorage.getItem("auth-token");
@@ -82,7 +85,7 @@ export default function ApplyJob() {
       formData.append("jobId", jobId);
       formData.append("resume", resume);
 
-      const response = await fetch("http://localhost:8080/api/applyJobs/", {
+      const response = await fetch(`${API_URL}/applyJobs/`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + token,

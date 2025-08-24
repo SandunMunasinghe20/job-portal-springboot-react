@@ -9,6 +9,8 @@ import React from "react";
 
 export default function ViewProfilePage() {
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [profile, setProfile] = useState([]);
 
   const token = localStorage.getItem("auth-token");
@@ -24,18 +26,18 @@ export default function ViewProfilePage() {
     //view own profile
     if (!paramSeekerId && !paramEmployerId) {
       if (role === "employer") {
-        url = "http://localhost:8080/api/employers/profile";
+        url = `${API_URL}/employers/profile`;
       } else if (role === "seeker") {
-        url = "http://localhost:8080/api/seekers/profile";
+        url = `${API_URL}/seekers/profile`;
       } else {
-        url = "http://localhost:8080/api/admin/profile";
+        url = `${API_URL}/admin/profile`;
       }
     } else {
       //someone view other users profile
       if (paramSeekerId) {
-        url = `http://localhost:8080/api/seekers/${paramSeekerId}`;
+        url = `${API_URL}/seekers/${paramSeekerId}`;
       } else {
-        url = `http://localhost:8080/api/employers/${paramEmployerId}`;
+        url = `${API_URL}/employers/${paramEmployerId}`;
       }
     }
 

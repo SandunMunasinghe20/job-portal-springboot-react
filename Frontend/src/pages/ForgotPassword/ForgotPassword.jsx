@@ -5,10 +5,10 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function ForgotPassword() {
+
+  const API_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
-  //const [err, toast.error] = useState("");
-  //const [success, toast.success] = useState("");
-  //const navigate = useNavigate();
+  
 
   const role = localStorage.getItem("role");
 
@@ -18,7 +18,7 @@ export default function ForgotPassword() {
     try {
       //console.log("starting to get to back");
       const response = await fetch(
-        "http://localhost:8080/api/auth/forgot-password",
+        `${API_URL}/auth/forgot-password`,
         {
           method: "POST",
           headers: {

@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function Applications() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [applications, setApplications] = useState([]);
   //const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
@@ -16,10 +18,10 @@ export default function Applications() {
 
   let url;
   if (role === "seeker")
-    url = "http://localhost:8080/api/applyJobs/myApplications";
+    url = `${API_URL}/applyJobs/myApplications`;
   else if (role == "admin")
-    url = "http://localhost:8080/api/admin/applications";
-  else url = "http://localhost:8080/api/applyJobs/view";
+    url = `${API_URL}/admin/applications`;
+  else url = `${API_URL}/applyJobs/view`;
 
   useEffect(() => {
     const fetchApplications = async () => {

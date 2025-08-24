@@ -8,8 +8,9 @@ import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 export default function UsersPage() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [users, setUsers] = useState([]);
-  //const [error, toast.error] = useState("");
 
   const role = localStorage.getItem("role");
 
@@ -23,12 +24,12 @@ export default function UsersPage() {
 
       if (roletoget === "employer") {
         response = await fetchFromBackend({
-          url: "http://localhost:8080/api/employers/all",
+          url: `${API_URL}/employers/all`,
           method: "GET",
         });
       } else {
         response = await fetchFromBackend({
-          url: "http://localhost:8080/api/seekers/all",
+          url: `${API_URL}/seekers/all`,
           method: "GET",
         });
       }

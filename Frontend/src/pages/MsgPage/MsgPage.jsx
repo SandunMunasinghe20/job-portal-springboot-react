@@ -9,6 +9,8 @@ import { MdDone, MdDoneAll, MdSend } from "react-icons/md";
 import { FiUser, FiMessageCircle } from "react-icons/fi";
 
 export default function MsgPage() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [msg, setMsg] = useState("");
   const [chat, setChat] = useState([]);
 
@@ -30,7 +32,7 @@ export default function MsgPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/msg/send", {
+      const response = await fetch(`${API_URL}/msg/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +61,7 @@ export default function MsgPage() {
   const handleMarkAsRead = async (msg) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/msg/mark-as-read",
+        `${API_URL}/msg/mark-as-read`,
         {
           method: "POST",
           headers: {
@@ -91,7 +93,7 @@ export default function MsgPage() {
   const getChat = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/msg/chat?senderId=${currentId}&receiverId=${receiverId}`,
+        `${API_URL}/msg/chat?senderId=${currentId}&receiverId=${receiverId}`,
         {
           method: "GET",
           headers: {

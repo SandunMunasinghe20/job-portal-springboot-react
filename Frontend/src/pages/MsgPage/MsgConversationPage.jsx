@@ -6,6 +6,8 @@ import React from "react";
 
 
 export default function MsgInboxPage() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [conversations, setConversations] = useState([]);
   const token = localStorage.getItem("auth-token");
   const currentId = Number(localStorage.getItem("id"));
@@ -23,7 +25,7 @@ export default function MsgInboxPage() {
   async function fetchInbox() {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/msg/inbox?userId=${currentId}`,
+        `${API_URL}/msg/inbox?userId=${currentId}`,
         {
           headers: {
             Authorization: "Bearer " + token,

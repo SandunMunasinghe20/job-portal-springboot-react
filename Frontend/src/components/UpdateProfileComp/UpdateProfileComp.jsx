@@ -7,6 +7,8 @@ import GetInput from "../GetInput/GetInput";
 import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
 
 export default function UpdateProfileComp() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const navigate = useNavigate();
 
   //set Error
@@ -51,8 +53,8 @@ export default function UpdateProfileComp() {
       try {
         const url =
           role === "seeker"
-            ? "http://localhost:8080/api/seekers/profile"
-            : "http://localhost:8080/api/employers/profile";
+            ? `${API_URL}/seekers/profile`
+            : `${API_URL}/employers/profile`;
 
         const response = await fetchFromBackend({ url, method: "GET" });
 
@@ -120,7 +122,7 @@ export default function UpdateProfileComp() {
     let body = {};
 
     if (role === "seeker") {
-      url = "http://localhost:8080/api/seekers/update";
+      url = `${API_URL}/seekers/update`;
       body = {
         fname,
         lname,
@@ -140,7 +142,7 @@ export default function UpdateProfileComp() {
         certifications,
       };
     } else if (role === "employer") {
-      url = "http://localhost:8080/api/employers/update";
+      url = `${API_URL}/employers/update`;
       body = {
         companyName,
         address,

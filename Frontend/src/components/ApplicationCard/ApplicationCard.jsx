@@ -6,6 +6,9 @@ import ConfirmModal from "../ConfirmModel/ConfirmModel";
 import { FaRegEnvelope } from "react-icons/fa";
 
 export default function ApplicationCard({ applications }) {
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
@@ -27,7 +30,7 @@ export default function ApplicationCard({ applications }) {
   const handleDelete = async ({ app }) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/applyJobs/delete/${app.id}`,
+        `${API_URL}/applyJobs/delete/${app.id}`,
         {
           method: "DELETE",
           headers: {
@@ -78,7 +81,7 @@ export default function ApplicationCard({ applications }) {
       formData.append("resume", resume);
 
       const response = await fetch(
-        `http://localhost:8080/api/applyJobs/update/${app.id}`,
+        `${API_URL}/applyJobs/update/${app.id}`,
         {
           method: "PUT",
           headers: {
@@ -124,7 +127,7 @@ export default function ApplicationCard({ applications }) {
   const handleStatusChange = async ({ app, newStatus }) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/applyJobs/updateBYEmp",
+        `${API_URL}/applyJobs/updateBYEmp`,
         {
           method: "PUT",
           headers: {

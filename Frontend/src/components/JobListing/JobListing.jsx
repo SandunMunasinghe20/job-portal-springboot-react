@@ -9,6 +9,8 @@ import Spinner from "../Spinner/Spinner";
 
 
 export default function JobListing() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,8 +55,16 @@ export default function JobListing() {
       return;
     }
 
+    //load based on role
+    let url;
+    if (role=="employer"){
+      url = `${API_URL}/jobs/findByEmp`;
+    }else{
+      url = `${API_URL}/jobs/all`;
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/api/jobs/all", {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +93,7 @@ export default function JobListing() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/jobs/delete/${job.id}`,
+        `${API_URL}/jobs/delete/${job.id}`,
         {
           method: "DELETE",
           headers: {

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Register() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPass, setViewPass] = useState(false);
@@ -27,9 +29,9 @@ export default function Register() {
 
     try {
       if (selected == "seeker") {
-        url = "http://localhost:8080/api/auth/register-seeker";
+        url = `${API_URL}/auth/register-seeker`;
       } else {
-        url = "http://localhost:8080/api/auth/register-employer";
+        url = `${API_URL}/auth/register-employer`;
       }
       const response = await fetch(url, {
         method: "POST",

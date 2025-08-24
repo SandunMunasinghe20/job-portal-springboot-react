@@ -10,6 +10,8 @@ import GetSelect from "../../components/GetInput/GetSelect";
 import GetMultiSelect from "../../components/GetInput/GetMultiSelect";
 
 export default function PostJobs() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const navigate = useNavigate();
 
   const [jobTitle, setJobTitle] = useState("");
@@ -19,8 +21,7 @@ export default function PostJobs() {
   const [jobType, setJobType] = useState("");
   const [skillsRequired, setSkillsRequired] = useState("");
 
-  //const [err, toast.error] = useState("");
-  //const [success, toast.success] = useState("");
+  
   const [posting, setPosting] = useState("");
 
   const [searchParams] = useSearchParams();
@@ -36,9 +37,9 @@ export default function PostJobs() {
     /*edit or add based on search parameters */
   }
   if (!jobId) {
-    url = "http://localhost:8080/api/jobs/add";
+    url = `${API_URL}/jobs/add`;
   } else {
-    url = "http://localhost:8080/api/jobs/update";
+    url = `${API_URL}/jobs/update`;
   }
 
   const handleSubmit = async (e) => {
@@ -74,7 +75,10 @@ export default function PostJobs() {
       //no existing job id ,so this is an adding job
       if (!jobId) {
         if (!response.ok) {
-          toast.error("Failed to add Job.Try again");
+          const errmsg = await response.text();
+          toast.error(errmsg);
+          navigate("/updateProfile");
+          return;
         }
 
         const data = await response.text();
@@ -86,6 +90,7 @@ export default function PostJobs() {
         if (!response.ok) {
           const data = await response.text();
           toast.error(data);
+          return;
         }
 
         const data = await response.text();

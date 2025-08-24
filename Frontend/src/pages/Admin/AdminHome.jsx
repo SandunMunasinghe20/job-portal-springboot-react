@@ -32,6 +32,8 @@ import { FaBuilding } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 export default function AdminHome() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const navigate = useNavigate();
 
   // role and auth token
@@ -50,7 +52,7 @@ export default function AdminHome() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/admin/analytics", {
+        const res = await fetch(`${API_URL}/admin/analytics`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -172,7 +174,7 @@ export default function AdminHome() {
                 title="Total Users"
                 count={stats.totalUsers}
                 color="text-blue-600"
-                Icon={<FiUsers className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiUsers className={`w-8 h-8 text-blue-600`}/>}
                 
                 trend={12.5}
               />
@@ -180,7 +182,7 @@ export default function AdminHome() {
                 title="Job Seekers"
                 count={stats.jobSeekers}
                 color="text-green-600"
-                Icon={<FiUserCheck className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiUserCheck className={`w-8 h-8 text-green-600`}/>}
                 
                 trend={8.3}
               />
@@ -188,7 +190,7 @@ export default function AdminHome() {
                 title="Employers"
                 count={stats.employers}
                 color="text-yellow-600"
-                Icon={<FaBuilding className={`w-8 h-8 ${color}`}/>}
+                Icon={<FaBuilding className={`w-8 h-8 text-yellow-600`}/>}
                 
                 trend={15.7}
               />
@@ -196,7 +198,7 @@ export default function AdminHome() {
                 title="Admins"
                 count={stats.admins}
                 color="text-gray-600"
-                Icon={<FiShield className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiShield className={`w-8 h-8 text-gray-600`}/>}
                 
               />
             </div>
@@ -207,7 +209,7 @@ export default function AdminHome() {
                 title="Total Jobs"
                 count={stats.totalJobs}
                 color="text-blue-600"
-                Icon={<FiBriefcase className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiBriefcase className={`w-8 h-8 text-blue-600`}/>}
                 
                 trend={22.1}
               />
@@ -215,7 +217,7 @@ export default function AdminHome() {
                 title="Applications"
                 count={stats.totalApplications}
                 color="text-green-600"
-                Icon={<FiFileText className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiFileText className={`w-8 h-8 text-green-600`}/>}
                 
                 trend={18.9}
               />
@@ -223,7 +225,7 @@ export default function AdminHome() {
                 title="Messages"
                 count={stats.totalMessages}
                 color="text-yellow-600"
-                Icon={<FiMessageSquare className={`w-8 h-8 ${color}`}/>}
+                Icon={<FiMessageSquare className={`w-8 h-8 text-yellow-600`}/>}
                 
                 trend={7.4}
               />

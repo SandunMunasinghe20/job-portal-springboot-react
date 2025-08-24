@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ChangePass() {
-  //const [err, toast.error] = useState("");
-  // const [success, toast.success] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
+  
+  
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -32,7 +33,7 @@ export default function ChangePass() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/auth/reset-password",
+        `${API_URL}/auth/reset-password`,
         {
           method: "POST",
           headers: {

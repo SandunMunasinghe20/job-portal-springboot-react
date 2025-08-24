@@ -5,6 +5,8 @@ import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function Jobs() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const [jobs, setJobs] = useState([]);
   //const [error, toast.error] = useState("");
   const [loading, setLoading] = useState(true);
@@ -13,6 +15,7 @@ export default function Jobs() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
+  
   const fetchJobs = async () => {
     setLoading(true);
 
@@ -23,7 +26,7 @@ export default function Jobs() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/jobs/all", {
+      const response = await fetch(`${API_URL}/jobs/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +65,7 @@ export default function Jobs() {
           <div className="jl-spinner"></div>
         </div>
       ) : (
-        <JobListing jobs={jobs} navigate={navigate} />
+        <JobListing jobsRe={jobs} />
       )}
     </>
   );
