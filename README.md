@@ -177,8 +177,21 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ## ⚙️ Non-Functional Requirements
 
 ### 🚀 Performance
-- APIs respond within **<300ms** for common operations (job search, profile retrieval)  
-- Supports **1000+ concurrent users** with minimal latency  
+- APIs respond within **<200ms** for common operations (job search, profile retrieval)  
+- Supports **2000+ concurrent users** with minimal latency.  
+
+**Load Testing Results (Proof):**
+
+- **Concurrent Users Tested:** 2000  
+- **Total Requests:** 2000  
+- **Average Response Time:** 18 ms  
+- **Max Response Time:** 154 ms  
+- **Std. Dev.:** 4.24  
+- **Error %:** 0%  
+- **Throughput:** 10 requests/sec  
+
+![Summary Report](./Screenshots/summary-report.png)
+  
 
 ### 🔐 Security
 - Passwords hashed with **BCryptPasswordEncoder**  
