@@ -334,8 +334,8 @@ Configured **GitHub Actions** to automatically run workflows on every push and p
 - ✅ Notifications for Account activations and deactivations by Admin
 - ✅ Stats/Analytics
 - ✅ UI/UX Polish
-- 🔜 Deployment (Render / Vercel / Railway)
-
+- ✅ Frontend deployed on [Netlify](https://jobpulse-frontend.netlify.app/)
+- 🔜 Backend deployment (Render / Railway / AWS EC2)
 
 
 ---
