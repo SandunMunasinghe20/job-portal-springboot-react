@@ -32,19 +32,26 @@ import { useNavigate } from "react-router-dom";
 import { MdMessage } from "react-icons/md";
 
 function App() {
+  
   function FloatingMessageIcon() {
-    const navigate = useNavigate();
-    //const id = localStorage.getItem("id");
-    return (
-      <div
-        onClick={() => navigate(`/conversation`)}
-        className="fixed z-50 p-4 text-white bg-blue-600 rounded-full shadow-lg cursor-pointer bottom-6 right-6 hover:bg-blue-700"
-        title="Messages"
-      >
-        <MdMessage size={24} />
-      </div>
-    );
-  }
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("auth-token");
+
+  // Only show for logged in users
+  if (!role || !token) return null;
+
+  return (
+    <div
+      onClick={() => navigate(`/conversation`)}
+      className="fixed z-50 p-4 text-white bg-blue-600 rounded-full shadow-lg cursor-pointer bottom-6 right-6 hover:bg-blue-700"
+      title="Messages"
+    >
+      <MdMessage size={24} />
+    </div>
+  );
+}
+
 
   return (
     <BrowserRouter>
