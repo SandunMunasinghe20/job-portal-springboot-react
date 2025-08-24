@@ -51,7 +51,7 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 📂 Upload and view resumes, profile pictures, and company logos securely.
 
-The project is fully developed individually, with a MySQL database backend, Spring Boot APIs, and a React + Vite frontend, demonstrating end-to-end fullstack development, database design, and security best practices.
+
 ---
 
 ## ❓ Why This Project?
