@@ -56,6 +56,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+      {/* redirect "/* > "/register" (for deployment */}
+      <Route path="/" element={<Navigate to="/register" replace />} />
+        
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
