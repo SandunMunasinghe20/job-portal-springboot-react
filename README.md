@@ -244,10 +244,11 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ![Apache JMeter](https://img.shields.io/badge/Apache_JMeter-5.6-red?logo=apachejmeter&logoColor=white&style=flat-square) 
 ![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square)
 
-**Code Quality**
+**Code Quality:**  
 ![PMD](https://img.shields.io/badge/PMD-6-red?style=flat-square) 
-![SpotBugs](https://img.shields.io/badge/SpotBugs-4-yellow?style=flat-square)
+![SpotBugs](https://img.shields.io/badge/SpotBugs-4-yellow?style=flat-square) 
 ![ESLint](https://img.shields.io/badge/ESLint-8-darkblue?logo=eslint&logoColor=white&style=flat-square)
+
 
 **DevOps & Tools:**  
 ![Git](https://img.shields.io/badge/Git-2.45-orange?logo=git&logoColor=white&style=flat-square) 
