@@ -236,17 +236,24 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ![Spring Security](https://img.shields.io/badge/Spring_Security-6-green?logo=springsecurity&logoColor=white&style=flat-square) 
 ![JPA](https://img.shields.io/badge/JPA-2.2-blue?logo=hibernate&logoColor=white&style=flat-square) 
 ![PMD](https://img.shields.io/badge/PMD-6-red?style=flat-square)
+![SpotBugs](https://img.shields.io/badge/SpotBugs-4-yellow?style=flat-square)  
 
 **Database:**  
 ![MySQL](https://img.shields.io/badge/MySQL-8-blue?logo=mysql&logoColor=white&style=flat-square) 
 ![MariaDB](https://img.shields.io/badge/MariaDB-10.11-blue?logo=mariadb&logoColor=white&style=flat-square)
 
-**Tools:**  
-![Git](https://img.shields.io/badge/Git-2.45-orange?logo=git&logoColor=white&style=flat-square) 
-![GitHub](https://img.shields.io/badge/GitHub-2025-black?logo=github&logoColor=white&style=flat-square) 
-![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square) 
-![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)
+**Testing & Quality:**  
+![JUnit](https://img.shields.io/badge/JUnit-5-red?style=flat-square)  
+![Mockito](https://img.shields.io/badge/Mockito-5-green?style=flat-square)  
+![Apache JMeter](https://img.shields.io/badge/Apache_JMeter-5.6-red?logo=apachejmeter&logoColor=white&style=flat-square)  
+![Postman](https://img.shields.io/badge/Postman-10-orange?logo=postman&logoColor=white&style=flat-square)  
 
+**DevOps & Tools:**  
+![Git](https://img.shields.io/badge/Git-2.45-orange?logo=git&logoColor=white&style=flat-square)  
+![GitHub](https://img.shields.io/badge/GitHub-2025-black?logo=github&logoColor=white&style=flat-square)  
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-blue?logo=githubactions&logoColor=white&style=flat-square)  
+![Node.js](https://img.shields.io/badge/Node.js-20-green?logo=nodedotjs&logoColor=white&style=flat-square)  
+![npm](https://img.shields.io/badge/npm-10-red?logo=npm&logoColor=white&style=flat-square)  
 ---
 
 ## ⚙️ Setup Instructions
