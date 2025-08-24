@@ -9,7 +9,7 @@ This is a personal Fullstack Job Portal project built individually using Spring 
 - [My Role as Developer](#-my-role-as-developer)
 - [Architecture](#%EF%B8%8F-architecture)
 - [Screenshots](#-screenshots)
-- [Key Features](#-key-features)
+- [Key Features](#-key-features-functional-requirements)
   - [Authentication & Authorization](#-authentication--authorization)
   - [Messaging System](#-messaging-system)
   - [Role Capabilities](#-role-capabilities)
@@ -19,6 +19,7 @@ This is a personal Fullstack Job Portal project built individually using Spring 
   - [File Uploads](#-file-uploads)
 - [Challenges Solved](#-challenges-solved)
 - [What I Learned](#-what-i-learned)
+- [Non-Functional Requirements](#%EF%B8%8F-non-functional-requirements)
 - [Tech Stack](#%EF%B8%8F-tech-stack)
 - [Setup Instructions](#%EF%B8%8F-setup-instructions)
   - [Prerequisites](#-prerequisites)
@@ -102,7 +103,7 @@ The project is fully developed individually, with a MySQL database backend, Spri
 
 ---
 
-## 🧪 Key Features
+## 🧪 Key Features (Functional Requirements)
 
 ### 🔐 Authentication & Authorization
 
@@ -172,6 +173,40 @@ The project is fully developed individually, with a MySQL database backend, Spri
 - Structuring clean code and maintaining modularity in large projects
 
 ---
+
+## ⚙️ Non-Functional Requirements
+
+### 🚀 Performance
+- APIs respond within **<300ms** for common operations (job search, profile retrieval)  
+- Supports **1000+ concurrent users** with minimal latency  
+
+### 🔐 Security
+- Passwords hashed with **BCryptPasswordEncoder**  
+- **JWT-based authentication** for stateless sessions  
+- Role-based access enforced via **Spring Security**  
+- Secure file uploads (resumes, profile images, company logos)  
+
+### 🎨 Usability
+- **Responsive design** across desktop, tablet, and mobile  
+- Accessibility improvements (labels, ARIA roles, contrast)  
+
+### 📈 Scalability
+- REST APIs structured for horizontal scaling  
+- Indexed queries in MySQL for efficient job searching  
+
+### ⚡ Reliability & Availability
+- Error handling with descriptive fallback messages  
+- Auto-recovery on backend restart  
+
+### 🛠️ Maintainability
+- Layered architecture (controllers, services, repositories)  
+- Static code analysis with **PMD & SpotBugs**  
+- Consistent coding conventions and modular structure  
+
+### 🌍 Portability
+- Backend deployable on **AWS EC2** or any cloud VM  
+- Frontend can run on **Vercel / Netlify** with minimal configuration  
+
 
 ## 🛠️ Tech Stack
 
