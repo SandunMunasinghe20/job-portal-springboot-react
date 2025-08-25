@@ -103,8 +103,10 @@ export default function MsgPage() {
       );
 
       if (!response.ok) {
-        const err = await (response.json() || response.text());
+      const err = await (response.json() || response.text());
+       if(err != "Your Inbox is empty"){
         toast.error(err);
+      }
         return;
       }
 

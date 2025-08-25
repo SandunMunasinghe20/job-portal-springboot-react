@@ -37,7 +37,9 @@ export default function Applications() {
 
         if (!response.ok) {
           const errorMsg = await response.text();
-          toast.error(errorMsg);
+          if(errorMsg !="No Jobs found"){
+           toast.error(errorMsg); 
+          }
           setLoading(false);
           return;
         }

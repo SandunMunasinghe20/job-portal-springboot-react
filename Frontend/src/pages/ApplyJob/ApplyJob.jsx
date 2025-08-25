@@ -38,7 +38,10 @@ export default function ApplyJob() {
         }
         const data = await response.json();
         console.log("data ", data);
+        //console.log(" hi ",data.jobDescription.split("\n"));
         setJobData(data);
+        
+
       } catch (e) {
         toast.error(`Unable to connect with the server. || ${e}`);
         return;
@@ -129,9 +132,10 @@ export default function ApplyJob() {
             {jobData.title}
           </h2>
 
-          <p className="mb-4 text-justify text-gray-700">
-            {jobData.description}
+          <p className="mb-4 text-justify text-gray-700 whitespace-pre-line">
+            {jobData.jobDescription || ""}
           </p>
+
           <img
             src={jobData.image}
             alt="Company Logo"

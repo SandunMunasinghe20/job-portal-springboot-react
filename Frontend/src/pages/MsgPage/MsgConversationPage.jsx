@@ -35,7 +35,9 @@ export default function MsgInboxPage() {
 
       if (!res.ok) {
         const data = await res.text();
+       if(data != "Your Inbox is empty") {
         toast.error(data);
+      }
         return;
       }
 

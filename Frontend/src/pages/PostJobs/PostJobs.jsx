@@ -147,7 +147,7 @@ export default function PostJobs() {
         />
 
         <GetInput
-          type="text"
+          type="textarea"
           placeholder="Job Description"
           value={jobDescription}
           onChange={setJobDescription}

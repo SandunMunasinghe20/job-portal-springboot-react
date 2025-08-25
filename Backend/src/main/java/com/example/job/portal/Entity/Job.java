@@ -17,6 +17,8 @@ public class Job {
     private Long employerId;
 
     private String jobTitle;
+
+    @Column(columnDefinition = "TEXT")
     private String jobDescription;
     private String location;
     private String jobType;

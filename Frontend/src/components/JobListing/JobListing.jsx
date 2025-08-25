@@ -79,7 +79,7 @@ export default function JobListing() {
 
       const data = await response.json();
       setJobs(data);
-      toast.success("Jobs loaded successfully");
+      //toast.success("Jobs loaded successfully");
     } catch (error) {
       toast.error("An error occurred while fetching jobs");
       console.error("Error fetching jobs:", error);
@@ -288,7 +288,7 @@ export default function JobListing() {
                     <p className="my-4 font-semibold text-left text-gray-800">
                       {job.companyName || "Confidential"}
                     </p>
-                    <p className="max-w-xl my-4 leading-relaxed text-left text-gray-700 break-words ">
+                    <p className="max-w-xl my-4 leading-relaxed text-left text-gray-700 break-words whitespace-pre-line">
                       {job.jobDescription}
                     </p>
                   </div>
