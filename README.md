@@ -1,6 +1,6 @@
 # 💼 Fullstack Job Portal | Java Spring Boot + React (Vite) + MySQL
 
-This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite), and MySQL. It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging, and an Admin Dashboard. Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
+This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite) and MySQL. It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging and an Admin Dashboard. Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
 ---
 
 ## 📑 Table of Contents
@@ -17,8 +17,6 @@ This is a personal Fullstack Job Portal project built individually using Spring 
     - [Employers](#-employers)
     - [Admins](#%EF%B8%8F-admins)
   - [File Uploads](#-file-uploads)
-- [Challenges Solved](#-challenges-solved)
-- [What I Learned](#-what-i-learned)
 - [Non-Functional Requirements](#%EF%B8%8F-non-functional-requirements)
 - [Tech Stack](#%EF%B8%8F-tech-stack)
 - [Setup Instructions](#%EF%B8%8F-setup-instructions)
@@ -26,20 +24,19 @@ This is a personal Fullstack Job Portal project built individually using Spring 
   - [Backend Setup](#%EF%B8%8F-backend-setup)
   - [Frontend Setup](#-frontend-setup)
 - [Continuous Integration & Code Quality](#%EF%B8%8F-continuous-integration--code-quality)
-- [Roadmap](#-roadmap)
 - [Author](#-author)
-- [License](#-license)
 
 
-## 🚀 Project Overview
+
+##  Project Overview
 
 This fullstack Job Portal allows seamless interaction between Employers and Job Seekers. Key features include:
 
-🧑‍💼 Employers can post, update, and delete job listings, and manage applications.
+ Employers can post, update, and delete job listings and manage applications.
 
-👨‍🎓 Job Seekers can browse, search, filter, and apply to jobs with uploaded resumes.
+ Job Seekers can browse, search, filter and apply to jobs with uploaded resumes.
 
-🔐 Secure login, registration, and password management using Spring Security
+ Secure login, registration and password management using Spring Security
 
       Passwords are hashed with BCryptPasswordEncoder
       
@@ -47,26 +44,9 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
       
       Role-based access control enforced via @PreAuthorize annotations
 
-💬 Messaging system enabling Employers and Job Seekers to communicate securely based on application status.
+ Messaging system enabling Employers and Job Seekers to communicate securely based on application status.
 
-📂 Upload and view resumes, profile pictures, and company logos securely.
-
-
----
-
-## ❓ Why This Project?
-- This project is ideal for developers who want to learn how to build a **fullstack job portal application** using **Spring  Boot, React, and MySQL**.  
-- It covers authentication with JWT, secure file uploads, real-time messaging, and role-based access, making it a great reference for **portfolio projects** and **enterprise-style applications**.
-
-
-## 🧑‍💻 My Role as Developer
-
-- Designed and implemented RESTful APIs using Spring Boot
-- Built a responsive frontend UI using React + Vite + Tailwind CSS
-- Configured **JWT-based authentication and role-based access** using Spring Security
-- Designed database schema and relationships in MySQL
-- Integrated secure resume and profile image upload features
-- Managed CORS, error handling, and environment configurations
+ Upload and view resumes, profile pictures and company logos securely.
 
 ---
 
@@ -74,8 +54,8 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 | Layer    | Stack                                                                            |
 | -------- | -------------------------------------------------------------------------------- |
-| Frontend | React, Vite, Tailwind CSS, React Icons, React Router, React Toastify, ESLint     |
-| Backend  | Java 21, Spring Boot, Spring Data JPA, Spring Security, PMD                      |
+| Frontend | React, Vite, Tailwind CSS, ESLint     |
+| Backend  | Java 21, Spring Boot, PMD                      |
 | Database | MySQL (local development), MariaDB via SkySQL (CI)                               |
 | Tools    | Git, GitHub,Maven, Postman, JUnit                                                |
 
@@ -99,20 +79,17 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 ![User Profile page showing resume upload, contact info, and job applications in Job Portal](./Screenshots/viewProfile.png)
 
-## 🔗 Live Demo / Video
 
----
+##  Key Features (Functional Requirements)
 
-## 🧪 Key Features (Functional Requirements)
-
-### 🔐 Authentication & Authorization
+###  Authentication & Authorization
 
 - Login / Register / Forgot Password via email service
 - **JWT Token** based secure authentication
-- Role-based access control for Employers, Job Seekers, and Admins
+- Role-based access control for Employers, Job Seekers and Admins
 - Logout functionality for all roles
 
-### 💬 Messaging System
+###  Messaging System
 
 - Employers can message job seekers only **after a job application** exists
 - Admins can message anyone
@@ -120,9 +97,9 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 - **Read receipts** are enabled (users can see if their message was viewed)
 - **Messages cannot be deleted** to ensure platform integrity
 
-### 🧭 Role Capabilities
+###  Role Capabilities
 
-#### 👨‍🎓 Job Seekers
+####  Job Seekers
 
 - Browse and search all job posts
 - Apply to jobs with attached resume
@@ -130,51 +107,29 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 - Upload resume to profile and during job applications
 - View submitted applications
 
-#### 🧑‍💼 Employers
+####  Employers
 
 - Post, edit, delete **only their own jobs**
 - View received job applications
-- Approve, reject, or delete job applications
+- Approve, reject or delete job applications
 - View and update profile
 - See all jobs on the portal
 
-#### 🛠️ Admins
+####  Admins
 
-- View **all** jobs, applications, employers, and seekers
+- View **all** jobs, applications, employers and seekers
 - Activate or Deactivate User Accounts
 - Delete inappropriate jobs
 - Monitor platform activities
 
-### 📂 File Uploads
+###  File Uploads
 
 - Upload and view resumes (PDF)
 - Upload and view profile pictures and company logos
 
 ---
 
-## 🧩 Challenges Solved
-
-- Integrated **JWT and Spring Security** securely for role-based access
-- Solved CORS issues between frontend and backend during development
-- Designed clean RESTful APIs with proper separation of concerns
-- Normalized schema for user-job-application relationships
-- Maintained secure upload storage for resumes and images
-- Implemented Continuous Integration (CI) using GitHub Actions to automate backend builds,  tests, and frontend linting
-
----
-
-## 🧠 What I Learned
-
-- Building and securing fullstack applications end-to-end
-- React state management with Hooks and API integration
-- Designing scalable and normalized relational databases
-- Implementing security best practices with Spring Security & JWT
-- Handling uploads and file storage across the stack
-- Structuring clean code and maintaining modularity in large projects
-
----
-
-## ⚙️ Non-Functional Requirements
+##  Non-Functional Requirements
 
 ### 🚀 Performance
 - APIs respond within **<200ms** for common operations (job search, profile retrieval)  
@@ -193,32 +148,31 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ![Summary Report](./Screenshots/summary-report.png)
   
 
-### 🔐 Security
+###  Security
 - Passwords hashed with **BCryptPasswordEncoder**  
 - **JWT-based authentication** for stateless sessions  
 - Role-based access enforced via **Spring Security**  
 - Secure file uploads (resumes, profile images, company logos)  
 
-### 🎨 Usability
-- **Responsive design** across desktop, tablet, and mobile  
+###  Usability
+- **Responsive design** across desktop, tablet and mobile  
 - Accessibility improvements (labels, ARIA roles, contrast)  
 
-### 📈 Scalability
+###  Scalability
 - REST APIs structured for horizontal scaling  
 - Indexed queries in MySQL for efficient job searching  
 
-### ⚡ Reliability & Availability
+###  Reliability & Availability
 - Error handling with descriptive fallback messages  
 - Auto-recovery on backend restart  
 
-### 🛠️ Maintainability
+###  Maintainability
 - Layered architecture (controllers, services, repositories)  
 - Static code analysis with **PMD & SpotBugs**  
 - Consistent coding conventions and modular structure  
 
-### 🌍 Portability
-- Backend deployable on **AWS EC2** or any cloud VM  
-- Frontend can run on **Vercel / Netlify** with minimal configuration  
+###  Portability
+- Backend deployable on **AWS EC2** or any cloud VM   
 
 ## 🛠️ Tech Stack
 
@@ -259,14 +213,14 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 ## ⚙️ Setup Instructions
 
-### ✅ Prerequisites
+###  Prerequisites
 
 - Java 21
 - Node.js & npm
 - MySQL Server
 - Maven
 
-### 🛠️ Backend Setup
+###  Backend Setup
 
 ```sql
 CREATE DATABASE job_portal;
@@ -287,7 +241,7 @@ spring.jpa.hibernate.ddl-auto=update
 ./mvnw spring-boot:run
 ```
 
-### 💻 Frontend Setup
+###  Frontend Setup
 
 ```bash
 cd frontend
@@ -297,48 +251,31 @@ npm run dev
 
 ---
 
-## 🛠️ Continuous Integration & Code Quality
+##  Continuous Integration & Code Quality
 
 Configured **GitHub Actions** to automatically run workflows on every push and pull request.
 
-#### ⚙️ Backend CI
+####  Backend CI
 - Builds the Spring Boot project with Maven
 - Runs JUnit tests for backend services
 - Connects to **SkySQL (MariaDB)** for integration tests
 
-#### 💻 Frontend CI
+####  Frontend CI
 - Runs ESLint for linting and formatting checks
 - Detects unused variables, accessibility issues, and potential React bugs
 - Prevents merging code with style or quality violations
 
-#### 🖥️ Local Developer Quality Checks
+####  Local Developer Quality Checks
 *(Run manually in IntelliJ IDEA — not enforced in CI)*
-- 🔍 PMD → Detects code smells, complexity issues, and unused imports
-- 🐞 SpotBugs → Finds potential runtime bugs, null-pointer risks, and concurrency problems
+-  PMD → Detects code smells, complexity issues, and unused imports
+-  SpotBugs → Finds potential runtime bugs, null-pointer risks, and concurrency problems
 
-#### 🎯 Benefits
-- 🐞 Catch bugs and regressions before deployment
-- 🎨 Maintain consistent code style across frontend & backend
-- ⚡ Faster feedback loops with automated tests
-- 🛡️ Higher reliability and maintainability of the codebase
+####  Benefits
+-  Catch bugs and regressions before deployment
+-  Maintain consistent code style across frontend & backend
+-  Faster feedback loops with automated tests
+-  Higher reliability and maintainability of the codebase
 
-
-## 📌 Roadmap
-
-- ✅ Login, Register, Forgot/Reset Password
-- ✅ Job Posting and Application Flows
-- ✅ MySQL Integration
-- ✅ Resume Upload & File Storage
-- ✅ Role-Based Messaging System
-- ✅ Admin View and Control Features
-- ✅ Notifications for Account activations and deactivations by Admin
-- ✅ Stats/Analytics
-- ✅ UI/UX Polish
-- ✅ Frontend deployed on [Netlify](https://jobpulse-frontend.netlify.app/)
-- 🔜 Backend deployment (Render / Railway / AWS EC2)
-
-
----
 
 ## 👤 Author
 
@@ -347,12 +284,5 @@ Configured **GitHub Actions** to automatically run workflows on every push and p
 📧 [msandunlakshan2001@gmail.com](mailto:msandunlakshan2001@gmail.com)
 🔗 [GitHub Profile](https://github.com/SandunMunasinghe20)
 
----
 
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-
----
 
