@@ -1,9 +1,11 @@
-# 💼 Fullstack Job Portal | Java Spring Boot + React (Vite) + MySQL
+#  Fullstack Job Portal | Java Spring Boot + React (Vite) + MySQL
 
-This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite) and MySQL. It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging and an Admin Dashboard. Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
+This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite) and MySQL.
+It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging and an Admin Dashboard. 
+Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
 ---
 
-## 📑 Table of Contents
+##  Table of Contents
 - [Project Overview](#-project-overview)
 - [Why This Project?](#-why-this-project)
 - [My Role as Developer](#-my-role-as-developer)
@@ -50,7 +52,7 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 | Layer    | Stack                                                                            |
 | -------- | -------------------------------------------------------------------------------- |
@@ -61,21 +63,21 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
-### 🛠️ Admin Dashboard
+###  Admin Dashboard
 
 ![Admin Dashboard of Job Portal built with Spring Boot, React, and MySQL](./Screenshots/AdminHome.png)
 
-### 📄 View Job Applications
+###  View Job Applications
 
 ![Job Applications management page in Job Portal using React frontend and Spring Boot backend](./Screenshots/viewJobApplications.png)
 
-### 📝 Job Details Page
+###  Job Details Page
 
 ![Detailed Job Posting page with description, requirements, and apply option in Fullstack Job Portal](./Screenshots/job-details.png)
 
-### 👤 Profile View
+###  Profile View
 
 ![User Profile page showing resume upload, contact info, and job applications in Job Portal](./Screenshots/viewProfile.png)
 
@@ -131,7 +133,7 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 
 ##  Non-Functional Requirements
 
-### 🚀 Performance
+###  Performance
 - APIs respond within **<200ms** for common operations (job search, profile retrieval)  
 - Supports **2000+ concurrent users** with minimal latency.  
 
@@ -174,7 +176,7 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ###  Portability
 - Backend deployable on **AWS EC2** or any cloud VM   
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 **Frontend:**  
 ![React](https://img.shields.io/badge/React-18-blue?logo=react&logoColor=white&style=flat-square) 
@@ -211,7 +213,7 @@ This fullstack Job Portal allows seamless interaction between Employers and Job 
 ![Node.js](https://img.shields.io/badge/Node.js-20-green?logo=nodedotjs&logoColor=white&style=flat-square) 
 ![npm](https://img.shields.io/badge/npm-10-red?logo=npm&logoColor=white&style=flat-square)
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
 ###  Prerequisites
 
@@ -277,7 +279,7 @@ Configured **GitHub Actions** to automatically run workflows on every push and p
 -  Higher reliability and maintainability of the codebase
 
 
-## 👤 Author
+##  Author
 
 **Sandun Munasinghe**
 📧 [e20259@eng.pdn.ac.lk](mailto:e20259@eng.pdn.ac.lk)
