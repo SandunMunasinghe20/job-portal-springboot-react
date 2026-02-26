@@ -61,7 +61,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test fetching all job seekers through SeekerService
+        // Test fetching all job seekers
     void testGetAllSeekers() {
         List<SeekerDTO> mockSeekers = List.of(new SeekerDTO());
         when(seekerService.getAllSeekers()).thenReturn(ResponseEntity.ok(mockSeekers));
@@ -73,7 +73,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test retrieving admin profile based on authentication
+        // Test retrieving admin profile
     void testGetAdminProfile() {
         Admin admin = new Admin();
         admin.setEmail("admin@example.com");
@@ -87,7 +87,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test updating admin profile with new email and password
+        // Test updating admin profile
     void testUpdateAdmin() {
         Admin admin = new Admin();
         admin.setEmail("old@example.com");
@@ -107,7 +107,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test activating a user account (from inactive to active)
+        // Test activating a user account
     void testActivateUserAccount() {
         Admin admin = new Admin();
         when(authentication.getName()).thenReturn("admin@example.com");
@@ -129,7 +129,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test deactivating a user account and marking JWT token as used
+        // Test deactivating a user account
     void testDeactivateUserAccount() {
         Admin admin = new Admin();
         when(authentication.getName()).thenReturn("admin@example.com");
@@ -157,7 +157,7 @@ public class AdminServiceTest {
     }
 
     @Test
-        // Test getting site-wide analytics including user growth and skill-based data
+        // Test  analytics
     void testGetAnalytics() {
         when(seekerRepo.count()).thenReturn(5L);
         when(employerRepo.count()).thenReturn(3L);

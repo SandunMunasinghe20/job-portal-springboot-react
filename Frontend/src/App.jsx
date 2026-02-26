@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { Navigate } from "react-router-dom";
+import React from "react";
 
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -28,39 +29,35 @@ import HelpCenter from "./FooterComponents/HelpCenter";
 import Security from "./FooterComponents/Security";
 import JobPulse from "./FooterComponents/JobPulse";
 
-
 import { useNavigate } from "react-router-dom";
 import { MdMessage } from "react-icons/md";
 
 function App() {
-  
   function FloatingMessageIcon() {
-  const navigate = useNavigate();
-  const role = localStorage.getItem("role");
-  const token = localStorage.getItem("auth-token");
+    const navigate = useNavigate();
+    const role = localStorage.getItem("role");
+    const token = localStorage.getItem("auth-token");
 
-  // Only show for logged in users
-  if (!role || !token) return null;
+    // Only show for logged in users
+    if (!role || !token) return null;
 
-  return (
-    <div
-      onClick={() => navigate(`/conversation`)}
-      className="fixed z-50 p-4 text-white bg-blue-600 rounded-full shadow-lg cursor-pointer bottom-6 right-6 hover:bg-blue-700"
-      title="Messages"
-    >
-      <MdMessage size={24} />
-    </div>
-  );
-}
-
+    return (
+      <div
+        onClick={() => navigate(`/conversation`)}
+        className="fixed z-50 p-4 text-white bg-blue-600 rounded-full shadow-lg cursor-pointer bottom-6 right-6 hover:bg-blue-700"
+        title="Messages"
+      >
+        <MdMessage size={24} />
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>
       <Routes>
+        {/* redirect "/* > "/register" (for deployment */}
+        <Route path="/" element={<Navigate to="/register" replace />} />
 
-      {/* redirect "/* > "/register" (for deployment */}
-      <Route path="/" element={<Navigate to="/register" replace />} />
-        
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />

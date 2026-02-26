@@ -1,5 +1,4 @@
-
-export default function validateEmail({ email }) {
+export function validateEmail({ email }) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email) {
@@ -23,9 +22,9 @@ export function validatePassword({ password }) {
 
   if (!passwordRegex.test(password)) {
     return (
-      "Password must:\n" +
-      "* Be at least 8 characters\n" +
-      "* Contain uppercase and lowercase letters\n" +
+      "Password must: \n" +
+      "* Be at least 8 characters \n" +
+      "* Contain uppercase and lowercase letters \n" +
       "* Include a number\n" +
       "* Include a special character"
     );

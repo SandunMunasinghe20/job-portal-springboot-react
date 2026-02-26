@@ -14,6 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -167,7 +170,50 @@ public class AdminService {
     }
 
     // Get site-wide analytics
+//    public ResponseEntity<AnalyticsDTO> getAnalytics() {
+//        long jobSeekers = seekerRepo.count();
+//        long employers = employerRepo.count();
+//        long admins = adminRepo.count();
+//        long totalJobs = jobRepo.count();
+//        long totalApplications = jobApplicationRepo.count();
+//        long totalMessages = messageRepo.count();
+//        long totalUsers = jobSeekers + employers + admins;
+//
+//        // today
+//        AnalyticsDTO analyticsDTO = new AnalyticsDTO();
+//        analyticsDTO.setJobSeekers(jobSeekers);
+//        analyticsDTO.setEmployers(employers);
+//        analyticsDTO.setAdmins(admins);
+//        analyticsDTO.setTotalJobs(totalJobs);
+//        analyticsDTO.setTotalApplications(totalApplications);
+//        analyticsDTO.setTotalMessages(totalMessages);
+//        analyticsDTO.setTotalUsers(totalUsers);
+//
+//        // monthly user growth
+//        List<Object[]> userGrowthRaw = userRepo.getUserGrowthByMonth();
+//        Map<String, Long> userGrowthData = userGrowthRaw.stream().collect(Collectors.toMap(obj -> (String) obj[0],               // month string, e.g. "2023-07"
+//                obj -> ((Number) obj[1]).longValue() // count of users
+//        ));
+//        analyticsDTO.setUserGrowthData(userGrowthData);
+//
+//        // skill-based job and application counts
+//        Map<String, Long> skillJobCounts = jobRepo.getJobCountBySkill();
+//        Map<String, Long> skillApplicationCounts = jobApplicationRepo.getApplicationCountBySkill(jobRepo);
+//
+//        Map<String, Object> skillBasedData = new HashMap<>();
+//        skillBasedData.put("skillJobCounts", skillJobCounts);
+//        skillBasedData.put("skillApplicationCounts", skillApplicationCounts);
+//
+//        analyticsDTO.setSkillBasedData(skillBasedData);
+//
+//
+//        return ResponseEntity.ok(analyticsDTO);
+//    }
+
+    // Get site wide analytics
     public ResponseEntity<AnalyticsDTO> getAnalytics() {
+
+        // Current totals
         long jobSeekers = seekerRepo.count();
         long employers = employerRepo.count();
         long admins = adminRepo.count();
@@ -185,14 +231,37 @@ public class AdminService {
         analyticsDTO.setTotalMessages(totalMessages);
         analyticsDTO.setTotalUsers(totalUsers);
 
-        // monthly user growth
+        // Convert LocalDate to java.util.Date for repository queries
+        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
+
+        long prevJobSeekers = seekerRepo.countByAccountCreatedAtBefore(oneMonthAgo);
+        long prevEmployers = employerRepo.countByAccountCreatedAtBefore(oneMonthAgo);
+        long prevAdmins = adminRepo.countByAccountCreatedAtBefore(oneMonthAgo);
+        long prevTotalJobs = jobRepo.countByPostedDateBefore(oneMonthAgo);
+        long prevApplications = jobApplicationRepo.countByAppliedAtBefore(oneMonthAgo);
+        long prevMessages = messageRepo.countBySendTimeBefore(oneMonthAgo);
+
+        long prevTotalUsers = prevJobSeekers + prevEmployers + prevAdmins;
+
+        analyticsDTO.setJobSeekersPercentage(calculatePercentage(jobSeekers, prevJobSeekers));
+        System.out.println("value "+ calculatePercentage(jobSeekers, prevJobSeekers));
+        analyticsDTO.setEmployersPercentage(calculatePercentage(employers, prevEmployers));
+        analyticsDTO.setAdminsPercentage(calculatePercentage(admins, prevAdmins));
+        analyticsDTO.setTotalJobsPercentage(calculatePercentage(totalJobs, prevTotalJobs));
+        analyticsDTO.setTotalApplicationsPercentage(calculatePercentage(totalApplications, prevApplications));
+        analyticsDTO.setTotalMessagesPercentage(calculatePercentage(totalMessages, prevMessages));
+        analyticsDTO.setTotalUsersPercentage(calculatePercentage(totalUsers, prevTotalUsers));
+
+        // Monthly user growth
         List<Object[]> userGrowthRaw = userRepo.getUserGrowthByMonth();
-        Map<String, Long> userGrowthData = userGrowthRaw.stream().collect(Collectors.toMap(obj -> (String) obj[0],               // month string, e.g. "2023-07"
-                obj -> ((Number) obj[1]).longValue() // count of users
-        ));
+        Map<String, Long> userGrowthData = userGrowthRaw.stream()
+                .collect(Collectors.toMap(
+                        obj -> (String) obj[0],
+                        obj -> ((Number) obj[1]).longValue()
+                ));
         analyticsDTO.setUserGrowthData(userGrowthData);
 
-        // skill-based job and application counts
+        // Skill based job and application counts
         Map<String, Long> skillJobCounts = jobRepo.getJobCountBySkill();
         Map<String, Long> skillApplicationCounts = jobApplicationRepo.getApplicationCountBySkill(jobRepo);
 
@@ -204,4 +273,11 @@ public class AdminService {
 
         return ResponseEntity.ok(analyticsDTO);
     }
+
+    private double calculatePercentage(long current, long previous) {
+        if (previous == 0) return current == 0 ? 0:100;
+        System.out.println("currrent :  "+current+" previous : "+previous+ " percentage: "+((double) (current - previous) / previous) * 100);
+        return ((double) (current - previous) / previous) * 100;
+    }
+
 }

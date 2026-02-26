@@ -4,12 +4,9 @@ import com.example.job.portal.Entity.Job;
 import com.example.job.portal.Entity.JobApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public interface JobApplicationRepo extends JpaRepository<JobApplication, Long> {
@@ -42,4 +39,5 @@ public interface JobApplicationRepo extends JpaRepository<JobApplication, Long> 
         return skillAppCount;
     }
 
+    long countByAppliedAtBefore(LocalDateTime localDate);
 }

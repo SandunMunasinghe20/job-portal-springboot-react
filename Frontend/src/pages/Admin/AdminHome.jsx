@@ -1,6 +1,7 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -17,6 +18,7 @@ import {
   Area,
   AreaChart,
 } from "recharts";
+
 import {
   FiUsers,
   FiBriefcase,
@@ -33,7 +35,7 @@ import { toast } from "react-toastify";
 
 export default function AdminHome() {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const navigate = useNavigate();
 
   // role and auth token
@@ -135,10 +137,7 @@ export default function AdminHome() {
                   : "bg-gray-50"
           }`}
         >
-          <div>
-            {Icon}
-          </div>
-          
+          <div>{Icon}</div>
         </div>
       </div>
     </div>
@@ -174,32 +173,29 @@ export default function AdminHome() {
                 title="Total Users"
                 count={stats.totalUsers}
                 color="text-blue-600"
-                Icon={<FiUsers className={`w-8 h-8 text-blue-600`}/>}
-                
-                trend={12.5}
+                Icon={<FiUsers className={`w-8 h-8 text-blue-600`} />}
+                trend={stats.totalUsersPercentage}
               />
               <StatCard
                 title="Job Seekers"
                 count={stats.jobSeekers}
                 color="text-green-600"
-                Icon={<FiUserCheck className={`w-8 h-8 text-green-600`}/>}
-                
-                trend={8.3}
+                Icon={<FiUserCheck className={`w-8 h-8 text-green-600`} />}
+                trend={stats.jobSeekersPercentage}
               />
               <StatCard
                 title="Employers"
                 count={stats.employers}
                 color="text-yellow-600"
-                Icon={<FaBuilding className={`w-8 h-8 text-yellow-600`}/>}
-                
-                trend={15.7}
+                Icon={<FaBuilding className={`w-8 h-8 text-yellow-600`} />}
+                trend={stats.employersPercentage}
               />
               <StatCard
                 title="Admins"
                 count={stats.admins}
                 color="text-gray-600"
-                Icon={<FiShield className={`w-8 h-8 text-gray-600`}/>}
-                
+                Icon={<FiShield className={`w-8 h-8 text-gray-600`} />}
+                trend={stats.adminsPercentage}
               />
             </div>
 
@@ -209,25 +205,22 @@ export default function AdminHome() {
                 title="Total Jobs"
                 count={stats.totalJobs}
                 color="text-blue-600"
-                Icon={<FiBriefcase className={`w-8 h-8 text-blue-600`}/>}
-                
-                trend={22.1}
+                Icon={<FiBriefcase className={`w-8 h-8 text-blue-600`} />}
+                trend={stats.totalJobsPercentage}
               />
               <StatCard
                 title="Applications"
                 count={stats.totalApplications}
                 color="text-green-600"
-                Icon={<FiFileText className={`w-8 h-8 text-green-600`}/>}
-                
-                trend={18.9}
+                Icon={<FiFileText className={`w-8 h-8 text-green-600`} />}
+                trend={stats.totalApplicationsPercentage}
               />
               <StatCard
                 title="Messages"
                 count={stats.totalMessages}
                 color="text-yellow-600"
-                Icon={<FiMessageSquare className={`w-8 h-8 text-yellow-600`}/>}
-                
-                trend={7.4}
+                Icon={<FiMessageSquare className={`w-8 h-8 text-yellow-600`} />}
+                trend={stats.totalMessagesPercentage}
               />
             </div>
 
@@ -237,7 +230,6 @@ export default function AdminHome() {
               <ChartCard title="User Growth Trend">
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={userGrowthData}>
-                
                     <defs>
                       <linearGradient
                         id="colorUsers"

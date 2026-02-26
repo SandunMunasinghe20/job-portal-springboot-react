@@ -6,9 +6,8 @@ import ConfirmModal from "../ConfirmModel/ConfirmModel";
 import { FaRegEnvelope } from "react-icons/fa";
 
 export default function ApplicationCard({ applications }) {
-
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
@@ -29,15 +28,12 @@ export default function ApplicationCard({ applications }) {
 
   const handleDelete = async ({ app }) => {
     try {
-      const response = await fetch(
-        `${API_URL}/applyJobs/delete/${app.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
+      const response = await fetch(`${API_URL}/applyJobs/delete/${app.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token,
         },
-      );
+      });
       if (!response.ok) {
         toast.error("Error occurred while deleting Job Application");
         return;
@@ -45,7 +41,7 @@ export default function ApplicationCard({ applications }) {
       const data = await response.text();
       toast.success(data);
       navigate(0);
-    } catch(error) {
+    } catch (error) {
       toast.error(`Error occurred while connecting to server.|| ${error}`);
     }
   };
@@ -60,7 +56,7 @@ export default function ApplicationCard({ applications }) {
       return;
     }
 
-    const maxSize = 10 * 1024 * 1024;
+    const maxSize = 2 * 1024 * 1024;
     const allowedTypes = ["application/pdf"];
 
     if (!allowedTypes.includes(resume.type)) {
@@ -80,16 +76,13 @@ export default function ApplicationCard({ applications }) {
       formData.append("id", app.id);
       formData.append("resume", resume);
 
-      const response = await fetch(
-        `${API_URL}/applyJobs/update/${app.id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          body: formData,
+      const response = await fetch(`${API_URL}/applyJobs/update/${app.id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + token,
         },
-      );
+        body: formData,
+      });
 
       if (!response.ok) {
         const errmsg = await response.text();
@@ -126,20 +119,17 @@ export default function ApplicationCard({ applications }) {
 
   const handleStatusChange = async ({ app, newStatus }) => {
     try {
-      const response = await fetch(
-        `${API_URL}/applyJobs/updateBYEmp`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify({
-            id: app.id,
-            status: newStatus,
-          }),
+      const response = await fetch(`${API_URL}/applyJobs/updateBYEmp`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
-      );
+        body: JSON.stringify({
+          id: app.id,
+          status: newStatus,
+        }),
+      });
       const data = await response.text();
       if (!response.ok) {
         toast.error(data);

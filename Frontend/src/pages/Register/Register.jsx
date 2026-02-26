@@ -5,20 +5,23 @@ import SubmitButton from "../../components/submitButton/submitbutton";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { validatePassword, validateEmail } from "../../services/Service";
 
 export default function Register() {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPass, setViewPass] = useState(false);
   const [selected, setSelected] = useState("seeker");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const role = localStorage.getItem("role");
+  //const role = localStorage.getItem("role");
 
   let url = "";
+  let role = "";
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -27,11 +30,50 @@ export default function Register() {
       return;
     }
 
+    // Validate email
+    const emailError = validateEmail({ email });
+    if (emailError) {
+      toast.error(emailError);
+      return;
+    }
+
+    // Validate password
+    const passwordError = validatePassword({ password });
+    if (passwordError) {
+      /*toast.error(
+        <div>
+          Password must:
+          <br />
+          * Be at least 8 characters
+          <br />
+          * Contain uppercase and lowercase letters
+          <br />
+          * Include a number
+          <br />* Include a special character
+        </div>,
+      );*/
+      setError(
+        <div>
+          Password must:
+          <br />
+          * Be at least 8 characters
+          <br />
+          * Contain uppercase and lowercase letters
+          <br />
+          * Include a number
+          <br />* Include a special character
+        </div>,
+      );
+      return;
+    }
+
     try {
       if (selected == "seeker") {
         url = `${API_URL}/auth/register-seeker`;
+        role = "seeker";
       } else {
         url = `${API_URL}/auth/register-employer`;
+        role = "employer";
       }
       const response = await fetch(url, {
         method: "POST",
@@ -40,12 +82,13 @@ export default function Register() {
         },
 
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       console.log("data sending back is: ", { email, password });
       // get resp entity string msg
       const msg = await response.text();
-      console.log(msg);
+      console.log("msg is :" + msg);
 
       if (!response.ok) {
         toast.error(msg);
@@ -115,6 +158,7 @@ export default function Register() {
                       value={password}
                       onChange={setPassword}
                     />
+                    <div className="text-red-500 text-xs mt-2">{error}</div>
                     <button
                       type="button"
                       onClick={() => setViewPass(!viewPass)}

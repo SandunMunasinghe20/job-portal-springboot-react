@@ -3,12 +3,9 @@ package com.example.job.portal.Repository;
 import com.example.job.portal.Entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public interface JobRepo extends JpaRepository<Job, Long> {
     Optional<Job> findJobById(Long id);
@@ -35,4 +32,5 @@ public interface JobRepo extends JpaRepository<Job, Long> {
         return skillCount;
     }
 
+    long countByPostedDateBefore(LocalDateTime localDate);
 }

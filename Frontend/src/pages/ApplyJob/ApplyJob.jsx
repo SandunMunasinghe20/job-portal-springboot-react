@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 
 export default function ApplyJob() {
-
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [searchParams] = useSearchParams();
   const jobId = searchParams.get("id");
   const token = localStorage.getItem("auth-token");
@@ -15,13 +14,18 @@ export default function ApplyJob() {
   const [jobData, setJobData] = useState("");
   const [resume, setResume] = useState(null);
 
+  const hasFetched = useRef(false);
+
   const navigate = useNavigate();
 
   const role = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchJobDetails = async () => {
-    
+      // stop re render
+      if (hasFetched.current) return;
+      hasFetched.current = true;
+
       try {
         const response = await fetch(
           `http://localhost:8080/api/jobs/findById/${jobId}`,
@@ -32,18 +36,19 @@ export default function ApplyJob() {
             },
           },
         );
+
         if (!response.ok) {
           toast.error("Failed to load Job Details");
           return;
         }
+
         const data = await response.json();
         console.log("data ", data);
         //console.log(" hi ",data.jobDescription.split("\n"));
         setJobData(data);
-        
-
       } catch (e) {
         toast.error(`Unable to connect with the server. || ${e}`);
+        hasFetched.current = false;
         return;
       }
     };
