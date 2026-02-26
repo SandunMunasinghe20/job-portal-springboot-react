@@ -1,7 +1,7 @@
 #  Fullstack Job Portal | Java Spring Boot + React (Vite) + MySQL
 
 This is a personal Fullstack Job Portal project built individually using Spring Boot (Java 21), React (Vite) and MySQL.
-It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, real-time messaging and an Admin Dashboard. 
+It includes secure authentication with JWT, role-based access control, job posting & applications, resume uploads, messaging and an Admin Dashboard. 
 Designed and developed from scratch to demonstrate fullstack engineering skills with Spring Boot & React.
 ---
 
