@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import JobListing from "../../components/JobListing/JobListing";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
+import { useRef } from "react";
 
 export default function Jobs() {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [jobs, setJobs] = useState([]);
   //const [error, toast.error] = useState("");
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
+  const hasFetched = useRef(false);
 
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("auth-token");
 
-  
   const fetchJobs = async () => {
     setLoading(true);
 
     if (!token) {
       toast.error("Please login first.");
       setLoading(false);
+      hasFetched.current(false);
       return;
     }
 
@@ -53,6 +54,9 @@ export default function Jobs() {
   };
 
   useEffect(() => {
+    // stop re render
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     fetchJobs();
   }, []);
 

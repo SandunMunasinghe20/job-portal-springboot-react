@@ -96,11 +96,13 @@
 
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.0.7</version> <!-- Use the latest stable version -->
-        </dependency>
+            <version>3.0.7</version>
+            <dependency>
+        -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

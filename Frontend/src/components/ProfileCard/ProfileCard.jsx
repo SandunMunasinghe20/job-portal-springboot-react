@@ -5,10 +5,9 @@ import { ToggleRight, ToggleLeft } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
 export default function ProfileCard({ profile, roletoget }) {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isActive, setIsActive] = useState(profile.accountStatus === "active");
 
@@ -142,7 +141,7 @@ export default function ProfileCard({ profile, roletoget }) {
                 )
               ) : currentProfile.companyLogo ? (
                 <img
-                  src={currentProfile.companyLogo}
+                  src={`data:image/jpeg;base64,${currentProfile.companyLogo}`}
                   alt="Company Logo"
                   className="object-cover w-full h-full"
                 />

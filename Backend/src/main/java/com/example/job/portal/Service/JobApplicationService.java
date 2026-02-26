@@ -67,9 +67,10 @@ public class JobApplicationService {
                 return ResponseEntity.badRequest().body("You have already Applied to this Job");
             }
         }
-        // Check file size (max 10MB)
-        if (resume.getSize() > 10 * 1024 * 1024) {    //10Mb
-            return ResponseEntity.badRequest().body("Max allowed file size is 10MB");
+
+        // Check file size (max 2MB)
+        if (resume.getSize() > 2 * 1024 * 1024) {    //10Mb
+            return ResponseEntity.badRequest().body("Max allowed file size is 2MB");
         }
         // Convert resume to byte array
         byte[] resumeBytes = null;
@@ -95,6 +96,7 @@ public class JobApplicationService {
     // Admin: get all job applications
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<?> getallAppliedJobs() {
+
         List<JobApplicationDTO> appliedJobs = new ArrayList<>();
 
         List<JobApplication> optionalList = jobApplicationRepo.findAll();
@@ -105,6 +107,9 @@ public class JobApplicationService {
             jobApplicationDTO.setSeekerId(jobApplication.getSeekerId());
             jobApplicationDTO.setAppliedAt(jobApplication.getAppliedAt());
             jobApplicationDTO.setStatus(jobApplication.getStatus());
+
+            System.out.println("Applied at: "+ jobApplicationDTO.getAppliedAt());
+
             // Convert resume to Base64 for transfer
             byte[] resumeBytes = jobApplication.getResume();
             if (resumeBytes != null) {
@@ -130,6 +135,7 @@ public class JobApplicationService {
 
             appliedJobs.add(jobApplicationDTO);
         }
+
         return ResponseEntity.ok(appliedJobs);
     }
 
@@ -159,6 +165,7 @@ public class JobApplicationService {
             JobApplicationDTO dto = new JobApplicationDTO();
 
             dto.setId(jobApplication.getId());
+            dto.setAppliedAt(jobApplication.getAppliedAt());
             dto.setJobId(jobApplication.getJobId());
             dto.setSeekerId(jobApplication.getSeekerId());
             dto.setStatus(jobApplication.getStatus());

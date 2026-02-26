@@ -39,6 +39,7 @@ public class AuthController {
     public ResponseEntity<String> registerEmployer(@Valid @RequestBody UserDto userDto) {
         return authService.registerEmployer(userDto);
     }
+
     @PostMapping("register-admin")
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody UserDto userDto) {
         return authService.registerAdmin(userDto);

@@ -1,5 +1,6 @@
 package com.example.job.portal.Service;
 
+import com.example.job.portal.DTO.LinkTokenDTO;
 import com.example.job.portal.DTO.LoginRequestDTO;
 import com.example.job.portal.DTO.LoginResponseDTO;
 import com.example.job.portal.DTO.UserDto;
@@ -45,25 +46,22 @@ public class AuthServiceTest {
     private EmployerRepo employerRepo;
     @Mock
     private UserRepo userRepo;
-
     @Mock
     private AdminRepo adminRepo;
-
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private UserDto userDto;
     @Mock
     private AuthenticationManager authenticationManager;
-
     @Mock
     private UserDetailsService userDetailsService;
-
     @Mock
     private JWTService jwtService;
-
     @Mock
     private JWTTokenRepo jwtTokenRepo;
+    @Mock
+    private LinkTokenRepo linkTokenRepo;
 
 
     @BeforeEach
@@ -137,6 +135,83 @@ public class AuthServiceTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @Test
+    void login_UserNotFound() {
+        LoginRequestDTO request = new LoginRequestDTO();
+        request.setEmail("a@gmail.com");
+        request.setPassword("pass");
+        when(userRepo.findByEmail("a@gmail.com")).thenReturn(Optional.empty());
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authService.login(request));
+        assertEquals("User not found", ex.getMessage());
+    }
+
+    @Test
+    void login_InactiveUser() {
+        LoginRequestDTO request = new LoginRequestDTO();
+        request.setEmail("user@gmail.com");
+        request.setPassword("pass");
+        User user = new User();
+        user.setEmail("user@gmail.com");
+        user.setAccountStatus("inactive");
+        when(userRepo.findByEmail("user@gmail.com")).thenReturn(Optional.of(user));
+        BadCredentialsException ex = assertThrows(BadCredentialsException.class, () -> authService.login(request));
+        assertEquals("Your account is currently inactive", ex.getMessage());
+    }
+    @Test
+    void login_Success() {
+
+        LoginRequestDTO request = new LoginRequestDTO();
+
+        request.setEmail("user@gmail.com");
+        request.setPassword("pass");
+
+        User user = new User();
+
+        user.setEmail("user@gmail.com");
+        user.setAccountStatus("active");
+        user.setRole("seeker");
+        user.setId(1L);
+
+        UserDetails userDetails = mock(UserDetails.class);
+
+        when(userDetails.getUsername()).thenReturn("user@gmail.com");
+
+        when(userRepo.findByEmail("user@gmail.com")).thenReturn(Optional.of(user));
+        when(userDetailsService.loadUserByUsername("user@gmail.com")).thenReturn(userDetails);
+        when(jwtService.generateToken(userDetails)).thenReturn("jwt-token");
+        when(jwtTokenRepo.findByUser(user)).thenReturn(Optional.empty());
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(mock(Authentication.class));
+        when(jwtTokenRepo.save(any(JWTToken.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        LoginResponseDTO response = authService.login(request);
+
+        assertNotNull(response);
+        assertEquals("jwt-token", response.getToken());
+        assertEquals("seeker", response.getRole());
+        assertEquals(1L, response.getId());
+    }
+
+
+    @Test
+    void logout_NoAuth() {
+        ResponseEntity<String> response = authService.logout(null, null);
+        assertEquals(400, response.getStatusCodeValue());
+    }
+
+    @Test
+    void forgotPassword_UserNotFound() {
+        ResponseEntity<String> response = authService.forgotPassword("unknown@gmail.com");
+        assertEquals(400, response.getStatusCodeValue());
+    }
+
+    @Test
+    void resetPassword_TokenInvalid() {
+        LinkTokenDTO dto = new LinkTokenDTO();
+        dto.setToken("token");
+        ResponseEntity<String> response = authService.resetPassword(dto);
+        assertEquals(400, response.getStatusCodeValue());
+    }
 
 
 }

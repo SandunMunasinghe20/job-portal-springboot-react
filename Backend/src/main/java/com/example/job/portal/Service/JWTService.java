@@ -3,6 +3,7 @@ package com.example.job.portal.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.util.function.Function;
 @Component
 public class JWTService {
 
-    // Secret key used to sign and verify JWT tokens
+    // Secret key for JWT tokens
     private static final String SECRET_KEY = System.getenv("JWT_SECRET");
 
     // Extract username (subject) from JWT token
@@ -20,13 +21,13 @@ public class JWTService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Generic method to extract any claim from JWT token using a resolver function
+    // claim solver
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // Extract all claims (payload data) from the JWT token
+    // Extract all claims
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())) // use secret key for validation
                 .build().parseClaimsJws(token) // parse and validate JWT
@@ -37,12 +38,12 @@ public class JWTService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername()) // set username as subject
                 .setIssuedAt(new Date(System.currentTimeMillis())) // token issue time
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiration
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hours expiration
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())) // sign using secret key
                 .compact(); // build token string
     }
 
-    // Validate if the token is valid for the given user
+    // Validate if the token is valid
     public boolean isTokenValid(String token, UserDetails userDetails) {
         // Check username matches and token is not expired
         return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);

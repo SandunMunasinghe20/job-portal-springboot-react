@@ -1,8 +1,14 @@
 package com.example.job.portal.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Map;
 
+@Getter
+@Setter
 public class AnalyticsDTO {
+
     private long totalUsers;
     private long jobSeekers;
     private long employers;
@@ -13,6 +19,15 @@ public class AnalyticsDTO {
 
     private Map<String,Long> userGrowthData;
     private Map<String, Object> skillBasedData;
+
+    private double jobSeekersPercentage;
+    private double employersPercentage;
+    private double adminsPercentage;
+    private double totalJobsPercentage;
+    private double totalApplicationsPercentage;
+    private double totalMessagesPercentage;
+    private double totalUsersPercentage;
+
 
 
     // Constructors
@@ -68,4 +83,32 @@ public class AnalyticsDTO {
 
     public long getTotalMessages() { return totalMessages; }
     public void setTotalMessages(long totalMessages) { this.totalMessages = totalMessages; }
+
+    public void setJobSeekersPercentage(double jobSeekersPercentage) {
+        this.jobSeekersPercentage = jobSeekersPercentage;
+    }
+
+    public void setEmployersPercentage(double employersPercentage) {
+        this.employersPercentage = employersPercentage;
+    }
+
+    public void setAdminsPercentage(double adminsPercentage) {
+        this.adminsPercentage = adminsPercentage;
+    }
+
+    public void setTotalApplicationsPercentage(double totalApplicationsPercentage) {
+        this.totalApplicationsPercentage = totalApplicationsPercentage;
+    }
+
+    public void setTotalUsersPercentage(double totalUsersPercentage) {
+        this.totalUsersPercentage = totalUsersPercentage;
+    }
+
+    public void setTotalJobsPercentage(double totalJobsPercentage) {
+        this.totalJobsPercentage = totalJobsPercentage;
+    }
+
+    public void setTotalMessagesPercentage(double totalMessagesPercentage) {
+        this.totalMessagesPercentage = totalMessagesPercentage;
+    }
 }

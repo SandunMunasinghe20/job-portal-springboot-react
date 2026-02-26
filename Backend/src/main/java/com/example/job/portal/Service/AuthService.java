@@ -8,6 +8,7 @@ import com.example.job.portal.Entity.*;
 import com.example.job.portal.Repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class AuthService {
     private UserRepo userRepo;
     @Autowired
     private JWTTokenRepo jwtTokenRepo;
+
 
     private LocalDateTime localDateTime;
 
@@ -79,8 +82,8 @@ public class AuthService {
                 Seeker newSeeker = new Seeker();
                 newSeeker.setEmail(email);
                 newSeeker.setPassword(passwordEncoder.encode(password));
-                newSeeker.setAccountCreatedAt(new Date());
-                newSeeker.setAccountUpdatedAt(new Date());
+                newSeeker.setAccountCreatedAt(LocalDateTime.now());
+                newSeeker.setAccountUpdatedAt(LocalDateTime.now());
                 newSeeker.setRole("seeker");
                 newSeeker.setAccountStatus("active");
                 seekerRepo.save(newSeeker);
@@ -111,8 +114,8 @@ public class AuthService {
                 Employer newEmployer = new Employer();
                 newEmployer.setEmail(email);
                 newEmployer.setPassword(passwordEncoder.encode(password));
-                newEmployer.setAccountCreatedAt(new Date());
-                newEmployer.setAccountUpdatedAt(new Date());
+                newEmployer.setAccountCreatedAt(LocalDateTime.now());
+                newEmployer.setAccountUpdatedAt(LocalDateTime.now());
                 newEmployer.setRole("employer");
                 newEmployer.setAccountStatus("active");
                 employerRepo.save(newEmployer);
@@ -144,8 +147,8 @@ public class AuthService {
                 Admin newAdmin = new Admin();
                 newAdmin.setEmail(email);
                 newAdmin.setPassword(passwordEncoder.encode(password));
-                newAdmin.setAccountCreatedAt(new Date());
-                newAdmin.setAccountUpdatedAt(new Date());
+                newAdmin.setAccountCreatedAt(LocalDateTime.now());
+                newAdmin.setAccountUpdatedAt(LocalDateTime.now());
                 newAdmin.setRole("admin");
                 newAdmin.setAccountStatus("active");
                 adminRepo.save(newAdmin);
@@ -162,7 +165,10 @@ public class AuthService {
 
         // Check account status
         if (!"active".equalsIgnoreCase(user.getAccountStatus())) {
-            throw new BadCredentialsException("Your account is currently inactive");
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Your account is currently inactive"
+            );
         }
 
         // Authenticate user
@@ -174,7 +180,7 @@ public class AuthService {
 
         // Save or update JWT in database
         Optional<JWTToken> existingToken = jwtTokenRepo.findByUser(user);
-        LocalDateTime expiry = LocalDateTime.now().plusHours(10);
+        LocalDateTime expiry = LocalDateTime.now().plusHours(1);
 
         if (existingToken.isPresent()) {
             JWTToken jwtToken = existingToken.get();

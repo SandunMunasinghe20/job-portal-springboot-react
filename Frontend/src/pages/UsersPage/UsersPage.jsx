@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import { useEffect, useState } from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
@@ -6,10 +6,11 @@ import { fetchFromBackend } from "../../services/Service";
 import NavBar from "../../components/HomeComp/NavBar/NavBar";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import { IoMdReturnLeft } from "react-icons/io";
 
 export default function UsersPage() {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [users, setUsers] = useState([]);
 
   const role = localStorage.getItem("role");
@@ -18,8 +19,21 @@ export default function UsersPage() {
   const queryParams = new URLSearchParams(location.search);
   const roletoget = queryParams.get("role");
 
+  const hasFetched = useRef(false);
+
+  // reset fetch permission when role changes
+  useEffect(() => {
+    hasFetched.current = false;
+  }, [roletoget]);
+
   useEffect(() => {
     async function loadUsers() {
+      // stop re rendering
+      if (hasFetched.current) return;
+      hasFetched.current = true;
+
+      setUsers([]); // reset users
+
       let response;
 
       if (roletoget === "employer") {
@@ -38,12 +52,14 @@ export default function UsersPage() {
 
       if (data.error) {
         toast.error(data.error);
+        hasFetched.current = false;
       } else {
         setUsers(data);
         console.log("data is: ", data);
       }
     }
     if (roletoget) loadUsers();
+    else hasFetched.current = false;
   }, [roletoget]);
 
   return (

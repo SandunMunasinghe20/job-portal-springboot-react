@@ -19,10 +19,10 @@ public class User {
     private String password;
 
     @Column(name = "account_created_at")
-    private Date accountCreatedAt;
+    private LocalDateTime accountCreatedAt;
 
     @Column(name = "account_updated_at")
-    private Date accountUpdatedAt;
+    private LocalDateTime accountUpdatedAt;
 
     @Column(name = "role")
     private String role;
@@ -69,19 +69,20 @@ public class User {
         this.password = password;
     }
 
-    public Date getAccountCreatedAt() {
+    public LocalDateTime getAccountCreatedAt() {
         return accountCreatedAt;
     }
 
-    public void setAccountCreatedAt(Date accountCreatedAt) {
+    public void setAccountCreatedAt(LocalDateTime accountCreatedAt) {
         this.accountCreatedAt = accountCreatedAt;
     }
 
-    public Date getAccountUpdatedAt() {
+    public LocalDateTime getAccountUpdatedAt() {
         return accountUpdatedAt;
     }
 
-    public void setAccountUpdatedAt(Date accountUpdatedAt) {
+    public void setAccountUpdatedAt(LocalDateTime accountUpdatedAt) {
         this.accountUpdatedAt = accountUpdatedAt;
     }
+
 }

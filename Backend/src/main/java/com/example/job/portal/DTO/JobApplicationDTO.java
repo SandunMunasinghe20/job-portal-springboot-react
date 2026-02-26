@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class JobApplicationDTO {
+
     private Long id;
     private Long seekerId;
     private Long jobId;

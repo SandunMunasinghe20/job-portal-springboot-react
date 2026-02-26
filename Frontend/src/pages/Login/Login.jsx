@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import SubmitButton from "../../components/submitButton/submitbutton";
 import GetInput from "../../components/GetInput/GetInput";
@@ -8,75 +9,15 @@ import GoogleLoginButton from "../../components/GoogleLoginButton/GoogleLoginBut
 
 function Login() {
   const API_URL = import.meta.env.VITE_API_URL;
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPass, setViewPass] = useState(false);
- // const [isDarkMode, setIsDarkMode] = useState(false);
+  // const [isDarkMode, setIsDarkMode] = useState(false);
 
   const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
-  
-
- 
-
-  // Handle Google login success
-  const handleGoogleSuccess = async (credential) => {
-    try {
-      const response = await fetch(
-        `${API_URL}/auth/google-login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: credential }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (response.ok && data.token) {
-        localStorage.setItem("auth-token", data.token);
-        localStorage.setItem("role", data.role);
-        localStorage.setItem("id", data.id);
-
-        toast.success("Google login successful");
-
-        setTimeout(() => {
-          const role = localStorage.getItem("role");
-          if (role === "admin") {
-            navigate("/adminHome");
-          } else {
-            navigate("/home");
-          }
-        }, 1000);
-      } else {
-        toast.error(data.message || "Google login failed");
-      }
-    } catch (error) {
-      toast.error("Google login error: " + error.message);
-    }
-  };
-
-  // Handle Google login failure
-  const handleGoogleError = (error) => {
-    toast.error(error);
-  };
-
-  /*
-        useEffect(() => {
-            if (isDarkMode) {
-                document.body.classList.add('dark-theme');
-            } else {
-                document.body.classList.remove('dark-theme');
-            }
-        }, [isDarkMode]);
-    
-        const toggleTheme = () => {
-            const newTheme = !isDarkMode;
-            setIsDarkMode(newTheme);
-            localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-        };*/
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -92,9 +33,22 @@ function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
+      console.log("resp coming is: " + response);
 
       if (!response.ok) {
-        toast.error("Login failed");
+        let errorMessage = "Login failed";
+
+        try {
+          const data = await response.clone().json();
+          //console.log("Data coming is: " + data);
+          errorMessage = data.message || data.error || errorMessage;
+        } catch {
+          const text = await response.clone().text();
+          //console.log("Text coming is: " + text);
+          if (text) errorMessage = text;
+        }
+
+        toast.error(errorMessage);
         return;
       }
 
@@ -109,8 +63,8 @@ function Login() {
       localStorage.setItem("auth-token", data.token);
       localStorage.setItem("role", data.role);
       localStorage.setItem("id", data.id);
-      console.log("id is : ", data.id);
-      console.log("Role ", data.role);
+      // console.log("id is : ", data.id);
+      // console.log("Role ", data.role);
       //setSuccess("Login Successful");
       toast.success("Login Successful");
 
@@ -119,7 +73,7 @@ function Login() {
         if (role == "admin") {
           navigate("/adminHome");
         } else navigate("/home");
-      }, 1000);
+      }, 100);
     } catch (e) {
       //console.log("Error occured while logging");
       //setError("Login failed. Try again");
@@ -257,17 +211,17 @@ function Login() {
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-200"></div>
                   </div>
-                  <div className="relative flex justify-center text-sm">
+                  {/* <div className="relative flex justify-center text-sm">
                     <span className="px-4 font-medium text-gray-500 bg-white">
                       Or continue with
                     </span>
-                  </div>
+                  </div> */}
                 </div>
 
-                <GoogleLoginButton
+                {/* <GoogleLoginButton
                   onLoginSuccess={handleGoogleSuccess}
                   onLoginError={handleGoogleError}
-                />
+                /> */}
               </div>
 
               <div className="pt-2 text-center">
